@@ -137,3 +137,14 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+# PHP
+/backend/.env
+/backend/vendor/
+
+# React
+/frontend/node_modules/
+/frontend/dist/
+
+# System
+.DS_Store
+Thumbs.db
