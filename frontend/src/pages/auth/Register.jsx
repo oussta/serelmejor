@@ -4,42 +4,71 @@ import { register } from '../../services/authService'
 import { useAuth } from '../../context/AuthContext'
 
 function Register() {
-  const [form, setForm]     = useState({
-    name: '', email: '', password: '', business_name: '', plan: 'full'
+  const [form, setForm] = useState({
+    name: '', email: '', password: '', business_name: ''
   })
-  const [error, setError]   = useState('')
-  const [loading, setLoading] = useState(false)
+  const [showPass, setShowPass]       = useState(false)
+  const [errors, setErrors]           = useState({})
+  const [serverError, setServerError] = useState('')
+  const [loading, setLoading]         = useState(false)
 
   const { saveAuth } = useAuth()
   const navigate     = useNavigate()
 
+  function validateField(name, value) {
+    if (name === 'name') {
+  if (!value) return 'El nombre es obligatorio'
+  if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return 'El nombre solo puede contener letras'
+}
+    if (name === 'business_name' && !value) return 'El nombre de empresa es obligatorio'
+    if (name === 'email') {
+      if (!value) return 'El email es obligatorio'
+      if (!/\S+@\S+\.\S+/.test(value)) return 'Email no válido'
+    }
+    if (name === 'password') {
+      if (!value) return 'La contraseña es obligatoria'
+      if (value.length < 8) return 'Mínimo 8 caracteres'
+    }
+    return ''
+  }
+
   function handleChange(e) {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setForm(prev => ({ ...prev, [name]: value }))
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: validateField(name, value) }))
+    }
+  }
+
+  function handleBlur(e) {
+    const { name, value } = e.target
+    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }))
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
-    setError('')
+    setServerError('')
 
-    if (!form.name || !form.email || !form.password || !form.business_name) {
-      setError('Please fill in all fields')
-      return
-    }
+    const newErrors = {}
+    Object.keys(form).forEach(key => {
+      const err = validateField(key, form[key])
+      if (err) newErrors[key] = err
+    })
 
-    if (form.password.length < 8) {
-      setError('Password must be at least 8 characters')
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
       return
     }
 
     try {
       setLoading(true)
       const data = await register(
-        form.name, form.email, form.password, form.business_name, form.plan
+        form.name, form.email, form.password, form.business_name, 'full'
       )
       saveAuth(data.token, data.user)
-      navigate('/dashboard')
+      navigate('/pricing')
     } catch (err) {
-      setError(err.message)
+      setServerError(err.message)
     } finally {
       setLoading(false)
     }
@@ -51,67 +80,70 @@ function Register() {
         <h1 style={styles.title}>serElMejor</h1>
         <h2 style={styles.subtitle}>Crear cuenta</h2>
 
-        {error && <p style={styles.error}>{error}</p>}
+        {serverError && <p style={styles.serverError}>{serverError}</p>}
 
         <form onSubmit={handleSubmit}>
           <div style={styles.field}>
             <label style={styles.label}>Nombre</label>
             <input
-              style={styles.input}
+              style={{...styles.input, borderColor: errors.name ? 'var(--color-error)' : 'var(--color-border)'}}
               name="name"
               value={form.name}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Tu nombre"
             />
+            {errors.name && <p style={styles.fieldError}>{errors.name}</p>}
           </div>
 
           <div style={styles.field}>
             <label style={styles.label}>Email</label>
             <input
-              style={styles.input}
+              style={{...styles.input, borderColor: errors.email ? 'var(--color-error)' : 'var(--color-border)'}}
               name="email"
               type="email"
               value={form.email}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="tu@email.com"
             />
+            {errors.email && <p style={styles.fieldError}>{errors.email}</p>}
           </div>
 
           <div style={styles.field}>
             <label style={styles.label}>Contraseña</label>
-            <input
-              style={styles.input}
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Mínimo 8 caracteres"
-            />
+            <div style={styles.passwordWrapper}>
+              <input
+                style={{...styles.input, borderColor: errors.password ? 'var(--color-error)' : 'var(--color-border)'}}
+                name="password"
+                type={showPass ? 'text' : 'password'}
+                value={form.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Mínimo 8 caracteres"
+              />
+              <button
+                type="button"
+                style={styles.eyeBtn}
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? '🙈' : '👁️'}
+              </button>
+            </div>
+            {errors.password && <p style={styles.fieldError}>{errors.password}</p>}
           </div>
 
           <div style={styles.field}>
             <label style={styles.label}>Nombre de tu empresa</label>
             <input
-              style={styles.input}
+              style={{...styles.input, borderColor: errors.business_name ? 'var(--color-error)' : 'var(--color-border)'}}
               name="business_name"
               value={form.business_name}
               onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Mi Empresa S.L."
             />
-          </div>
-
-          <div style={styles.field}>
-            <label style={styles.label}>Plan</label>
-            <select
-              style={styles.input}
-              name="plan"
-              value={form.plan}
-              onChange={handleChange}
-            >
-              <option value="full">Full Suite — €49/mes</option>
-              <option value="salesflow">SalesFlow CRM — €29/mes</option>
-              <option value="stockflow">StockFlow Inventario — €29/mes</option>
-            </select>
+            {errors.business_name && <p style={styles.fieldError}>{errors.business_name}</p>}
           </div>
 
           <button style={styles.button} type="submit" disabled={loading}>
@@ -156,7 +188,7 @@ const styles = {
     textAlign: 'center',
     fontWeight: '500',
   },
-  error: {
+  serverError: {
     background: 'var(--color-error-light)',
     color: 'var(--color-error)',
     padding: '12px',
@@ -183,6 +215,24 @@ const styles = {
     color: 'var(--color-text-primary)',
     outline: 'none',
     boxSizing: 'border-box',
+  },
+  passwordWrapper: {
+    position: 'relative',
+  },
+  eyeBtn: {
+    position: 'absolute',
+    right: '10px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  fieldError: {
+    color: 'var(--color-error)',
+    fontSize: 'var(--text-xs)',
+    marginTop: '4px',
   },
   button: {
     width: '100%',

@@ -52,25 +52,69 @@ class BusinessController {
         $user = AuthMiddleware::handle();
         $pdo  = getDB();
 
-        // Count team members
         $stmt = $pdo->prepare("SELECT COUNT(*) as total_users FROM users WHERE business_id = ?");
         $stmt->execute([$user['business_id']]);
         $users = $stmt->fetch();
 
-        // Count leads
         $stmt = $pdo->prepare("SELECT COUNT(*) as total_leads FROM leads WHERE business_id = ?");
         $stmt->execute([$user['business_id']]);
         $leads = $stmt->fetch();
 
-        // Count products
         $stmt = $pdo->prepare("SELECT COUNT(*) as total_products FROM products WHERE business_id = ?");
         $stmt->execute([$user['business_id']]);
         $products = $stmt->fetch();
 
         Response::json([
-            "total_users"    => (int) $users['total_leads'],
+            "total_users"    => (int) $users['total_users'],
             "total_leads"    => (int) $leads['total_leads'],
             "total_products" => (int) $products['total_products'],
+        ]);
+    }
+
+    // PUT /business/subscription
+    public static function updateSubscription() {
+        $user = AuthMiddleware::handle();
+        RoleMiddleware::require($user, ['owner', 'admin']);
+
+        $data  = json_decode(file_get_contents("php://input"), true);
+        $error = Validator::required($data, ['plan']);
+        if ($error) Response::error($error, 400);
+
+        $plan = Validator::sanitize($data['plan']);
+
+        if (!in_array($plan, ['salesflow', 'stockflow', 'full'])) {
+            Response::error("Invalid plan", 400);
+        }
+
+        $price = match($plan) {
+            'salesflow' => 29.00,
+            'stockflow' => 29.00,
+            'full'      => 49.00,
+        };
+
+        $pdo = getDB();
+
+        // Update business plan
+        $stmt = $pdo->prepare("UPDATE businesses SET subscription_plan = ? WHERE id = ?");
+        $stmt->execute([$plan, $user['business_id']]);
+
+        // Update or insert subscription
+        $stmt = $pdo->prepare("SELECT id FROM subscriptions WHERE business_id = ?");
+        $stmt->execute([$user['business_id']]);
+        $sub = $stmt->fetch();
+
+        if ($sub) {
+            $stmt = $pdo->prepare("UPDATE subscriptions SET plan = ?, price = ?, status = 'active' WHERE business_id = ?");
+            $stmt->execute([$plan, $price, $user['business_id']]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO subscriptions (business_id, plan, price, status) VALUES (?, ?, ?, 'active')");
+            $stmt->execute([$user['business_id'], $plan, $price]);
+        }
+
+        Response::json([
+            "message" => "Plan updated successfully",
+            "plan"    => $plan,
+            "price"   => $price
         ]);
     }
 }

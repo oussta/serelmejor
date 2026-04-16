@@ -39,6 +39,9 @@ elseif ($path === 'business' && $method === 'PUT') {
 elseif ($path === 'business/stats' && $method === 'GET') {
     BusinessController::stats();
 }
+elseif ($path === 'business/subscription' && $method === 'PUT') {
+    BusinessController::updateSubscription();
+}
 
 // Team routes
 elseif ($path === 'team' && $method === 'GET') {
@@ -47,11 +50,21 @@ elseif ($path === 'team' && $method === 'GET') {
 elseif ($path === 'team/invite' && $method === 'POST') {
     TeamController::invite();
 }
-elseif ($parts[0] === 'team' && isset($parts[1]) && $parts[2] === 'role' && $method === 'PUT') {
+elseif ($parts[0] === 'team' && isset($parts[1]) && isset($parts[2]) && $parts[2] === 'role' && $method === 'PUT') {
     TeamController::updateRole($parts[1]);
 }
 elseif ($parts[0] === 'team' && isset($parts[1]) && $method === 'DELETE') {
     TeamController::delete($parts[1]);
+}
+
+// Payment routes
+elseif ($path === 'payment/create-intent' && $method === 'POST') {
+    require_once __DIR__ . '/../controllers/PaymentController.php';
+    PaymentController::createIntent();
+}
+elseif ($path === 'payment/confirm' && $method === 'POST') {
+    require_once __DIR__ . '/../controllers/PaymentController.php';
+    PaymentController::confirm();
 }
 
 // No route matched

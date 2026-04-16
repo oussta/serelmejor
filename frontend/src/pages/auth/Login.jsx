@@ -6,19 +6,40 @@ import { useAuth } from '../../context/AuthContext'
 function Login() {
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError]       = useState('')
+  const [showPass, setShowPass] = useState(false)
+  const [errors, setErrors]     = useState({})
   const [loading, setLoading]   = useState(false)
+  const [serverError, setServerError] = useState('')
 
   const { saveAuth } = useAuth()
   const navigate     = useNavigate()
 
+  function validateField(name, value) {
+    if (name === 'email') {
+      if (!value) return 'El email es obligatorio'
+      if (!/\S+@\S+\.\S+/.test(value)) return 'Email no válido'
+    }
+    if (name === 'password') {
+      if (!value) return 'La contraseña es obligatoria'
+      if (value.length < 8) return 'Mínimo 8 caracteres'
+    }
+    return ''
+  }
+
+  function handleBlur(e) {
+    const { name, value } = e.target
+    setErrors(prev => ({ ...prev, [name]: validateField(name, value) }))
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
-    setError('')
+    setServerError('')
 
-    // Client-side validation
-    if (!email || !password) {
-      setError('Please fill in all fields')
+    const emailError    = validateField('email', email)
+    const passwordError = validateField('password', password)
+
+    if (emailError || passwordError) {
+      setErrors({ email: emailError, password: passwordError })
       return
     }
 
@@ -28,7 +49,7 @@ function Login() {
       saveAuth(data.token, data.user)
       navigate('/dashboard')
     } catch (err) {
-      setError(err.message)
+      setServerError(err.message)
     } finally {
       setLoading(false)
     }
@@ -40,29 +61,44 @@ function Login() {
         <h1 style={styles.title}>serElMejor</h1>
         <h2 style={styles.subtitle}>Iniciar sesión</h2>
 
-        {error && <p style={styles.error}>{error}</p>}
+        {serverError && <p style={styles.serverError}>{serverError}</p>}
 
         <form onSubmit={handleSubmit}>
           <div style={styles.field}>
             <label style={styles.label}>Email</label>
             <input
-              style={styles.input}
+              style={{...styles.input, borderColor: errors.email ? 'var(--color-error)' : 'var(--color-border)'}}
               type="email"
+              name="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
+              onBlur={handleBlur}
               placeholder="tu@email.com"
             />
+            {errors.email && <p style={styles.fieldError}>{errors.email}</p>}
           </div>
 
           <div style={styles.field}>
             <label style={styles.label}>Contraseña</label>
-            <input
-              style={styles.input}
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
+            <div style={styles.passwordWrapper}>
+              <input
+                style={{...styles.input, borderColor: errors.password ? 'var(--color-error)' : 'var(--color-border)'}}
+                type={showPass ? 'text' : 'password'}
+                name="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                onBlur={handleBlur}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                style={styles.eyeBtn}
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? '🙈' : '👁️'}
+              </button>
+            </div>
+            {errors.password && <p style={styles.fieldError}>{errors.password}</p>}
           </div>
 
           <button style={styles.button} type="submit" disabled={loading}>
@@ -107,7 +143,7 @@ const styles = {
     textAlign: 'center',
     fontWeight: '500',
   },
-  error: {
+  serverError: {
     background: 'var(--color-error-light)',
     color: 'var(--color-error)',
     padding: '12px',
@@ -134,6 +170,24 @@ const styles = {
     color: 'var(--color-text-primary)',
     outline: 'none',
     boxSizing: 'border-box',
+  },
+  passwordWrapper: {
+    position: 'relative',
+  },
+  eyeBtn: {
+    position: 'absolute',
+    right: '10px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px',
+  },
+  fieldError: {
+    color: 'var(--color-error)',
+    fontSize: 'var(--text-xs)',
+    marginTop: '4px',
   },
   button: {
     width: '100%',
