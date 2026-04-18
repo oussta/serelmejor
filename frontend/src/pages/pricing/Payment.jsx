@@ -131,7 +131,7 @@ function CheckoutForm({ plan, price, clientSecret }) {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>serElMejor</h1>
+        <h1 style={styles.title}>Salesek</h1>
         <h2 style={styles.subtitle}>Pago seguro</h2>
 
         <div style={styles.planBadge}>

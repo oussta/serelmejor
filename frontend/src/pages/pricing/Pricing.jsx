@@ -82,7 +82,7 @@ function Pricing() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h1 style={styles.title}>serElMejor</h1>
+        <h1 style={styles.title}>Salesek</h1>
         <h2 style={styles.subtitle}>Elige tu plan</h2>
         <p style={styles.trial}>✅ 14 días gratis — no se requiere tarjeta</p>
       </div>

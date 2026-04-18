@@ -4,6 +4,8 @@ import Register from '../pages/auth/Register'
 import Dashboard from '../pages/dashboard/Dashboard'
 import Pricing from '../pages/pricing/Pricing'
 import Payment from '../pages/pricing/Payment'
+import Leads from '../pages/salesflow/Leads'
+import LeadDetail from '../pages/salesflow/LeadDetail'
 import { useAuth } from '../context/AuthContext'
 
 function ProtectedRoute({ children }) {
@@ -30,6 +32,16 @@ function AppRouter() {
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/leads" element={
+        <ProtectedRoute>
+          <Leads />
+        </ProtectedRoute>
+      } />
+      <Route path="/leads/:id" element={
+        <ProtectedRoute>
+          <LeadDetail />
         </ProtectedRoute>
       } />
       <Route path="*" element={<Navigate to="/login" />} />
