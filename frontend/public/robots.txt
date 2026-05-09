@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /leads
+Disallow: /products
+Disallow: /orders
+Disallow: /admin
+Disallow: /team
+Disallow: /supplier
+Disallow: /pricing
+Disallow: /payment
+
+Sitemap: https://salesek.onrender.com/sitemap.xml

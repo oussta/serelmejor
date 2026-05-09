@@ -19,7 +19,12 @@ function Leads() {
   const [loading, setLoading]   = useState(true)
   const [error, setError]       = useState('')
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm]         = useState({ client_name: '', inquiry_text: '', close_probability: 50 })
+  const [form, setForm]         = useState(() => {
+    const saved = localStorage.getItem('new_lead_form')
+    return saved ? JSON.parse(saved) : {
+      client_name: '', inquiry_text: '', close_probability: 50
+    }
+  })
   const [creating, setCreating] = useState(false)
 
   useEffect(() => {
@@ -38,9 +43,15 @@ function Leads() {
     }
   }
 
+  function handleFormChange(field, value) {
+    const updated = { ...form, [field]: value }
+    setForm(updated)
+    localStorage.setItem('new_lead_form', JSON.stringify(updated))
+  }
+
   async function handleCreate(e) {
     e.preventDefault()
-    
+
     if (!form.client_name.trim()) {
       setError('El nombre del cliente es obligatorio')
       return
@@ -57,7 +68,9 @@ function Leads() {
       setCreating(true)
       const newLead = await createLead(form, token)
       setLeads(prev => [newLead, ...prev])
-      setForm({ client_name: '', inquiry_text: '', close_probability: 50 })
+      const empty = { client_name: '', inquiry_text: '', close_probability: 50 }
+      setForm(empty)
+      localStorage.removeItem('new_lead_form')
       setShowForm(false)
     } catch (err) {
       setError(err.message)
@@ -91,20 +104,19 @@ function Leads() {
 
   return (
     <div style={styles.container}>
-      {/* Header */}
       <div style={styles.header}>
         <div>
           <h1 style={styles.title}>SalesFlow CRM</h1>
           <p style={styles.subtitle}>{leads.length} leads en total</p>
         </div>
         <button style={styles.addBtn} onClick={() => setShowForm(!showForm)}>
-          + Nuevo Lead
+          <span className="material-icons-round" style={{fontSize: '18px'}}>add</span>
+          Nuevo Lead
         </button>
       </div>
 
       {error && <p style={styles.error}>{error}</p>}
 
-      {/* Create form */}
       {showForm && (
         <div style={styles.formCard}>
           <h3 style={styles.formTitle}>Nuevo Lead</h3>
@@ -113,27 +125,33 @@ function Leads() {
               style={styles.input}
               placeholder="Nombre del cliente *"
               value={form.client_name}
-              onChange={e => setForm({...form, client_name: e.target.value})}
+              onChange={e => handleFormChange('client_name', e.target.value)}
             />
             <textarea
               style={{...styles.input, height: '80px', resize: 'vertical'}}
               placeholder="Descripción del interés"
               value={form.inquiry_text}
-              onChange={e => setForm({...form, inquiry_text: e.target.value})}
+              onChange={e => handleFormChange('inquiry_text', e.target.value)}
             />
             <div style={styles.probabilityRow}>
-              <label style={styles.label}>Probabilidad de cierre: {form.close_probability}%</label>
+              <label style={styles.label}>
+                Probabilidad de cierre: {form.close_probability}%
+              </label>
               <input
                 type="range"
                 min="0"
                 max="100"
                 value={form.close_probability}
-                onChange={e => setForm({...form, close_probability: parseInt(e.target.value)})}
+                onChange={e => handleFormChange('close_probability', parseInt(e.target.value))}
                 style={{ width: '100%' }}
               />
             </div>
             <div style={styles.formActions}>
-              <button type="button" style={styles.cancelBtn} onClick={() => setShowForm(false)}>
+              <button
+                type="button"
+                style={styles.cancelBtn}
+                onClick={() => setShowForm(false)}
+              >
                 Cancelar
               </button>
               <button type="submit" style={styles.saveBtn} disabled={creating}>
@@ -144,12 +162,13 @@ function Leads() {
         </div>
       )}
 
-      {/* Kanban Board */}
       <div style={styles.board}>
         {COLUMNS.map(col => (
           <div key={col.id} style={styles.column}>
             <div style={{...styles.columnHeader, borderColor: col.color}}>
-              <span style={{...styles.columnTitle, color: col.color}}>{col.label}</span>
+              <span style={{...styles.columnTitle, color: col.color}}>
+                {col.label}
+              </span>
               <span style={{...styles.columnCount, background: col.color}}>
                 {leadsByStatus(col.id).length}
               </span>
@@ -204,15 +223,13 @@ function Leads() {
 
 const styles = {
   container: {
-    padding: '24px',
-    maxWidth: '1400px',
-    margin: '0 auto',
+    padding: '0',
   },
   center: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '60vh',
     color: 'var(--color-text-secondary)',
   },
   header: {
@@ -222,22 +239,26 @@ const styles = {
     marginBottom: '24px',
   },
   title: {
-    fontSize: 'var(--text-2xl)',
+    fontSize: '24px',
+    fontWeight: '800',
     color: 'var(--color-text-primary)',
-    fontWeight: '700',
+    letterSpacing: '-0.5px',
   },
   subtitle: {
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
     color: 'var(--color-text-secondary)',
     marginTop: '4px',
   },
   addBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
     padding: '10px 20px',
     background: 'var(--gradient-primary)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-md)',
-    fontSize: 'var(--text-sm)',
+    fontSize: '14px',
     fontWeight: '600',
     cursor: 'pointer',
   },
@@ -247,7 +268,7 @@ const styles = {
     padding: '12px',
     borderRadius: 'var(--radius-sm)',
     marginBottom: '16px',
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
   },
   formCard: {
     background: 'var(--color-white)',
@@ -256,10 +277,11 @@ const styles = {
     boxShadow: 'var(--shadow-md)',
     marginBottom: '24px',
     maxWidth: '500px',
+    border: '1px solid var(--color-border)',
   },
   formTitle: {
-    fontSize: 'var(--text-lg)',
-    fontWeight: '600',
+    fontSize: '16px',
+    fontWeight: '700',
     marginBottom: '16px',
     color: 'var(--color-text-primary)',
   },
@@ -268,21 +290,22 @@ const styles = {
     padding: '10px 14px',
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-base)',
+    fontSize: '14px',
     color: 'var(--color-text-primary)',
     outline: 'none',
     boxSizing: 'border-box',
     marginBottom: '12px',
-    fontFamily: 'var(--font-family)',
+    fontFamily: 'Plus Jakarta Sans, sans-serif',
   },
   probabilityRow: {
     marginBottom: '16px',
   },
   label: {
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
     color: 'var(--color-text-secondary)',
     marginBottom: '6px',
     display: 'block',
+    fontWeight: '500',
   },
   formActions: {
     display: 'flex',
@@ -296,16 +319,17 @@ const styles = {
     border: 'none',
     borderRadius: 'var(--radius-sm)',
     cursor: 'pointer',
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
+    fontWeight: '500',
   },
   saveBtn: {
-    padding: '8px 16px',
+    padding: '8px 20px',
     background: 'var(--gradient-primary)',
     color: 'white',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
     cursor: 'pointer',
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
     fontWeight: '600',
   },
   board: {
@@ -315,7 +339,7 @@ const styles = {
     paddingBottom: '16px',
   },
   column: {
-    minWidth: '240px',
+    minWidth: '220px',
     flex: 1,
     background: 'var(--color-surface-2)',
     borderRadius: 'var(--radius-lg)',
@@ -330,14 +354,14 @@ const styles = {
     borderBottom: '2px solid',
   },
   columnTitle: {
-    fontSize: 'var(--text-sm)',
+    fontSize: '13px',
     fontWeight: '700',
   },
   columnCount: {
     color: 'white',
     borderRadius: 'var(--radius-full)',
     padding: '2px 8px',
-    fontSize: 'var(--text-xs)',
+    fontSize: '11px',
     fontWeight: '700',
   },
   columnBody: {
@@ -350,15 +374,16 @@ const styles = {
     borderRadius: 'var(--radius-md)',
     padding: '12px',
     boxShadow: 'var(--shadow-xs)',
+    border: '1px solid var(--color-border)',
   },
   leadName: {
-    fontSize: 'var(--text-sm)',
-    fontWeight: '600',
+    fontSize: '13px',
+    fontWeight: '700',
     color: 'var(--color-text-primary)',
     marginBottom: '4px',
   },
   leadText: {
-    fontSize: 'var(--text-xs)',
+    fontSize: '11px',
     color: 'var(--color-text-secondary)',
     marginBottom: '8px',
     overflow: 'hidden',
@@ -370,7 +395,7 @@ const styles = {
     marginBottom: '8px',
   },
   probability: {
-    fontSize: 'var(--text-xs)',
+    fontSize: '11px',
     color: 'var(--color-brand)',
     fontWeight: '600',
   },
@@ -384,17 +409,17 @@ const styles = {
     padding: '4px 6px',
     border: '1px solid var(--color-border)',
     borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-xs)',
+    fontSize: '11px',
     color: 'var(--color-text-primary)',
     outline: 'none',
   },
   detailBtn: {
-    padding: '4px 8px',
+    padding: '4px 10px',
     background: 'var(--color-brand-light)',
     color: 'var(--color-brand)',
     border: 'none',
     borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-xs)',
+    fontSize: '11px',
     fontWeight: '600',
     cursor: 'pointer',
   },
@@ -409,7 +434,7 @@ const styles = {
   emptyCol: {
     textAlign: 'center',
     color: 'var(--color-text-muted)',
-    fontSize: 'var(--text-xs)',
+    fontSize: '12px',
     padding: '20px 0',
   }
 }

@@ -4,8 +4,11 @@ import { register } from '../../services/authService'
 import { useAuth } from '../../context/AuthContext'
 
 function Register() {
-  const [form, setForm] = useState({
-    name: '', email: '', password: '', business_name: ''
+  const [form, setForm] = useState(() => {
+    const saved = localStorage.getItem('register_form')
+    return saved ? JSON.parse(saved) : {
+      name: '', email: '', password: '', business_name: ''
+    }
   })
   const [showPass, setShowPass]       = useState(false)
   const [errors, setErrors]           = useState({})
@@ -17,9 +20,9 @@ function Register() {
 
   function validateField(name, value) {
     if (name === 'name') {
-  if (!value) return 'El nombre es obligatorio'
-  if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return 'El nombre solo puede contener letras'
-}
+      if (!value) return 'El nombre es obligatorio'
+      if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return 'El nombre solo puede contener letras'
+    }
     if (name === 'business_name' && !value) return 'El nombre de empresa es obligatorio'
     if (name === 'email') {
       if (!value) return 'El email es obligatorio'
@@ -34,7 +37,9 @@ function Register() {
 
   function handleChange(e) {
     const { name, value } = e.target
-    setForm(prev => ({ ...prev, [name]: value }))
+    const updated = { ...form, [name]: value }
+    setForm(updated)
+    localStorage.setItem('register_form', JSON.stringify(updated))
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: validateField(name, value) }))
     }
@@ -66,6 +71,7 @@ function Register() {
         form.name, form.email, form.password, form.business_name, 'full'
       )
       saveAuth(data.token, data.user)
+      localStorage.removeItem('register_form')
       navigate('/pricing')
     } catch (err) {
       setServerError(err.message)
@@ -180,6 +186,7 @@ const styles = {
     color: 'var(--color-brand)',
     marginBottom: '8px',
     textAlign: 'center',
+    fontWeight: '800',
   },
   subtitle: {
     fontSize: 'var(--text-lg)',

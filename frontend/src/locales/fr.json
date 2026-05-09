@@ -1,0 +1,175 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "contact": "Contact",
+    "blog": "Blog",
+    "login": "Connexion",
+    "register": "Commencer gratuitement",
+    "cta": "Commencer gratuitement"
+  },
+  "hero": {
+    "badge": "CRM + Inventaire pour PME",
+    "title": "Arrêtez de perdre des clients et de l'argent par mauvaise gestion",
+    "subtitle": "Salesek connecte votre CRM de ventes avec votre inventaire en une seule plateforme. Quand vous concluez une vente, le stock se met à jour automatiquement.",
+    "cta": "Commencer 14 jours gratuits",
+    "ctaSub": "Sans carte. Sans engagement.",
+    "demo": "Voir la démo"
+  },
+  "pricing": {
+    "badge": "Tarifs transparents",
+    "title": "Choisissez ce dont votre entreprise a besoin",
+    "subtitle": "Sans petits caractères. Sans fonctions bloquées. Sans surprises.",
+    "month": "/mois",
+    "popular": "Plus populaire",
+    "cta": "Commencer 14 jours gratuits",
+    "ctaSuite": "Commencer avec la Suite",
+    "free": "14 jours gratuits",
+    "noCard": "Sans carte",
+    "noPermanence": "Sans engagement",
+    "plans": {
+      "salesflow": {
+        "name": "SalesFlow",
+        "desc": "Pour les équipes commerciales qui veulent arrêter de perdre des clients par manque de suivi.",
+        "f1": "Pipeline de ventes visuel",
+        "f2": "Jusqu'à 500 leads",
+        "f3": "Historique des messages par lead",
+        "f4": "Rappels automatiques",
+        "f5": "Statistiques de conversion",
+        "f6": "Assistant IA de ventes",
+        "f7": "1 utilisateur inclus",
+        "f8": "Support par email"
+      },
+      "suite": {
+        "name": "Suite Complète",
+        "desc": "CRM + Inventaire connectés automatiquement. La solution complète pour votre entreprise.",
+        "f1": "Tout SalesFlow inclus",
+        "f2": "Tout StockFlow inclus",
+        "f3": "The Bridge — synchronisation automatique",
+        "f4": "Leads et produits illimités",
+        "f5": "Notifications en temps réel",
+        "f6": "Portail fournisseurs inclus",
+        "f7": "IA dans CRM et inventaire",
+        "f8": "Jusqu'à 10 utilisateurs",
+        "f9": "Support prioritaire 24h",
+        "f10": "Accès anticipé aux nouvelles fonctions"
+      },
+      "stockflow": {
+        "name": "StockFlow",
+        "desc": "Pour les entreprises qui ont besoin de toujours connaître leur stock et quand le réapprovisionner.",
+        "f1": "Gestion des produits",
+        "f2": "Jusqu'à 1.000 produits",
+        "f3": "Alertes stock bas",
+        "f4": "Historique des mouvements",
+        "f5": "Commandes automatiques aux fournisseurs",
+        "f6": "Suggestions de réapprovisionnement IA",
+        "f7": "Portail fournisseurs",
+        "f8": "Support par email"
+      }
+    },
+    "faqs": {
+      "q1": "Ai-je besoin d'une carte de crédit pour la période d'essai ?",
+      "a1": "Non. Les 14 jours d'essai sont complètement gratuits et ne nécessitent aucune donnée de paiement. Vous commencez sans engagement.",
+      "q2": "Puis-je changer de plan à tout moment ?",
+      "a2": "Oui. Vous pouvez passer à un plan supérieur ou inférieur quand vous voulez. Les changements s'appliquent au prochain cycle de facturation sans coût supplémentaire.",
+      "q3": "Que se passe-t-il avec mes données si j'annule ?",
+      "a3": "Vous avez 30 jours pour exporter toutes vos données après annulation. Nous ne supprimons jamais rien sans vous prévenir.",
+      "q4": "Combien d'utilisateurs puis-je ajouter ?",
+      "a4": "SalesFlow et StockFlow incluent 1 utilisateur. La Suite Complète inclut jusqu'à 10. Vous pouvez ajouter des utilisateurs supplémentaires pour 9€/mois chacun.",
+      "q5": "Les prix incluent-ils la TVA ?",
+      "a5": "Les prix affichés n'incluent pas la TVA. Pour les entreprises en France, la TVA applicable sera ajoutée.",
+      "q6": "Qu'est-ce que The Bridge ?",
+      "a6": "The Bridge est la connexion automatique entre le CRM et l'inventaire. Quand vous concluez une vente, le stock se met à jour automatiquement. S'il tombe en dessous du minimum, la commande fournisseur est générée automatiquement."
+    }
+  },
+  "blog": {
+    "title": "Ce que personne ne vous dit sur la gestion d'une PME",
+    "subtitle": "Articles pratiques sur le CRM, l'inventaire et la gestion des clients. Sans jargon, juste ce qui fonctionne.",
+    "badge": "Blog Salesek",
+    "readMore": "Lire plus",
+    "readFull": "Lire l'article complet",
+    "featured": "À la une",
+    "related": "Articles similaires",
+    "back": "Blog",
+    "mins": "min de lecture",
+    "useful": "Cet article vous a-t-il été utile ?",
+    "yes": "Oui, beaucoup",
+    "quite": "Assez utile",
+    "cta": {
+      "title": "Essayez Salesek 14 jours gratuits",
+      "subtitle": "CRM + inventaire connectés. Sans carte, sans engagement.",
+      "button": "Commencer gratuitement",
+      "noCard": "Sans carte de crédit"
+    },
+    "newsletter": {
+      "title": "Prêt à essayer Salesek ?",
+      "subtitle": "CRM + inventaire en une seule plateforme. 14 jours gratuits, sans carte, sans engagement.",
+      "button": "Commencer gratuitement"
+    },
+    "tags": {
+      "all": "Tous",
+      "crm": "CRM",
+      "gestion": "Gestion",
+      "inventario": "Inventaire",
+      "software": "Logiciel",
+      "ventas": "Ventes",
+      "proveedores": "Fournisseurs"
+    },
+    "posts": {
+      "crm-para-pequenas-empresas-espana": {
+        "title": "CRM pour petites entreprises en Espagne : ce dont vous avez besoin",
+        "description": "La plupart des CRM sont conçus pour des équipes de 50 personnes. Si vous en avez 5, voici ce qu'il vous faut vraiment.",
+        "tag": "CRM",
+        "date": "2 mai 2026",
+        "content": "<h2>Le problème avec les CRM pour PME</h2><p>Quand une petite entreprise commence à chercher un CRM, elle trouve d'abord des outils conçus pour des équipes de 30 ou 50 personnes. Ces outils ont tellement de fonctionnalités qu'une entreprise de 5 personnes finit par utiliser 10% et payer pour 100%.</p><p>Le résultat est toujours le même : le logiciel est abandonné en quelques semaines parce qu'il est trop compliqué, et on revient au tableur habituel.</p><h2>Ce dont un CRM PME a vraiment besoin</h2><ul><li><strong>Voir d'un coup d'œil où en est chaque prospect.</strong> C'est un pipeline de ventes et c'est ce qu'il y a de plus utile.</li><li><strong>Rappels de suivi.</strong> La plupart des ventes sont perdues parce que personne n'a appelé au bon moment.</li><li><strong>Historique des conversations.</strong> N'importe qui dans l'équipe peut voir ce qui a été discuté.</li><li><strong>Prix raisonnable.</strong> Payer plus de 50€/mois pour un CRM est difficile à justifier.</li></ul><h2>La connexion avec l'inventaire</h2><p>La plupart des CRM sont complètement déconnectés du stock. <a href='/precios'>Salesek résout cela depuis 29€/mois</a>, en connectant CRM et inventaire automatiquement.</p>"
+      },
+      "como-dejar-de-gestionar-clientes-con-excel": {
+        "title": "Comment arrêter de gérer vos clients avec Excel sans devenir fou",
+        "description": "Excel n'est pas mauvais. Le problème c'est de l'utiliser pour quelque chose pour lequel il n'a pas été conçu.",
+        "tag": "Gestion",
+        "date": "28 avril 2026",
+        "content": "<h2>Excel n'est pas le problème. Le problème c'est comment vous l'utilisez</h2><p>Excel est fantastique pour ce pourquoi il a été conçu : calculs, analyse de données, tableaux. Le problème vient quand il devient base de données clients, système de suivi des ventes et contrôle des stocks en même temps.</p><h2>Les signes qu'il est temps de changer</h2><ul><li>Vous avez plus de 50 clients actifs et ne vous souvenez plus qui vous avez appelé cette semaine.</li><li>Quelqu'un a écrasé des données importantes par erreur.</li><li>Vous ne pouvez pas voir l'état de vos ventes en temps réel.</li><li>Vous perdez du temps chaque semaine à chercher des informations.</li></ul><h2>Comment faire la transition</h2><p><strong>Semaine 1 :</strong> Exportez vos contacts en CSV et importez-les dans le nouveau système.</p><p><strong>Semaines 2-3 :</strong> Enregistrez les nouvelles interactions uniquement dans le CRM.</p><p><strong>Mois 2 :</strong> Si l'équipe utilise le CRM normalement, archivez Excel. <a href='/'>Salesek</a> connecte CRM et inventaire sans rien intégrer.</p>"
+      },
+      "control-inventario-pymes-sin-complicaciones": {
+        "title": "Gestion des stocks pour PME : toujours savoir ce que vous avez",
+        "description": "Manquer de produit juste quand les ventes sont au plus haut est l'erreur la plus coûteuse d'une petite entreprise.",
+        "tag": "Inventaire",
+        "date": "22 avril 2026",
+        "content": "<h2>L'erreur la plus coûteuse d'une petite entreprise</h2><p>Manquer de stock au moment de la plus forte demande. C'est l'erreur la plus évitable et en même temps la plus courante.</p><h2>Pourquoi Excel échoue pour l'inventaire</h2><p>Le problème c'est que quelqu'un doit le mettre à jour manuellement à chaque entrée ou sortie. Et ça n'arrive pas toujours.</p><h2>Ce qu'il faut pour bien contrôler l'inventaire</h2><ul><li><strong>Enregistrement automatique des mouvements.</strong></li><li><strong>Alertes de stock minimum.</strong></li><li><strong>Historique des mouvements.</strong></li><li><strong>Commandes automatiques aux fournisseurs.</strong></li></ul><p><a href='/precios'>Salesek avec StockFlow</a> connecte ventes et inventaire automatiquement.</p>"
+      },
+      "software-gestion-pymes-que-vale-la-pena": {
+        "title": "Logiciel de gestion pour PME : quand ça vaut la peine de payer",
+        "description": "Toute entreprise n'a pas besoin d'un logiciel de gestion dès le premier jour. Mais il y a un moment où ne pas l'avoir coûte plus cher.",
+        "tag": "Logiciel",
+        "date": "15 avril 2026",
+        "content": "<h2>Tout le monde n'a pas besoin de logiciel dès le départ</h2><p>Si vous avez 3 clients et un produit, vous pouvez gérer avec un carnet. Mais il y a un point où continuer sans outils commence à vous coûter plus en temps perdu et clients oubliés.</p><h2>Les signes que vous avez atteint ce point</h2><ul><li>Vous avez plus de clients que vous ne pouvez en mémoriser.</li><li>Vous avez perdu une vente parce que personne n'a fait le suivi.</li><li>Vous avez manqué de stock au pire moment.</li><li>Il vous faut plus de 10 minutes pour savoir combien vous avez vendu ce mois.</li></ul><h2>Le retour sur investissement réel</h2><p>Si vous perdez une vente par mois et qu'elle vaut 300€, vous perdez 3600€/an. <a href='/precios'>Salesek a des plans à partir de 29€/mois</a> sans engagement.</p>"
+      },
+      "como-no-perder-clientes-por-falta-de-seguimiento": {
+        "title": "Comment arrêter de perdre des clients par manque de suivi",
+        "description": "80% des ventes se concluent après le cinquième contact. La plupart des PME n'arrivent pas au deuxième.",
+        "tag": "Ventes",
+        "date": "8 avril 2026",
+        "content": "<h2>La statistique que personne ne veut entendre</h2><p>80% des ventes se concluent après le cinquième contact. Et 44% des commerciaux abandonnent après le premier suivi. La plupart des petites entreprises offrent des ventes à leur concurrence simplement en ne donnant pas de nouvelles au bon moment.</p><h2>Pourquoi le suivi ne se fait pas</h2><p>Pas par manque de motivation. C'est parce qu'il n'y a aucun système qui vous dit quand appeler qui.</p><h2>Comment construire un système qui fonctionne</h2><ul><li><strong>Une liste de tous vos prospects</strong> avec leur statut actuel.</li><li><strong>Une date de prochain contact pour chacun.</strong></li><li><strong>Un rappel avant que cette date arrive.</strong></li></ul><p><a href='/'>Salesek a des suivis automatiques</a> conçus pour les petites équipes.</p>"
+      },
+      "gestionar-proveedores-sin-llamadas-ni-emails": {
+        "title": "Comment gérer vos fournisseurs sans appels ni emails interminables",
+        "description": "Commander du stock par WhatsApp fonctionne jusqu'à un certain point. Quand l'entreprise grandit, ce système se casse.",
+        "tag": "Fournisseurs",
+        "date": "1 avril 2026",
+        "content": "<h2>Le cycle qui épuise chaque petite entreprise</h2><p>Vous remarquez qu'il vous reste peu de stock. Vous cherchez le numéro du fournisseur. Vous appelez ou envoyez un WhatsApp. Vous attendez confirmation. Vous envoyez la commande formelle par email. Et quand la marchandise arrive, quelqu'un doit mettre à jour l'inventaire manuellement.</p><h2>Le problème sans système</h2><ul><li>Vous oubliez de passer la commande jusqu'à ce qu'il ne reste plus rien.</li><li>Le fournisseur dit avoir confirmé mais vous n'avez aucune trace.</li><li>Personne ne sait où en est une commande en attente.</li></ul><h2>Comment ça devrait fonctionner</h2><p>Quand le stock tombe en dessous du minimum, le système génère la commande automatiquement. Le fournisseur confirme en un clic. Quand il livre, il marque comme livré et le stock se met à jour automatiquement.</p><p><a href='/precios'>Salesek inclut un portail fournisseurs</a> dans tous ses plans.</p>"
+      }
+    }
+  },
+  "footer": {
+    "tagline": "CRM et inventaire pour PME",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Légal",
+    "rights": "Tous droits réservés",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies"
+  }
+}

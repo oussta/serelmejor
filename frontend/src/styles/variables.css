@@ -1,3 +1,6 @@
+/* Path: frontend/src/styles/variables.css */
+/* Replace entire file with this */
+
 :root {
   --color-white: #FFFFFF;
   --color-surface: #F8FAFC;
@@ -29,33 +32,15 @@
   --gradient-alert: linear-gradient(135deg, #F59E0B, #F43F5E);
 
   --font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-  --text-xs: 11px;
-  --text-sm: 13px;
-  --text-base: 15px;
-  --text-md: 17px;
-  --text-lg: 20px;
-  --text-xl: 24px;
-  --text-2xl: 30px;
-  --text-3xl: 38px;
-  --text-4xl: 56px;
+  --text-xs: 11px; --text-sm: 13px; --text-base: 15px; --text-md: 17px;
+  --text-lg: 20px; --text-xl: 24px; --text-2xl: 30px; --text-3xl: 38px; --text-4xl: 56px;
 
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-full: 9999px;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+  --radius-xl: 24px; --radius-full: 9999px;
 
   --shadow-xs: 0 1px 2px rgba(15,23,42,0.06);
   --shadow-sm: 0 2px 8px rgba(15,23,42,0.08);
@@ -67,9 +52,38 @@
   --transition-normal: 0.25s ease;
   --transition-slow: 0.4s ease;
 
-  --z-base: 1;
-  --z-dropdown: 10;
-  --z-sticky: 50;
-  --z-modal: 100;
-  --z-toast: 200;
+  --z-base: 1; --z-dropdown: 10; --z-sticky: 50; --z-modal: 100; --z-toast: 200;
+}
+
+[data-theme="dark"] {
+  --color-white: #1E293B;
+  --color-surface: #0F172A;
+  --color-surface-2: #1E293B;
+  --color-border: #334155;
+  --color-border-2: #475569;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-brand-light: #1E3A5F;
+  --color-brand-mid: #1E40AF;
+  --color-accent-light: #0C4A6E;
+  --color-success-light: #064E3B;
+  --color-warning-light: #451A03;
+  --color-error-light: #4C0519;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-brand: 0 4px 16px rgba(37,99,235,0.4);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@media (max-width: 640px) {
+  main {
+    padding: 16px 12px !important;
+  }
 }

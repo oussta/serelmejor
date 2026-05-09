@@ -113,27 +113,52 @@ class LeadController {
     }
 
     // PUT /leads/:id/status
-    public static function updateStatus($id) {
-        $user  = AuthMiddleware::handle();
-        $data  = json_decode(file_get_contents("php://input"), true);
-        $error = Validator::required($data, ['status']);
-        if ($error) Response::error($error, 400);
+   public static function updateStatus($id) {
+    $user  = AuthMiddleware::handle();
+    $data  = json_decode(file_get_contents("php://input"), true);
+    $error = Validator::required($data, ['status']);
+    if ($error) Response::error($error, 400);
 
-        $validStatuses = ['new', 'contacted', 'negotiating', 'won', 'lost'];
-        if (!in_array($data['status'], $validStatuses)) {
-            Response::error("Invalid status", 400);
-        }
-
-        $pdo  = getDB();
-        $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
-        $stmt->execute([$id, $user['business_id']]);
-        if (!$stmt->fetch()) Response::error("Lead not found", 404);
-
-        $stmt = $pdo->prepare("UPDATE leads SET status = ? WHERE id = ? RETURNING *");
-        $stmt->execute([$data['status'], $id]);
-
-        Response::json($stmt->fetch());
+    $validStatuses = ['new', 'contacted', 'negotiating', 'won', 'lost'];
+    if (!in_array($data['status'], $validStatuses)) {
+        Response::error("Invalid status", 400);
     }
+
+    $pdo  = getDB();
+    $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
+    $stmt->execute([$id, $user['business_id']]);
+    if (!$stmt->fetch()) Response::error("Lead not found", 404);
+
+    $stmt = $pdo->prepare("UPDATE leads SET status = ? WHERE id = ? RETURNING *");
+    $stmt->execute([$data['status'], $id]);
+    $lead = $stmt->fetch();
+
+    $bridge = null;
+
+    // ── The Bridge — triggers when lead is marked as Won ──
+    if ($data['status'] === 'won') {
+        $productId = isset($data['product_id']) ? (int)$data['product_id'] : null;
+        $quantity  = isset($data['quantity'])   ? (int)$data['quantity']   : 1;
+        $userId    = $user['user_id'] ?? $user['id'] ?? 0;
+
+        if ($productId) {
+            require_once __DIR__ . '/../services/BridgeService.php';
+            $bridgeService = new BridgeService($pdo);
+            $bridge = $bridgeService->trigger(
+                (int)$id,
+                $productId,
+                $quantity,
+                (int)$user['business_id'],
+                (int)$userId
+            );
+        }
+    }
+
+    Response::json([
+        'lead'   => $lead,
+        'bridge' => $bridge,
+    ]);
+}
 
     // GET /leads/:id/messages
     public static function getMessages($id) {

@@ -1,50 +1,105 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+
+import Team from '../pages/dashboard/Team'
+// Auth pages
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
+import AdminPanel from '../pages/admin/AdminPanel'
+// App pages (protected)
 import Dashboard from '../pages/dashboard/Dashboard'
-import Pricing from '../pages/pricing/Pricing'
-import Payment from '../pages/pricing/Payment'
 import Leads from '../pages/salesflow/Leads'
 import LeadDetail from '../pages/salesflow/LeadDetail'
-import { useAuth } from '../context/AuthContext'
+import Pricing from '../pages/pricing/Pricing'
+import Payment from '../pages/pricing/Payment'
+
+// StockFlow pages (protected)
+import Products from '../pages/stockflow/Products'
+import ProductDetail from '../pages/stockflow/ProductDetail'
+import Orders from '../pages/stockflow/Orders'
+
+// Public pages
+import Landing from '../pages/landing/Landing'
+import Features from '../pages/landing/Features'
+import PublicPricing from '../pages/landing/PublicPricing'
+import About from '../pages/landing/About'
+import Contact from '../pages/landing/Contact'
+import Blog from '../pages/landing/Blog'
+import BlogPost from '../pages/landing/BlogPost'
+
+// Layout
+import Layout from '../components/layout/Layout'
+
+import SupplierPortal from '../pages/supplier/SupplierPortal'
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth()
-  if (!token) return <Navigate to="/login" />
-  return children
+  if (!token) return <Navigate to="/login" replace />
+  return <Layout>{children}</Layout>
 }
 
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+
+      {/* ── Public ── */}
+      <Route path="/"            element={<Landing />} />
+      <Route path="/features"    element={<Features />} />
+      <Route path="/precios"     element={<PublicPricing />} />
+      <Route path="/about"       element={<About />} />
+      <Route path="/contact"     element={<Contact />} />
+      <Route path="/blog"        element={<Blog />} />
+      <Route path="/blog/:slug"  element={<BlogPost />} />
+
+
+        <Route path="/supplier" element={
+        <ProtectedRoute><SupplierPortal /></ProtectedRoute>
+        } />
+
+      {/* ── Auth ── */}
+      <Route path="/login"    element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      <Route path="/admin" element={
+      <ProtectedRoute><AdminPanel /></ProtectedRoute>
+      } />
+
+      {/* ── Protected ── */}
       <Route path="/pricing" element={
-        <ProtectedRoute>
-          <Pricing />
-        </ProtectedRoute>
+        <ProtectedRoute><Pricing /></ProtectedRoute>
+      } />
+      <Route path="/team" element={
+      <ProtectedRoute><Team /></ProtectedRoute>
       } />
       <Route path="/payment" element={
-        <ProtectedRoute>
-          <Payment />
-        </ProtectedRoute>
+        <ProtectedRoute><Payment /></ProtectedRoute>
       } />
       <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
+        <ProtectedRoute><Dashboard /></ProtectedRoute>
       } />
+
+      {/* SalesFlow */}
       <Route path="/leads" element={
-        <ProtectedRoute>
-          <Leads />
-        </ProtectedRoute>
+        <ProtectedRoute><Leads /></ProtectedRoute>
       } />
       <Route path="/leads/:id" element={
-        <ProtectedRoute>
-          <LeadDetail />
-        </ProtectedRoute>
+        <ProtectedRoute><LeadDetail /></ProtectedRoute>
       } />
-      <Route path="*" element={<Navigate to="/login" />} />
+
+      {/* StockFlow */}
+      <Route path="/products" element={
+        <ProtectedRoute><Products /></ProtectedRoute>
+      } />
+      <Route path="/products/:id" element={
+        <ProtectedRoute><ProductDetail /></ProtectedRoute>
+      } />
+      <Route path="/orders" element={
+        <ProtectedRoute><Orders /></ProtectedRoute>
+      } />
+
+      {/* ── Fallback ── */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+
     </Routes>
   )
 }
