@@ -1,7 +1,10 @@
 FROM php:8.2-cli
 
-# Install PostgreSQL extension
-RUN apt-get update && apt-get install -y libpq-dev \
+# Install git, PostgreSQL extension and other dependencies
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    git \
+    unzip \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Set working directory
