@@ -26,3 +26,14 @@ input, textarea, select {
   font-size: 20px;
   vertical-align: middle;
 }
+@media (max-width: 768px) {
+  /* Extra bottom padding for tab bar */
+  main, .page-content, [class*="page"] {
+    padding-bottom: 80px !important;
+  }
+
+  /* Dashboard grid — single column on mobile */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
