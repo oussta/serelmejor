@@ -12,16 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Load .env file
 require_once __DIR__ . '/vendor/autoload.php';
+
+// Load .env only in local development
 if (file_exists(__DIR__ . '/.env')) {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $dotenv->load();
-}
-
-// Make sure env vars are accessible
-foreach ($_ENV as $key => $value) {
-    putenv("$key=$value");
+    // Make .env vars available via getenv()
+    foreach ($_ENV as $key => $value) {
+        putenv("$key=$value");
+    }
 }
 
 require_once __DIR__ . '/routes/api.php';
