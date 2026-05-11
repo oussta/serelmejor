@@ -1,5 +1,17 @@
 <?php
 
+if ($path === 'debug') {
+    $host = getenv('DB_HOST') ?: 'NOT SET';
+    $name = getenv('DB_NAME') ?: 'NOT SET';
+    $user = getenv('DB_USER') ?: 'NOT SET';
+    echo json_encode([
+        'DB_HOST' => $host,
+        'DB_NAME' => $name,
+        'DB_USER' => $user,
+        'APP_ENV' => getenv('APP_ENV') ?: 'NOT SET'
+    ]);
+    exit;
+}
 
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/BusinessController.php';
