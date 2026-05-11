@@ -11,6 +11,10 @@
     "cta": "Empezar gratis"
   },
   "hero": {
+    "titleAccent": "sin perder tiempo",
+"ctaPrimary": "Empezar 14 días gratis",
+"ctaSecondary": "Ver funcionalidades",
+"socialProof": "Más de 500 empresas confían en Salesek",
     "badge": "CRM + Inventario para pymes",
     "title": "Deja de perder clientes y dinero por mala gestión",
     "subtitle": "Salesek conecta tu CRM de ventas con tu inventario en una sola plataforma. Cuando cierras una venta, el stock se actualiza solo.",

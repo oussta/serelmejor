@@ -16,7 +16,11 @@
     "subtitle": "Salesek connects your sales CRM with your inventory in one platform. When you close a deal, stock updates automatically.",
     "cta": "Start 14 days free",
     "ctaSub": "No card. No commitment.",
-    "demo": "Watch demo"
+    "demo": "Watch demo",
+    "titleAccent": "without wasting time",
+"ctaPrimary": "Start 14 days free",
+"ctaSecondary": "See features",
+"socialProof": "Over 500 businesses trust Salesek"
   },
   "pricing": {
     "badge": "Transparent pricing",

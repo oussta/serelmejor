@@ -16,7 +16,11 @@
     "subtitle": "Salesek connecte votre CRM de ventes avec votre inventaire en une seule plateforme. Quand vous concluez une vente, le stock se met à jour automatiquement.",
     "cta": "Commencer 14 jours gratuits",
     "ctaSub": "Sans carte. Sans engagement.",
-    "demo": "Voir la démo"
+    "demo": "Voir la démo",
+    "titleAccent": "sans perdre de temps",
+"ctaPrimary": "Commencer 14 jours gratuits",
+"ctaSecondary": "Voir les fonctionnalités",
+"socialProof": "Plus de 500 entreprises font confiance à Salesek"
   },
   "pricing": {
     "badge": "Tarifs transparents",
