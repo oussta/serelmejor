@@ -223,8 +223,8 @@ function Leads() {
 
 const styles = {
   container: {
-    padding: '0',
-  },
+  padding: '0 0 80px 0',
+},
   center: {
     display: 'flex',
     alignItems: 'center',
@@ -332,19 +332,23 @@ const styles = {
     fontSize: '13px',
     fontWeight: '600',
   },
-  board: {
-    display: 'flex',
-    gap: '16px',
-    overflowX: 'auto',
-    paddingBottom: '16px',
-  },
+ board: {
+  display: 'flex',
+  gap: '12px',
+  overflowX: 'auto',
+  paddingBottom: '16px',
+  WebkitOverflowScrolling: 'touch',
+  scrollSnapType: 'x mandatory',
+},
   column: {
-    minWidth: '220px',
-    flex: 1,
-    background: 'var(--color-surface-2)',
-    borderRadius: 'var(--radius-lg)',
-    padding: '12px',
-  },
+  minWidth: '200px',
+  maxWidth: '220px',
+  flex: '0 0 200px',
+  background: 'var(--color-surface-2)',
+  borderRadius: 'var(--radius-lg)',
+  padding: '12px',
+  scrollSnapAlign: 'start',
+},
   columnHeader: {
     display: 'flex',
     justifyContent: 'space-between',
