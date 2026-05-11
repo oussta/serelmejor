@@ -2,11 +2,11 @@
 require_once __DIR__ . '/../utils/Response.php';
 
 function getDB() {
-    $host = $_ENV['DB_HOST'];
-    $name = $_ENV['DB_NAME'];
-    $user = $_ENV['DB_USER'];
-    $pass = $_ENV['DB_PASS'];
-    $port = $_ENV['DB_PORT'] ?? '5432';
+    $host = getenv('DB_HOST') ?: $_ENV['DB_HOST'] ?? 'localhost';
+    $name = getenv('DB_NAME') ?: $_ENV['DB_NAME'] ?? 'salesek';
+    $user = getenv('DB_USER') ?: $_ENV['DB_USER'] ?? 'postgres';
+    $pass = getenv('DB_PASS') ?: $_ENV['DB_PASS'] ?? '';
+    $port = getenv('DB_PORT') ?: $_ENV['DB_PORT'] ?? '5432';
 
     try {
         $dsn = "pgsql:host=$host;dbname=$name;port=$port";
