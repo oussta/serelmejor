@@ -25,6 +25,14 @@ function Leads() {
       client_name: '', inquiry_text: '', close_probability: 50
     }
   })
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
+useEffect(() => {
+  const handle = () => setIsMobile(window.innerWidth <= 768)
+  window.addEventListener('resize', handle)
+  return () => window.removeEventListener('resize', handle)
+}, [])
+
   const [creating, setCreating] = useState(false)
 
   useEffect(() => {
@@ -162,9 +170,9 @@ function Leads() {
         </div>
       )}
 
-      <div style={styles.board}>
+      <div style={{ ...styles.board, flexDirection: isMobile ? 'column' : 'row' }}>
         {COLUMNS.map(col => (
-          <div key={col.id} style={styles.column}>
+          <div key={col.id} style={{ ...styles.column, minWidth: isMobile ? '100%' : '220px', flex: isMobile ? 'none' : '1' }}>
             <div style={{...styles.columnHeader, borderColor: col.color}}>
               <span style={{...styles.columnTitle, color: col.color}}>
                 {col.label}
@@ -332,22 +340,15 @@ const styles = {
     fontSize: '13px',
     fontWeight: '600',
   },
- board: {
+board: {
   display: 'flex',
   gap: '12px',
-  overflowX: 'auto',
   paddingBottom: '16px',
-  WebkitOverflowScrolling: 'touch',
-  scrollSnapType: 'x mandatory',
 },
-  column: {
-  minWidth: '200px',
-  maxWidth: '220px',
-  flex: '0 0 200px',
+column: {
   background: 'var(--color-surface-2)',
   borderRadius: 'var(--radius-lg)',
   padding: '12px',
-  scrollSnapAlign: 'start',
 },
   columnHeader: {
     display: 'flex',
