@@ -653,7 +653,7 @@ function LeadDetail() {
 }
 
 const styles = {
-  container: { padding: '0' },
+  container: { padding: '0 0 80px 0' },
   center: { display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' },
   backBtn: { display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: 'var(--color-brand)', fontSize: '13px', cursor: 'pointer', marginBottom: '20px', padding: 0, fontWeight: '600', fontFamily: 'Plus Jakarta Sans, sans-serif' },
   errorBanner: { display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--color-error-light)', color: 'var(--color-error)', padding: '10px 16px', borderRadius: 'var(--radius-md)', marginBottom: '16px', fontSize: '13px', fontWeight: '500' },
@@ -667,7 +667,7 @@ const styles = {
   aiBtn: { display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 16px', background: 'linear-gradient(135deg, #0a0f1e, #1e3a5f)', color: 'white', border: '1px solid rgba(37,99,235,0.4)', borderRadius: 'var(--radius-md)', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' },
   statusBadge: { color: 'white', padding: '5px 14px', borderRadius: 'var(--radius-full)', fontSize: '12px', fontWeight: '700' },
   statusSelect: { padding: '6px 10px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-sm)', fontSize: '13px', outline: 'none', fontFamily: 'Plus Jakarta Sans, sans-serif', background: 'white' },
-  grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' },
+ grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' },
   section: { background: 'var(--color-white)', borderRadius: 'var(--radius-lg)', padding: '20px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--color-border)' },
   sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid var(--color-border)' },
   sectionTitle: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', fontWeight: '700', color: 'var(--color-text-primary)' },
