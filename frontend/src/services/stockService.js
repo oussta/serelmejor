@@ -1,6 +1,6 @@
 // Path: frontend/src/services/stockService.js
 
-const API = 'http://localhost:8000'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 function getToken() {
   return localStorage.getItem('token')

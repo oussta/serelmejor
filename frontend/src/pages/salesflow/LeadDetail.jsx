@@ -285,7 +285,7 @@ function LeadDetail() {
 
   async function loadProducts() {
     try {
-      const res  = await fetch('http://localhost:8000/products', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/products`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       const data = await res.json()
@@ -311,7 +311,7 @@ function LeadDetail() {
 
   async function handleConfirmWon() {
     try {
-      const res = await fetch(`http://localhost:8000/leads/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/leads/${id}/status`,  {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
