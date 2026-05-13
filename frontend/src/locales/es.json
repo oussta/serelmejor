@@ -46,6 +46,17 @@
         "f7": "1 usuario incluido",
         "f8": "Soporte por email"
       },
+      "contact": {
+  "title": "Habla con nosotros",
+  "subtitle": "¿Tienes dudas? Escríbenos y te respondemos en menos de 24 horas.",
+  "name": "Nombre",
+  "email": "Email",
+  "company": "Empresa",
+  "message": "Mensaje",
+  "send": "Enviar mensaje",
+  "sending": "Enviando...",
+  "sent": "Te responderemos en menos de 24 horas."
+},
       "suite": {
         "name": "Suite Completa",
         "desc": "CRM + Inventario conectados automáticamente. La solución completa para tu negocio.",

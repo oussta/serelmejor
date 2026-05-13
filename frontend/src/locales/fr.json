@@ -22,6 +22,17 @@
 "ctaSecondary": "Voir les fonctionnalités",
 "socialProof": "Plus de 500 entreprises font confiance à Salesek"
   },
+  "contact": {
+  "title": "Parlons-nous",
+  "subtitle": "Des questions ? Écrivez-nous et nous répondrons en moins de 24 heures.",
+  "name": "Nom",
+  "email": "Email",
+  "company": "Entreprise",
+  "message": "Message",
+  "send": "Envoyer le message",
+  "sending": "Envoi...",
+  "sent": "Nous vous répondrons dans les 24 heures."
+},
   "pricing": {
     "badge": "Tarifs transparents",
     "title": "Choisissez ce dont votre entreprise a besoin",

@@ -22,6 +22,17 @@
 "ctaSecondary": "See features",
 "socialProof": "Over 500 businesses trust Salesek"
   },
+  "contact": {
+  "title": "Talk to us",
+  "subtitle": "Have questions? Write to us and we'll respond in less than 24 hours.",
+  "name": "Name",
+  "email": "Email",
+  "company": "Company",
+  "message": "Message",
+  "send": "Send message",
+  "sending": "Sending...",
+  "sent": "We'll get back to you within 24 hours."
+},
   "pricing": {
     "badge": "Transparent pricing",
     "title": "Choose what your business needs",
