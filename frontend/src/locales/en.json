@@ -13,26 +13,36 @@
   "hero": {
     "badge": "CRM + Inventory for small businesses",
     "title": "Stop losing clients and money from poor management",
+    "titleAccent": "without wasting time",
     "subtitle": "Salesek connects your sales CRM with your inventory in one platform. When you close a deal, stock updates automatically.",
+    "ctaPrimary": "Start 14 days free",
+    "ctaSecondary": "See features",
+    "socialProof": "Over 500 businesses trust Salesek",
     "cta": "Start 14 days free",
     "ctaSub": "No card. No commitment.",
-    "demo": "Watch demo",
-    "titleAccent": "without wasting time",
-"ctaPrimary": "Start 14 days free",
-"ctaSecondary": "See features",
-"socialProof": "Over 500 businesses trust Salesek"
+    "demo": "Watch demo"
+  },
+  "features": {
+    "sectionTitle": "Everything your business needs",
+    "sectionSubtitle": "Two powerful modules connected in one platform. Built for businesses of 1 to 10 people.",
+    "salesTitle": "SalesFlow CRM",
+    "salesDesc": "Visual sales pipeline so you never lose a client from lack of follow-up.",
+    "stockTitle": "StockFlow Inventory",
+    "stockDesc": "Full control of your stock in real time. Automatic alerts and supplier orders.",
+    "bridgeTitle": "The Bridge",
+    "bridgeDesc": "When you close a deal, inventory updates automatically. CRM and inventory connected."
   },
   "contact": {
-  "title": "Talk to us",
-  "subtitle": "Have questions? Write to us and we'll respond in less than 24 hours.",
-  "name": "Name",
-  "email": "Email",
-  "company": "Company",
-  "message": "Message",
-  "send": "Send message",
-  "sending": "Sending...",
-  "sent": "We'll get back to you within 24 hours."
-},
+    "title": "Talk to us",
+    "subtitle": "Have questions? Write to us and we'll respond in less than 24 hours.",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending...",
+    "sent": "We'll get back to you within 24 hours."
+  },
   "pricing": {
     "badge": "Transparent pricing",
     "title": "Choose what your business needs",
@@ -137,43 +147,37 @@
         "title": "CRM for small businesses in Spain: what you need and what you don't",
         "description": "Most CRMs on the market are built for 50-person teams. If you have 5, here's what you actually need.",
         "tag": "CRM",
-        "date": "May 2, 2026",
-        "content": "<h2>The problem with CRMs for small businesses</h2><p>When a small business starts looking for a CRM, the first thing they find are tools built for sales teams of 30 or 50 people. Salesforce, HubSpot paid plans, Pipedrive... They're good tools, but they have so much functionality that a 5-person company ends up using 10% and paying for 100%.</p><p>The result is always the same: the software gets abandoned after a few weeks because it's too complicated, and everyone goes back to Excel.</p><h2>What a small business CRM really needs</h2><ul><li><strong>See at a glance where each prospect is.</strong> Have we called them? Did they ask for a quote? That's a sales pipeline and it's the most useful thing a small business can have.</li><li><strong>Follow-up reminders.</strong> Most sales are lost not because the client doesn't want to buy, but because nobody called at the right time.</li><li><strong>Conversation history.</strong> Anyone on the team can see what was discussed last time.</li><li><strong>Reasonable price.</strong> Paying more than €50/month for a CRM is hard to justify without clear ROI.</li></ul><h2>The connection almost nobody mentions: inventory</h2><p>Most CRMs are completely disconnected from stock. You can close a deal and not realize you don't have product to fulfill it until you call the warehouse. <a href='/precios'>Salesek solves this from €29/month</a>, connecting CRM and inventory automatically.</p><h2>Conclusion</h2><p>Before signing up for a CRM, ask yourself: will my team use this every day? A CRM that gets used is infinitely better than one with a thousand features nobody opens.</p>"
+        "date": "May 2, 2026"
       },
       "como-dejar-de-gestionar-clientes-con-excel": {
         "title": "How to stop managing your clients with Excel without going crazy",
-        "description": "Excel isn't bad. The problem is using it for something it wasn't designed for. Here's how to make the switch without drama.",
+        "description": "Excel isn't bad. The problem is using it for something it wasn't designed for.",
         "tag": "Management",
-        "date": "April 28, 2026",
-        "content": "<h2>Excel isn't the problem. The problem is what you use it for</h2><p>Excel is a fantastic tool for what it was designed for: calculations, data analysis, tables. The problem comes when it becomes the client database, sales tracking system and stock control all at once.</p><p>At that point, Excel starts to fail. Cells get mixed up, data gets duplicated, nobody knows which version of the file is the right one.</p><h2>Signs it's time to make the switch</h2><ul><li>You have more than 50 active clients and can't remember who you called this week.</li><li>Someone on the team has overwritten important data by mistake.</li><li>You can't see your sales status in real time without opening and filtering the spreadsheet.</li><li>You lose time every week searching for information.</li></ul><h2>How to make the transition without stressing out your team</h2><p><strong>Week 1:</strong> Export your contacts to CSV and upload them to the new system. Don't delete Excel yet.</p><p><strong>Weeks 2-3:</strong> Start recording new interactions only in the CRM.</p><p><strong>Month 2:</strong> If the team is using the CRM normally, you can archive the Excel and work from the new tool only.</p><h2>What to look for</h2><p>Simplicity above all. If the new tool is more complicated than Excel, the team will go back to Excel. <a href='/'>Salesek</a> connects CRM and inventory in one platform with no integration needed.</p>"
+        "date": "April 28, 2026"
       },
       "control-inventario-pymes-sin-complicaciones": {
         "title": "Inventory management for small businesses: always know your stock",
-        "description": "Running out of product when sales are at their peak is the most expensive mistake a small business makes. Here's how to avoid it.",
+        "description": "Running out of product when sales are at their peak is the most expensive mistake a small business makes.",
         "tag": "Inventory",
-        "date": "April 22, 2026",
-        "content": "<h2>The most expensive mistake a small business makes</h2><p>Running out of stock at peak demand. It's the most avoidable and at the same time the most common mistake in small businesses that manage inventory from memory or spreadsheets.</p><h2>Why Excel fails for inventory</h2><p>The problem is that someone has to update it manually every time something enters or leaves the warehouse. And that doesn't always happen. The result is that Excel says you have 50 units, but the warehouse has 23.</p><h2>What proper inventory control requires</h2><ul><li><strong>Automatic movement tracking.</strong> Every sale deducts stock automatically.</li><li><strong>Low stock alerts.</strong> The system warns you when a product falls below your minimum.</li><li><strong>Movement history.</strong> See when each unit came in and went out.</li><li><strong>Automatic supplier orders.</strong> When stock falls below minimum, the order is generated automatically.</li></ul><h2>The connection that changes everything</h2><p>Close a deal in the CRM, stock deducts automatically, and if it falls below minimum the supplier order is generated on its own. That's what <a href='/precios'>Salesek's StockFlow module</a> does.</p>"
+        "date": "April 22, 2026"
       },
       "software-gestion-pymes-que-vale-la-pena": {
         "title": "Business management software for small businesses: when it's worth paying for",
-        "description": "Not every business needs management software from day one. But there's a point where not having it costs more than having it.",
+        "description": "Not every business needs management software from day one. But there's a point where not having it costs more.",
         "tag": "Software",
-        "date": "April 15, 2026",
-        "content": "<h2>Not everyone needs software from day one</h2><p>If you have 3 clients and one product, you can manage with a notebook. There's no point paying €30/month for a tool you'll use at 20% capacity.</p><p>But there's a point where managing without tools starts costing you more in lost time and forgotten clients than the software would cost.</p><h2>Signs you've reached that point</h2><ul><li>You have more clients than you can remember without looking somewhere.</li><li>You've lost a sale because nobody did the follow-up.</li><li>You've run out of stock at the worst possible moment.</li><li>It takes more than 10 minutes to know how much you've sold this month.</li></ul><h2>The real return on investment</h2><p>If you lose one sale per month from lack of follow-up and that sale is worth €300, you're losing €3,600 per year. A €29/month software that prevents that pays for itself in the first month.</p><h2>Where to start</h2><p>Look for tools with free trials. <a href='/precios'>Salesek has plans from €29/month</a> with no commitment.</p>"
+        "date": "April 15, 2026"
       },
       "como-no-perder-clientes-por-falta-de-seguimiento": {
         "title": "How to stop losing clients from lack of follow-up",
         "description": "80% of sales close after the fifth contact. Most small businesses don't make it to the second.",
         "tag": "Sales",
-        "date": "April 8, 2026",
-        "content": "<h2>The stat nobody wants to hear</h2><p>80% of sales close after the fifth contact with the client. And 44% of salespeople give up after the first follow-up. That means most small businesses are giving away sales to their competition simply by not reaching out at the right time.</p><h2>Why follow-up doesn't happen</h2><p>Not from lack of motivation. It's because there's no system that tells you when to call who. When you have 50 prospects at different stages, it's impossible to keep it all in your head.</p><h2>How to build a system that works</h2><ul><li><strong>A list of all your prospects</strong> with their current status.</li><li><strong>A next contact date for each one.</strong> Not when you can, but a specific date.</li><li><strong>A reminder before that date arrives</strong>, not after it's passed.</li></ul><h2>The role of a CRM</h2><p>The system reminds you, not the other way around. <a href='/'>Salesek has automatic follow-ups</a> built for small teams.</p>"
+        "date": "April 8, 2026"
       },
       "gestionar-proveedores-sin-llamadas-ni-emails": {
         "title": "How to manage your suppliers without endless calls and emails",
         "description": "Ordering stock by WhatsApp works up to a point. When the business grows, that system breaks down.",
         "tag": "Suppliers",
-        "date": "April 1, 2026",
-        "content": "<h2>The cycle that exhausts every small business</h2><p>You notice you're running low on something. You find the supplier's number. You call or send a WhatsApp. You wait for confirmation. You send a formal order by email. You wait again. And when the goods arrive, someone has to update the inventory manually.</p><p>All of that can take hours spread over several days, and it repeats every time any product runs out.</p><h2>The problem without a system</h2><ul><li>You forget to place the order until there's nothing left.</li><li>The supplier says they confirmed but you have no record.</li><li>Nobody knows where a pending order is.</li><li>When goods arrive, someone has to update inventory manually.</li></ul><h2>How it should work</h2><p>When stock falls below minimum, the system generates the order automatically. The supplier confirms with one click in their portal. When they deliver, they mark it as delivered and stock updates automatically. No calls, no emails, no manual updates.</p><p><a href='/precios'>Salesek includes a supplier portal</a> in all plans.</p>"
+        "date": "April 1, 2026"
       }
     }
   },

@@ -11,16 +11,37 @@
     "cta": "Empezar gratis"
   },
   "hero": {
-    "titleAccent": "sin perder tiempo",
-"ctaPrimary": "Empezar 14 días gratis",
-"ctaSecondary": "Ver funcionalidades",
-"socialProof": "Más de 500 empresas confían en Salesek",
     "badge": "CRM + Inventario para pymes",
     "title": "Deja de perder clientes y dinero por mala gestión",
+    "titleAccent": "sin perder tiempo",
     "subtitle": "Salesek conecta tu CRM de ventas con tu inventario en una sola plataforma. Cuando cierras una venta, el stock se actualiza solo.",
+    "ctaPrimary": "Empezar 14 días gratis",
+    "ctaSecondary": "Ver funcionalidades",
+    "socialProof": "Más de 500 empresas confían en Salesek",
     "cta": "Empezar 14 días gratis",
     "ctaSub": "Sin tarjeta. Sin permanencia.",
     "demo": "Ver demo"
+  },
+  "features": {
+    "sectionTitle": "Todo lo que necesita tu negocio",
+    "sectionSubtitle": "Dos módulos potentes conectados en una sola plataforma. Diseñados para negocios de 1 a 10 personas.",
+    "salesTitle": "SalesFlow CRM",
+    "salesDesc": "Pipeline visual de ventas para que nunca pierdas un cliente por falta de seguimiento.",
+    "stockTitle": "StockFlow Inventario",
+    "stockDesc": "Control total de tu stock en tiempo real. Alertas automáticas y pedidos a proveedores.",
+    "bridgeTitle": "The Bridge",
+    "bridgeDesc": "Cuando cierras una venta, el inventario se actualiza solo. CRM e inventario conectados."
+  },
+  "contact": {
+    "title": "Habla con nosotros",
+    "subtitle": "¿Tienes dudas? Escríbenos y te respondemos en menos de 24 horas.",
+    "name": "Nombre",
+    "email": "Email",
+    "company": "Empresa",
+    "message": "Mensaje",
+    "send": "Enviar mensaje",
+    "sending": "Enviando...",
+    "sent": "Te responderemos en menos de 24 horas."
   },
   "pricing": {
     "badge": "Precios transparentes",
@@ -46,17 +67,6 @@
         "f7": "1 usuario incluido",
         "f8": "Soporte por email"
       },
-      "contact": {
-  "title": "Habla con nosotros",
-  "subtitle": "¿Tienes dudas? Escríbenos y te respondemos en menos de 24 horas.",
-  "name": "Nombre",
-  "email": "Email",
-  "company": "Empresa",
-  "message": "Mensaje",
-  "send": "Enviar mensaje",
-  "sending": "Enviando...",
-  "sent": "Te responderemos en menos de 24 horas."
-},
       "suite": {
         "name": "Suite Completa",
         "desc": "CRM + Inventario conectados automáticamente. La solución completa para tu negocio.",
@@ -137,43 +147,37 @@
         "title": "CRM para pequeñas empresas en España: qué necesitas y qué no",
         "description": "La mayoría de CRMs del mercado están pensados para equipos de 50 personas. Si tienes 5, esto es lo que realmente te hace falta.",
         "tag": "CRM",
-        "date": "2 mayo 2026",
-        "content": "<h2>El problema con los CRMs para pymes</h2><p>Cuando una pequeña empresa empieza a buscar un CRM, lo primero que encuentra son herramientas pensadas para equipos de ventas de 30 o 50 personas. Salesforce, HubSpot en sus planes de pago, Pipedrive... Son buenas herramientas, pero tienen tanta funcionalidad que una empresa de 5 personas acaba usando el 10% y pagando por el 100%.</p><p>El resultado es siempre el mismo: el software se abandona a las pocas semanas porque es demasiado complicado o no lo entiende el equipo, y se vuelve al Excel de siempre.</p><h2>Qué necesita realmente un CRM para una pyme</h2><p>Si tienes entre 1 y 10 empleados y vendes productos o servicios, lo que necesitas de un CRM es básicamente esto:</p><ul><li><strong>Ver de un vistazo en qué punto está cada cliente potencial.</strong> ¿Le hemos llamado? ¿Ha pedido presupuesto? ¿Está pensándoselo? Eso es un pipeline de ventas y es lo más útil que puede tener una pequeña empresa.</li><li><strong>Recordatorios de seguimiento.</strong> La mayoría de ventas se pierden no porque el cliente no quiera comprar, sino porque nadie le llamó a tiempo.</li><li><strong>Historial de conversaciones.</strong> Que cualquier persona del equipo pueda ver qué se habló con ese cliente la última vez.</li><li><strong>Precio razonable.</strong> Para una empresa pequeña, pagar más de 50€/mes por un CRM es difícil de justificar.</li></ul><h2>Lo que NO necesitas aunque te lo vendan como imprescindible</h2><p>Automatización de marketing, lead scoring con inteligencia artificial, integración con 200 herramientas... Eso está muy bien para empresas con un departamento de marketing. Para una ferretería de 4 personas, es ruido que distrae.</p><h2>El factor que casi nadie menciona: la conexión con el inventario</h2><p>Aquí está el problema que tienen casi todos los CRMs cuando los usa una empresa que vende productos físicos: están completamente desconectados del stock. Puedes cerrar una venta en el CRM y no enterarte de que no tienes producto para servirla hasta que llamas al almacén.</p><p>Esa desconexión cuesta dinero y clientes. <a href='/precios'>Salesek lo resuelve desde 29€/mes</a>, conectando CRM e inventario automáticamente.</p><h2>Conclusión</h2><p>Antes de contratar un CRM, hazte esta pregunta: ¿lo va a usar mi equipo todos los días? Un CRM que se usa es infinitamente mejor que uno con mil funciones que nadie abre.</p>"
+        "date": "2 mayo 2026"
       },
       "como-dejar-de-gestionar-clientes-con-excel": {
         "title": "Cómo dejar de gestionar tus clientes con Excel sin volverse loco",
         "description": "Excel no es malo. El problema es usarlo para algo para lo que no fue diseñado. Te contamos cómo hacer la transición sin dramas.",
         "tag": "Gestión",
-        "date": "28 abril 2026",
-        "content": "<h2>Excel no es el problema. El problema es para qué lo usas</h2><p>Excel es una herramienta fantástica para lo que fue diseñada: hacer cálculos, analizar datos, crear tablas. El problema llega cuando se convierte en la base de datos de clientes, el sistema de seguimiento de ventas y el control de stock al mismo tiempo.</p><p>En ese momento, Excel empieza a fallar. Las celdas se mezclan, los datos se duplican, nadie sabe qué versión del archivo es la buena.</p><h2>Las señales de que ya es hora de dar el paso</h2><ul><li>Tienes más de 50 clientes activos y ya no recuerdas a quién llamaste esta semana.</li><li>Alguien del equipo ha sobreescrito datos importantes por error.</li><li>No puedes ver el estado de tus ventas en tiempo real.</li><li>Pierdes tiempo cada semana buscando información.</li><li>Cuando hay dos personas editando el mismo archivo, algo siempre se rompe.</li></ul><h2>Cómo hacer la transición sin traumatizar al equipo</h2><p><strong>Semana 1:</strong> Exporta tus contactos a CSV y súbelos al nuevo sistema. No borres el Excel todavía.</p><p><strong>Semana 2-3:</strong> Empieza a registrar las interacciones nuevas solo en el CRM.</p><p><strong>Mes 2:</strong> Si el equipo usa el CRM con normalidad, ya puedes dejar el Excel como archivo histórico.</p><h2>Qué buscar en la herramienta sustituta</h2><p>Simplicidad por encima de todo. Si la herramienta nueva es más complicada que el Excel, el equipo volverá al Excel. <a href='/'>Salesek</a> conecta CRM e inventario en una sola plataforma, sin necesidad de integrar nada.</p>"
+        "date": "28 abril 2026"
       },
       "control-inventario-pymes-sin-complicaciones": {
         "title": "Control de inventario para pymes: saber siempre cuánto stock tienes",
         "description": "Quedarte sin producto justo cuando más vendes es el error más caro de una pequeña empresa. Así se evita.",
         "tag": "Inventario",
-        "date": "22 abril 2026",
-        "content": "<h2>El error más caro de una pequeña empresa</h2><p>Quedarte sin stock en el momento de más demanda. Es el error más evitable y al mismo tiempo el más común en pequeñas empresas que gestionan su inventario de memoria o en hojas de cálculo.</p><p>Pasa siempre igual: llega un pedido grande, alguien va al almacén y descubre que hay menos unidades de las que pensaba.</p><h2>Por qué el inventario en Excel falla</h2><p>El problema es que alguien tiene que actualizarlo manualmente cada vez que entra o sale algo. Y eso no pasa siempre. El resultado es que el Excel dice que tienes 50 unidades, pero en el almacén hay 23.</p><h2>Qué hace falta para controlar el inventario bien</h2><ul><li><strong>Registro automático de movimientos.</strong> Cada venta descuenta stock automáticamente.</li><li><strong>Alertas de stock mínimo.</strong> El sistema avisa cuando un producto baja del mínimo.</li><li><strong>Historial de movimientos.</strong> Ver cuándo entró y salió cada unidad.</li><li><strong>Pedidos automáticos a proveedores.</strong> Cuando el stock baja del mínimo, el pedido se genera solo.</li></ul><h2>La conexión que cambia todo</h2><p>Cierras un trato en el CRM, el stock se descuenta automáticamente, y si queda por debajo del mínimo el pedido al proveedor se genera solo. Eso es lo que hace <a href='/precios'>Salesek con StockFlow</a>.</p>"
+        "date": "22 abril 2026"
       },
       "software-gestion-pymes-que-vale-la-pena": {
         "title": "Software de gestión para pymes: cuándo tiene sentido pagarlo",
         "description": "No todo negocio necesita software desde el primer día. Pero hay un punto en que no tenerlo empieza a costarte más.",
         "tag": "Software",
-        "date": "15 abril 2026",
-        "content": "<h2>No todo el mundo necesita software desde el primer día</h2><p>Si tienes 3 clientes y un producto, puedes gestionarlo con una libreta. No tiene sentido pagar 30€/mes por una herramienta que no vas a usar al 20%.</p><p>Pero hay un punto en que seguir sin herramientas empieza a costarte más en tiempo perdido y clientes olvidados que lo que costaría el software.</p><h2>Las señales de que ya llegaste a ese punto</h2><ul><li>Tienes más clientes de los que puedes recordar.</li><li>Has perdido alguna venta porque nadie hizo el seguimiento.</li><li>Te has quedado sin stock en el peor momento.</li><li>Tardas más de 10 minutos en saber cuánto has vendido este mes.</li></ul><h2>El retorno de inversión real</h2><p>Si pierdes una venta al mes por falta de seguimiento y esa venta vale 300€, estás perdiendo 3.600€ al año. Si un software de 29€/mes evita esa pérdida, se paga en el primer mes.</p><h2>Por dónde empezar</h2><p>Busca herramientas con prueba gratuita. <a href='/precios'>Salesek tiene planes desde 29€/mes</a> sin permanencia.</p>"
+        "date": "15 abril 2026"
       },
       "como-no-perder-clientes-por-falta-de-seguimiento": {
         "title": "Cómo dejar de perder clientes por no hacer seguimiento a tiempo",
         "description": "El 80% de las ventas se cierran después del quinto contacto. La mayoría de pymes no llegan al segundo.",
         "tag": "Ventas",
-        "date": "8 abril 2026",
-        "content": "<h2>El dato que nadie quiere oír</h2><p>El 80% de las ventas se cierran después del quinto contacto. Y el 44% de los comerciales abandona después del primero. Eso significa que la mayoría de pequeñas empresas están regalando ventas a su competencia por no dar señales de vida en el momento adecuado.</p><h2>Por qué no se hace el seguimiento</h2><p>No es por falta de ganas. Es porque no hay ningún sistema que avise de cuándo toca llamar a quién. Cuando tienes 50 clientes potenciales en diferentes etapas, es imposible recordarlo todo de cabeza.</p><h2>Cómo montar un sistema que funcione</h2><ul><li><strong>Una lista de todos tus leads</strong> con el estado en el que están.</li><li><strong>Una fecha de próximo contacto para cada uno.</strong> No cuando pueda, sino una fecha concreta.</li><li><strong>Un aviso que te recuerde esa fecha</strong> antes de que llegue.</li></ul><h2>El papel de un CRM</h2><p>El sistema te avisa a ti, no al revés. <a href='/'>Salesek tiene seguimientos automáticos</a> pensados para equipos pequeños.</p>"
+        "date": "8 abril 2026"
       },
       "gestionar-proveedores-sin-llamadas-ni-emails": {
         "title": "Cómo gestionar tus proveedores sin llamadas ni emails interminables",
         "description": "Pedir stock por WhatsApp funciona hasta cierto punto. Cuando el negocio crece, ese sistema se rompe.",
         "tag": "Proveedores",
-        "date": "1 abril 2026",
-        "content": "<h2>El ciclo que agota a cualquier pequeña empresa</h2><p>Detectas que te queda poco stock. Buscas el número del proveedor. Le llamas o le mandas un WhatsApp. Esperas confirmación. Mandas el pedido formal por email. Esperas otra confirmación. Y cuando llega la mercancía, alguien tiene que apuntarlo en algún sitio.</p><p>Todo eso puede llevar horas repartidas en varios días, y se repite con cada producto que se agota.</p><h2>El problema sin sistema</h2><ul><li>Se te olvida hacer el pedido hasta que ya no queda nada.</li><li>El proveedor dice que confirmó pero tú no tienes registro.</li><li>Nadie sabe en qué punto está un pedido.</li><li>Cuando llega la mercancía, hay que actualizarlo manualmente.</li></ul><h2>Cómo debería funcionar</h2><p>Cuando el stock cae del mínimo, el sistema genera el pedido automáticamente. El proveedor lo confirma con un clic en su portal. Cuando lo entrega, lo marca como entregado y el stock se actualiza solo.</p><p><a href='/precios'>Salesek incluye portal de proveedores</a> en todos sus planes.</p>"
+        "date": "1 abril 2026"
       }
     }
   },
