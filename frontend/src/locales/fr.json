@@ -104,6 +104,48 @@
 "ctaDesc": "14 jours gratuits, sans carte de crédit, sans engagement.",
 "ctaButton": "Commencer gratuitement"
   },
+  "leads": {
+  "total": "leads au total",
+  "newLead": "Nouveau Lead",
+  "loading": "Chargement...",
+  "clientName": "Nom du client *",
+  "description": "Description de l'intérêt",
+  "probability": "Probabilité de clôture",
+  "statusNew": "Nouveau",
+  "statusContacted": "Contacté",
+  "statusNegotiating": "Négociation",
+  "statusWon": "Gagné",
+  "statusLost": "Perdu",
+  "all": "Tous",
+  "empty": "Aucun lead",
+  "close": "Clôture",
+  "confirmDelete": "Supprimer ce lead ?",
+  "copy": "Copier",
+  "aiTitle": "Assistant commercial",
+  "nameRequired": "Le nom du client est obligatoire"
+},
+"common": {
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "view": "Voir",
+  "saving": "Enregistrement...",
+  "delete": "Supprimer",
+  "edit": "Modifier",
+  "back": "Retour",
+  "loading": "Chargement..."
+},
+"auth": {
+  "loginTitle": "Connexion",
+  "emailRequired": "L'email est obligatoire",
+  "emailInvalid": "Email invalide",
+  "password": "Mot de passe",
+  "passwordRequired": "Le mot de passe est obligatoire",
+  "passwordMin": "Minimum 8 caractères",
+  "loginButton": "Se connecter",
+  "loading": "Chargement...",
+  "noAccount": "Pas encore de compte ?",
+  "register": "S'inscrire"
+},
   "contact": {
     "title": "Parlons-nous",
     "subtitle": "Des questions ? Écrivez-nous et nous répondrons en moins de 24 heures.",

@@ -1,407 +1,502 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { request } from '../../services/api'
+import { useTheme } from '../../context/ThemeContext'
+import { useTranslation } from 'react-i18next'
 
-const stripePromise = loadStripe('pk_test_51TKdgYHu7fdnyixMdKAEYW5lD7zaLQT6RQ8iHsgXrPVBUlTLTPpCqMy18I6UEkN4j1A42zljqzqga7WFEUDwLPhc00now2TBZG')
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+const PLANS = [
+  { id: 'salesflow', name: 'SalesFlow', price: 29, color: '#2563EB', icon: 'contacts',      desc: 'CRM de ventas' },
+  { id: 'suite',     name: 'Suite Completa', price: 49, color: '#7C3AED', icon: 'rocket_launch', desc: 'CRM + Inventario', popular: true },
+  { id: 'stockflow', name: 'StockFlow', price: 29, color: '#0EA5E9', icon: 'inventory_2',   desc: 'Control de stock' },
+]
 
 function getCardType(number) {
-  const num = number.replace(/\s/g, '')
-  if (/^4/.test(num)) return 'visa'
-  if (/^5[1-5]/.test(num)) return 'mastercard'
-  if (/^3[47]/.test(num)) return 'amex'
-  if (/^6/.test(num)) return 'discover'
+  const n = number.replace(/\s/g, '')
+  if (/^4/.test(n)) return 'visa'
+  if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return 'mastercard'
+  if (/^3[47]/.test(n)) return 'amex'
   return 'unknown'
 }
 
-function CardPreview({ cardNumber, cardName, expiry, cardType }) {
-  const logos = {
-    visa:       '💳 VISA',
-    mastercard: '💳 Mastercard',
-    amex:       '💳 Amex',
-    discover:   '💳 Discover',
-    unknown:    '💳',
-  }
-
-  const colors = {
-    visa:       'linear-gradient(135deg, #1a1f71, #2563EB)',
-    mastercard: 'linear-gradient(135deg, #eb001b, #f79e1b)',
-    amex:       'linear-gradient(135deg, #007bc1, #00a8e0)',
-    discover:   'linear-gradient(135deg, #f76f20, #f9a01b)',
-    unknown:    'linear-gradient(135deg, #0F172A, #1E3A5F)',
-  }
-
-  const formatted = cardNumber
-    ? cardNumber.replace(/\s/g, '').replace(/(.{4})/g, '$1 ').trim()
-    : '•••• •••• •••• ••••'
-
-  return (
-    <div style={{...styles.cardPreview, background: colors[cardType]}}>
-      <div style={styles.cardTop}>
-        <div style={styles.chip}>▣</div>
-        <div style={styles.cardLogo}>{logos[cardType]}</div>
-      </div>
-      <div style={styles.cardNumber}>{formatted || '•••• •••• •••• ••••'}</div>
-      <div style={styles.cardBottom}>
-        <div>
-          <div style={styles.cardLabel}>Titular</div>
-          <div style={styles.cardValue}>{cardName || 'NOMBRE APELLIDO'}</div>
-        </div>
-        <div>
-          <div style={styles.cardLabel}>Expira</div>
-          <div style={styles.cardValue}>{expiry || 'MM/AA'}</div>
-        </div>
-      </div>
-    </div>
-  )
+function formatCardNumber(value) {
+  const v = value.replace(/\D/g, '').slice(0, 16)
+  return v.replace(/(.{4})/g, '$1 ').trim()
 }
 
-function CheckoutForm({ plan, price, clientSecret }) {
-  const stripe     = useStripe()
-  const elements   = useElements()
-  const navigate   = useNavigate()
-  const { token, user, saveAuth } = useAuth()
-
-  const [cardNumber, setCardNumber] = useState('')
-  const [cardName, setCardName]     = useState('')
-  const [expiry, setExpiry]         = useState('')
-  const [cardType, setCardType]     = useState('unknown')
-  const [error, setError]           = useState('')
-  const [loading, setLoading]       = useState(false)
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    if (!stripe || !elements) return
-
-    setLoading(true)
-    setError('')
-
-    try {
-      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
-        clientSecret,
-        {
-          payment_method: {
-            card: elements.getElement(CardNumberElement),
-            billing_details: { name: cardName }
-          }
-        }
-      )
-
-      if (stripeError) {
-        setError(stripeError.message)
-        setLoading(false)
-        return
-      }
-
-      if (paymentIntent.status === 'succeeded') {
-        // Confirm on backend
-        await request('POST', '/payment/confirm', {
-          plan,
-          payment_intent_id: paymentIntent.id
-        }, token)
-
-        saveAuth(token, { ...user, plan })
-        navigate('/dashboard')
-      }
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const planNames = {
-    salesflow: 'SalesFlow CRM',
-    stockflow: 'StockFlow',
-    full:      'Full Suite'
-  }
-
-  const stripeElementStyle = {
-    style: {
-      base: {
-        fontSize: '15px',
-        color: '#0F172A',
-        '::placeholder': { color: '#94A3B8' }
-      }
-    }
-  }
-
-  return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>Salesek</h1>
-        <h2 style={styles.subtitle}>Pago seguro</h2>
-
-        <div style={styles.planBadge}>
-          {planNames[plan]} — €{price}/mes
-        </div>
-
-        <CardPreview
-          cardNumber={cardNumber}
-          cardName={cardName}
-          expiry={expiry}
-          cardType={cardType}
-        />
-
-        {error && <p style={styles.error}>{error}</p>}
-
-        <form onSubmit={handleSubmit}>
-          <div style={styles.field}>
-            <label style={styles.label}>Número de tarjeta</label>
-            <div style={styles.stripeInput}>
-              <CardNumberElement
-                options={stripeElementStyle}
-                onChange={e => {
-                  if (e.brand) setCardType(e.brand)
-                  if (e.value) setCardNumber(e.value.toString())
-                }}
-              />
-            </div>
-          </div>
-
-          <div style={styles.field}>
-            <label style={styles.label}>Titular de la tarjeta</label>
-            <input
-              style={styles.input}
-              placeholder="Como aparece en la tarjeta"
-              value={cardName}
-              onChange={e => setCardName(e.target.value.toUpperCase())}
-            />
-          </div>
-
-          <div style={styles.row}>
-            <div style={{...styles.field, flex: 1}}>
-              <label style={styles.label}>Fecha de expiración</label>
-              <div style={styles.stripeInput}>
-                <CardExpiryElement
-                  options={stripeElementStyle}
-                  onChange={e => {
-                    if (e.value) setExpiry(e.value.toString())
-                  }}
-                />
-              </div>
-            </div>
-            <div style={{...styles.field, flex: 1}}>
-              <label style={styles.label}>CVC</label>
-              <div style={styles.stripeInput}>
-                <CardCvcElement options={stripeElementStyle} />
-              </div>
-            </div>
-          </div>
-
-          <div style={styles.secureNote}>
-            🔒 Pago seguro con cifrado SSL — Stripe
-          </div>
-
-          <button
-            style={styles.button}
-            type="submit"
-            disabled={loading || !stripe}
-          >
-            {loading ? 'Procesando...' : `Pagar €${price}`}
-          </button>
-        </form>
-
-        <p style={styles.testNote}>
-          🧪 Modo test — usa la tarjeta: 4242 4242 4242 4242
-        </p>
-      </div>
-    </div>
-  )
+function formatExpiry(value) {
+  const v = value.replace(/\D/g, '').slice(0, 4)
+  if (v.length >= 2) return v.slice(0, 2) + '/' + v.slice(2)
+  return v
 }
 
 function Payment() {
-  const location  = useLocation()
-  const navigate  = useNavigate()
-  const { token } = useAuth()
+  const { user, token } = useAuth()
+  const { theme } = useTheme()
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const isDark = theme === 'dark'
 
-  const { plan, price } = location.state || {}
-  const [clientSecret, setClientSecret] = useState('')
-  const [error, setError]               = useState('')
+  const [selectedPlan, setSelectedPlan] = useState('suite')
+  const [step, setStep] = useState('plan') // plan | card | confirm | done
+  const [cardData, setCardData] = useState({ number: '', name: '', expiry: '', cvv: '' })
+  const [errors, setErrors] = useState({})
+  const [sending, setSending] = useState(false)
+  const [flipped, setFlipped] = useState(false)
 
-  useEffect(() => {
-    if (!plan || !price) {
-      navigate('/pricing')
-      return
+  const isDarkCard = isDark
+  const cardBg    = isDark ? '#1E293B' : '#FFFFFF'
+  const border    = isDark ? '#334155' : '#E2E8F0'
+  const textMain  = isDark ? '#F1F5F9' : '#0F172A'
+  const textSub   = isDark ? '#94A3B8' : '#64748B'
+  const pageBg    = isDark ? '#0F172A' : '#F8FAFC'
+  const inputBg   = isDark ? '#0F172A' : '#F8FAFC'
+  const inputText = isDark ? '#F1F5F9' : '#0F172A'
+
+  const plan = PLANS.find(p => p.id === selectedPlan)
+  const cardType = getCardType(cardData.number)
+
+  function handleCardChange(field, value) {
+    let formatted = value
+    if (field === 'number') formatted = formatCardNumber(value)
+    if (field === 'expiry') formatted = formatExpiry(value)
+    if (field === 'cvv') formatted = value.replace(/\D/g, '').slice(0, 4)
+    setCardData(prev => ({ ...prev, [field]: formatted }))
+    if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
+  }
+
+  function validateCard() {
+    const e = {}
+    const num = cardData.number.replace(/\s/g, '')
+    if (!num || num.length < 16) e.number = 'Número de tarjeta inválido'
+    if (!cardData.name.trim()) e.name = 'Nombre requerido'
+    const [m, y] = cardData.expiry.split('/')
+    if (!m || !y || parseInt(m) > 12 || cardData.expiry.length < 5) e.expiry = 'Fecha inválida'
+    if (!cardData.cvv || cardData.cvv.length < 3) e.cvv = 'CVV inválido'
+    setErrors(e)
+    return Object.keys(e).length === 0
+  }
+
+  async function handlePayment() {
+    if (!validateCard()) return
+    setSending(true)
+    try {
+      // Save to localStorage as demo payment
+      const payment = {
+        plan: selectedPlan,
+        planName: plan.name,
+        price: plan.price,
+        cardLast4: cardData.number.replace(/\s/g, '').slice(-4),
+        cardType,
+        email: user?.email,
+        date: new Date().toISOString(),
+        status: 'confirmed',
+      }
+      localStorage.setItem('salesek_payment', JSON.stringify(payment))
+
+      // Send confirmation email via backend
+      await fetch(`${API}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          name: user?.name || 'Usuario',
+          email: user?.email || '',
+          company: plan.name,
+          message: `Confirmación de pago — Plan: ${plan.name} — ${plan.price}€/mes — Tarjeta: **** **** **** ${payment.cardLast4}`,
+        }),
+      })
+
+      setStep('done')
+    } catch (e) {
+      setStep('done') // Show success anyway (demo mode)
+    } finally {
+      setSending(false)
     }
+  }
 
-    request('POST', '/payment/create-intent', { plan }, token)
-      .then(data => setClientSecret(data.client_secret))
-      .catch(err => setError(err.message))
-  }, [])
-
-  if (error) return (
-    <div style={styles.container}>
-      <p style={styles.error}>{error}</p>
-    </div>
-  )
-
-  if (!clientSecret) return (
-    <div style={styles.container}>
-      <p style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}>
-        Preparando pago...
-      </p>
-    </div>
-  )
-
-  return (
-    <Elements stripe={stripePromise} options={{ clientSecret }}>
-      <CheckoutForm plan={plan} price={price} clientSecret={clientSecret} />
-    </Elements>
-  )
-}
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'var(--color-surface)',
-    padding: '20px',
-  },
-  card: {
-    background: 'var(--color-white)',
-    padding: '40px',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-md)',
+  const inputStyle = (field) => ({
     width: '100%',
-    maxWidth: '440px',
-  },
-  title: {
-    fontSize: 'var(--text-2xl)',
-    color: 'var(--color-brand)',
-    marginBottom: '4px',
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 'var(--text-lg)',
-    color: 'var(--color-text-primary)',
-    marginBottom: '16px',
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  planBadge: {
-    background: 'var(--color-brand-light)',
-    color: 'var(--color-brand)',
-    padding: '8px 16px',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-sm)',
-    fontWeight: '600',
-    textAlign: 'center',
-    marginBottom: '24px',
-  },
-  cardPreview: {
-    borderRadius: '16px',
-    padding: '24px',
-    marginBottom: '24px',
-    color: 'white',
-    minHeight: '180px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-  },
-  cardTop: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  chip: {
-    fontSize: '24px',
-    opacity: 0.8,
-  },
-  cardLogo: {
-    fontSize: '14px',
-    fontWeight: '700',
-    letterSpacing: '1px',
-  },
-  cardNumber: {
-    fontSize: '20px',
-    letterSpacing: '3px',
-    fontWeight: '500',
-    textAlign: 'center',
-    margin: '16px 0',
-  },
-  cardBottom: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  cardLabel: {
-    fontSize: '10px',
-    opacity: 0.7,
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
-    marginBottom: '2px',
-  },
-  cardValue: {
-    fontSize: '13px',
-    fontWeight: '600',
-    letterSpacing: '1px',
-  },
-  error: {
-    background: 'var(--color-error-light)',
-    color: 'var(--color-error)',
-    padding: '12px',
-    borderRadius: 'var(--radius-sm)',
-    marginBottom: '16px',
-    fontSize: 'var(--text-sm)',
-  },
-  field: {
-    marginBottom: '16px',
-  },
-  label: {
-    display: 'block',
-    fontSize: 'var(--text-sm)',
-    color: 'var(--color-text-secondary)',
-    marginBottom: '6px',
-    fontWeight: '500',
-  },
-  stripeInput: {
-    padding: '10px 14px',
-    border: '1px solid var(--color-border)',
-    borderRadius: 'var(--radius-sm)',
-    backgroundColor: 'white',
-  },
-  input: {
-    width: '100%',
-    padding: '10px 14px',
-    border: '1px solid var(--color-border)',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-base)',
-    color: 'var(--color-text-primary)',
+    padding: '11px 14px',
+    background: inputBg,
+    color: inputText,
+    border: `1.5px solid ${errors[field] ? '#F43F5E' : border}`,
+    borderRadius: '10px',
+    fontSize: '15px',
+    fontFamily: 'Plus Jakarta Sans, sans-serif',
     outline: 'none',
     boxSizing: 'border-box',
-  },
-  row: {
-    display: 'flex',
-    gap: '16px',
-  },
-  secureNote: {
-    fontSize: 'var(--text-xs)',
-    color: 'var(--color-text-muted)',
-    textAlign: 'center',
-    marginBottom: '16px',
-  },
-  button: {
-    width: '100%',
-    padding: '14px',
-    background: 'var(--gradient-primary)',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-base)',
-    fontWeight: '600',
-    cursor: 'pointer',
-  },
-  testNote: {
-    fontSize: 'var(--text-xs)',
-    color: 'var(--color-text-muted)',
-    textAlign: 'center',
-    marginTop: '16px',
+    transition: 'border-color 0.15s',
+  })
+
+  // ── DONE STATE ──
+  if (step === 'done') {
+    const payment = JSON.parse(localStorage.getItem('salesek_payment') || '{}')
+    return (
+      <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', background: pageBg, minHeight: '100vh', padding: '40px 20px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '24px', padding: '48px 40px', maxWidth: '480px', width: '100%', textAlign: 'center', boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}>
+          <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '36px', color: '#10B981' }}>check_circle</span>
+          </div>
+          <h2 style={{ fontSize: '24px', fontWeight: '800', color: textMain, marginBottom: '10px' }}>¡Pago confirmado!</h2>
+          <p style={{ fontSize: '15px', color: textSub, marginBottom: '28px', lineHeight: '1.6' }}>
+            Hemos enviado un email de confirmación a <strong style={{ color: textMain }}>{user?.email}</strong>
+          </p>
+          <div style={{ background: isDark ? '#0F172A' : '#F8FAFC', border: `1px solid ${border}`, borderRadius: '14px', padding: '20px', marginBottom: '28px', textAlign: 'left' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <span style={{ fontSize: '13px', color: textSub }}>Plan</span>
+              <span style={{ fontSize: '14px', fontWeight: '700', color: textMain }}>{payment.planName}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <span style={{ fontSize: '13px', color: textSub }}>Importe</span>
+              <span style={{ fontSize: '14px', fontWeight: '700', color: '#10B981' }}>€{payment.price}/mes</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <span style={{ fontSize: '13px', color: textSub }}>Tarjeta</span>
+              <span style={{ fontSize: '14px', fontWeight: '600', color: textMain }}>•••• {payment.cardLast4}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '13px', color: textSub }}>Estado</span>
+              <span style={{ fontSize: '12px', fontWeight: '700', color: '#10B981', background: 'rgba(16,185,129,0.1)', padding: '3px 10px', borderRadius: '99px' }}>Confirmado</span>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate('/dashboard')}
+            style={{ width: '100%', padding: '13px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+          >
+            Ir al dashboard
+          </button>
+        </div>
+      </div>
+    )
   }
+
+  return (
+    <div style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', background: pageBg, minHeight: '100vh', padding: '32px 20px 80px' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+
+        {/* Header */}
+        <div style={{ marginBottom: '32px' }}>
+          <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', color: '#2563EB', cursor: 'pointer', fontSize: '14px', fontWeight: '600', fontFamily: 'Plus Jakarta Sans, sans-serif', marginBottom: '16px', padding: 0 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_back</span>
+            Volver
+          </button>
+          <h1 style={{ fontSize: '26px', fontWeight: '800', color: textMain, marginBottom: '6px' }}>Suscripción</h1>
+          <p style={{ fontSize: '14px', color: textSub }}>Elige tu plan y realiza el pago de forma segura</p>
+        </div>
+
+        {/* Steps indicator */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '32px' }}>
+          {[
+            { key: 'plan', label: '1. Plan' },
+            { key: 'card', label: '2. Pago' },
+            { key: 'confirm', label: '3. Confirmación' },
+          ].map((s, i) => {
+            const steps = ['plan', 'card', 'confirm']
+            const current = steps.indexOf(step)
+            const thisIdx = steps.indexOf(s.key)
+            const isDone = thisIdx < current
+            const isActive = thisIdx === current
+            return (
+              <div key={s.key} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: isDone ? '#10B981' : isActive ? '#2563EB' : (isDark ? '#334155' : '#E2E8F0'), display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}>
+                    {isDone
+                      ? <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'white' }}>check</span>
+                      : <span style={{ fontSize: '12px', fontWeight: '700', color: isActive ? 'white' : textSub }}>{i + 1}</span>
+                    }
+                  </div>
+                  <span style={{ fontSize: '13px', fontWeight: isActive ? '700' : '500', color: isActive ? textMain : textSub }}>{s.label}</span>
+                </div>
+                {i < 2 && <div style={{ width: '32px', height: '2px', background: isDone ? '#10B981' : (isDark ? '#334155' : '#E2E8F0'), borderRadius: '99px' }} />}
+              </div>
+            )
+          })}
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '24px', alignItems: 'start' }}>
+
+          {/* Left panel */}
+          <div>
+
+            {/* STEP 1: Plan selection */}
+            {step === 'plan' && (
+              <div style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '28px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '700', color: textMain, marginBottom: '20px' }}>Elige tu plan</h2>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {PLANS.map(p => (
+                    <div
+                      key={p.id}
+                      onClick={() => setSelectedPlan(p.id)}
+                      style={{ padding: '20px', border: `2px solid ${selectedPlan === p.id ? p.color : border}`, borderRadius: '14px', cursor: 'pointer', background: selectedPlan === p.id ? `${p.color}08` : 'transparent', transition: 'all 0.2s', position: 'relative' }}
+                    >
+                      {p.popular && (
+                        <div style={{ position: 'absolute', top: '-10px', right: '16px', background: 'linear-gradient(135deg, #F59E0B, #F97316)', color: 'white', fontSize: '10px', fontWeight: '800', padding: '3px 10px', borderRadius: '99px' }}>
+                          ⭐ MÁS POPULAR
+                        </div>
+                      )}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `${p.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: '20px', color: p.color }}>{p.icon}</span>
+                          </div>
+                          <div>
+                            <p style={{ fontSize: '15px', fontWeight: '700', color: textMain }}>{p.name}</p>
+                            <p style={{ fontSize: '12px', color: textSub }}>{p.desc}</p>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <p style={{ fontSize: '22px', fontWeight: '800', color: p.color }}>€{p.price}<span style={{ fontSize: '12px', fontWeight: '400', color: textSub }}>/mes</span></p>
+                          <div style={{ width: '20px', height: '20px', borderRadius: '50%', border: `2px solid ${selectedPlan === p.id ? p.color : border}`, background: selectedPlan === p.id ? p.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginTop: '4px' }}>
+                            {selectedPlan === p.id && <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'white' }} />}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => setStep('card')}
+                  style={{ width: '100%', marginTop: '24px', padding: '13px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+                >
+                  Continuar con {plan.name} — €{plan.price}/mes
+                </button>
+              </div>
+            )}
+
+            {/* STEP 2: Card form */}
+            {step === 'card' && (
+              <div style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '28px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '700', color: textMain, marginBottom: '24px' }}>Datos de pago</h2>
+
+                {/* Visual credit card */}
+                <div
+                  style={{ width: '100%', maxWidth: '340px', height: '200px', borderRadius: '20px', background: 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)', padding: '24px', marginBottom: '28px', position: 'relative', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 16px 48px rgba(0,0,0,0.3)' }}
+                  onClick={() => setFlipped(!flipped)}
+                >
+                  {/* Decorative circles */}
+                  <div style={{ position: 'absolute', top: '-40px', right: '-40px', width: '150px', height: '150px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
+                  <div style={{ position: 'absolute', bottom: '-60px', left: '-20px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.03)' }} />
+
+                  {!flipped ? (
+                    <>
+                      {/* Card front */}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
+                        <div style={{ display: 'flex', gap: '4px' }}>
+                          <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#EB001B', opacity: 0.9 }} />
+                          <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: '#F79E1B', opacity: 0.9, marginLeft: '-12px' }} />
+                        </div>
+                        {cardType === 'visa' && <span style={{ color: 'white', fontWeight: '800', fontSize: '22px', fontStyle: 'italic', letterSpacing: '-1px' }}>VISA</span>}
+                        {cardType === 'mastercard' && (
+                          <div style={{ display: 'flex', gap: '4px' }}>
+                            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#EB001B' }} />
+                            <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#F79E1B', marginLeft: '-10px' }} />
+                          </div>
+                        )}
+                        {cardType === 'unknown' && <span className="material-symbols-outlined" style={{ fontSize: '28px', color: 'rgba(255,255,255,0.4)' }}>credit_card</span>}
+                      </div>
+                      <p style={{ fontSize: '20px', fontWeight: '600', color: 'white', letterSpacing: '3px', marginBottom: '16px', fontFamily: 'monospace' }}>
+                        {cardData.number || '•••• •••• •••• ••••'}
+                      </p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                        <div>
+                          <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Titular</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: 'white' }}>{cardData.name || 'NOMBRE APELLIDO'}</p>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '2px' }}>Vence</p>
+                          <p style={{ fontSize: '14px', fontWeight: '600', color: 'white' }}>{cardData.expiry || 'MM/YY'}</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Card back */}
+                      <div style={{ position: 'absolute', top: '40px', left: 0, right: 0, height: '40px', background: 'rgba(0,0,0,0.5)' }} />
+                      <div style={{ position: 'absolute', top: '95px', right: '24px', background: 'white', borderRadius: '6px', padding: '8px 16px', textAlign: 'center' }}>
+                        <p style={{ fontSize: '10px', color: '#64748B', marginBottom: '2px' }}>CVV</p>
+                        <p style={{ fontSize: '16px', fontWeight: '700', color: '#0F172A', fontFamily: 'monospace', letterSpacing: '3px' }}>{cardData.cvv || '•••'}</p>
+                      </div>
+                    </>
+                  )}
+                  <p style={{ position: 'absolute', bottom: '8px', right: '12px', fontSize: '10px', color: 'rgba(255,255,255,0.3)' }}>Toca para ver reverso</p>
+                </div>
+
+                {/* Card inputs */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Número de tarjeta</label>
+                    <input
+                      style={inputStyle('number')}
+                      value={cardData.number}
+                      onChange={e => handleCardChange('number', e.target.value)}
+                      placeholder="1234 5678 9012 3456"
+                      maxLength={19}
+                    />
+                    {errors.number && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.number}</p>}
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Nombre del titular</label>
+                    <input
+                      style={inputStyle('name')}
+                      value={cardData.name}
+                      onChange={e => handleCardChange('name', e.target.value.toUpperCase())}
+                      placeholder="NOMBRE APELLIDO"
+                    />
+                    {errors.name && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.name}</p>}
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Fecha de vencimiento</label>
+                      <input
+                        style={inputStyle('expiry')}
+                        value={cardData.expiry}
+                        onChange={e => handleCardChange('expiry', e.target.value)}
+                        placeholder="MM/YY"
+                        maxLength={5}
+                        onFocus={() => setFlipped(false)}
+                      />
+                      {errors.expiry && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.expiry}</p>}
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>CVV</label>
+                      <input
+                        style={inputStyle('cvv')}
+                        value={cardData.cvv}
+                        onChange={e => handleCardChange('cvv', e.target.value)}
+                        placeholder="•••"
+                        maxLength={4}
+                        onFocus={() => setFlipped(true)}
+                        onBlur={() => setFlipped(false)}
+                      />
+                      {errors.cvv && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.cvv}</p>}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
+                  <button
+                    onClick={() => setStep('plan')}
+                    style={{ flex: 1, padding: '13px', background: 'none', border: `1px solid ${border}`, borderRadius: '12px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: textSub, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+                  >
+                    Atrás
+                  </button>
+                  <button
+                    onClick={() => { if (validateCard()) setStep('confirm') }}
+                    style={{ flex: 2, padding: '13px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+                  >
+                    Revisar pedido
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: Confirm */}
+            {step === 'confirm' && (
+              <div style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '28px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: '700', color: textMain, marginBottom: '24px' }}>Confirmar pedido</h2>
+
+                <div style={{ background: isDark ? '#0F172A' : '#F8FAFC', border: `1px solid ${border}`, borderRadius: '14px', padding: '20px', marginBottom: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '14px', color: textSub }}>Plan</span>
+                    <span style={{ fontSize: '14px', fontWeight: '700', color: textMain }}>{plan.name}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '14px', color: textSub }}>Tarjeta</span>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: textMain }}>•••• •••• •••• {cardData.number.replace(/\s/g, '').slice(-4)}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '14px', color: textSub }}>Titular</span>
+                    <span style={{ fontSize: '14px', fontWeight: '600', color: textMain }}>{cardData.name}</span>
+                  </div>
+                  <div style={{ height: '1px', background: border, margin: '12px 0' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: '16px', fontWeight: '700', color: textMain }}>Total mensual</span>
+                    <span style={{ fontSize: '20px', fontWeight: '800', color: '#2563EB' }}>€{plan.price}/mes</span>
+                  </div>
+                </div>
+
+                <div style={{ background: isDark ? 'rgba(16,185,129,0.1)' : '#ECFDF5', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '10px', padding: '12px 16px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#10B981' }}>mail</span>
+                  <p style={{ fontSize: '13px', color: '#10B981', fontWeight: '500' }}>
+                    Se enviará confirmación a <strong>{user?.email}</strong>
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={() => setStep('card')}
+                    style={{ flex: 1, padding: '13px', background: 'none', border: `1px solid ${border}`, borderRadius: '12px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: textSub, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+                  >
+                    Atrás
+                  </button>
+                  <button
+                    onClick={handlePayment}
+                    disabled={sending}
+                    style={{ flex: 2, padding: '13px', background: 'linear-gradient(135deg, #10B981, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: sending ? 'not-allowed' : 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', opacity: sending ? 0.8 : 1 }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                      {sending ? 'hourglass_empty' : 'lock'}
+                    </span>
+                    {sending ? 'Procesando...' : `Pagar €${plan.price}/mes`}
+                  </button>
+                </div>
+
+                <p style={{ fontSize: '11px', color: textSub, textAlign: 'center', marginTop: '12px' }}>
+                  🔒 Pago seguro simulado — Proyecto DAW
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Right: Order summary */}
+          <div style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '24px', position: 'sticky', top: '80px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: '700', color: textMain, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#2563EB' }}>receipt</span>
+              Resumen
+            </h3>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: `${plan.color}08`, border: `1px solid ${plan.color}20`, borderRadius: '12px', marginBottom: '16px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${plan.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '18px', color: plan.color }}>{plan.icon}</span>
+              </div>
+              <div>
+                <p style={{ fontSize: '14px', fontWeight: '700', color: textMain }}>{plan.name}</p>
+                <p style={{ fontSize: '12px', color: textSub }}>{plan.desc}</p>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '13px', color: textSub }}>Subtotal</span>
+                <span style={{ fontSize: '13px', color: textMain }}>€{plan.price}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '13px', color: textSub }}>IVA (21%)</span>
+                <span style={{ fontSize: '13px', color: textMain }}>€{(plan.price * 0.21).toFixed(2)}</span>
+              </div>
+              <div style={{ height: '1px', background: border }} />
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '15px', fontWeight: '700', color: textMain }}>Total</span>
+                <span style={{ fontSize: '18px', fontWeight: '800', color: '#2563EB' }}>€{(plan.price * 1.21).toFixed(2)}/mes</span>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {['14 días gratis incluidos', 'Sin permanencia', 'Cancela cuando quieras', 'Soporte prioritario'].map(feature => (
+                <div key={feature} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: textSub }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#10B981' }}>check_circle</span>
+                  {feature}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default Payment

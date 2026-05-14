@@ -181,6 +181,48 @@
       "a6": "The Bridge es la conexión automática entre el CRM y el inventario. Cuando cierras una venta, el stock se actualiza solo. Si baja del mínimo, el pedido al proveedor se genera automáticamente."
     }
   },
+  "leads": {
+  "total": "leads en total",
+  "newLead": "Nuevo Lead",
+  "loading": "Cargando...",
+  "clientName": "Nombre del cliente *",
+  "description": "Descripción del interés",
+  "probability": "Probabilidad de cierre",
+  "statusNew": "Nuevo",
+  "statusContacted": "Contactado",
+  "statusNegotiating": "Negociando",
+  "statusWon": "Ganado",
+  "statusLost": "Perdido",
+  "all": "Todos",
+  "empty": "Sin leads",
+  "close": "Cierre",
+  "confirmDelete": "¿Eliminar este lead?",
+  "copy": "Copiar",
+  "aiTitle": "Asistente de ventas",
+  "nameRequired": "El nombre del cliente es obligatorio"
+},
+"common": {
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "view": "Ver",
+  "saving": "Guardando...",
+  "delete": "Eliminar",
+  "edit": "Editar",
+  "back": "Volver",
+  "loading": "Cargando..."
+},
+"auth": {
+  "loginTitle": "Iniciar sesión",
+  "emailRequired": "El email es obligatorio",
+  "emailInvalid": "Email no válido",
+  "password": "Contraseña",
+  "passwordRequired": "La contraseña es obligatoria",
+  "passwordMin": "Mínimo 8 caracteres",
+  "loginButton": "Entrar",
+  "loading": "Cargando...",
+  "noAccount": "¿No tienes cuenta?",
+  "register": "Regístrate"
+},
   "blog": {
     "title": "Lo que nadie te cuenta sobre gestionar una pyme",
     "subtitle": "Artículos prácticos sobre CRM, inventario y gestión de clientes. Sin tecnicismos, solo lo que te sirve.",

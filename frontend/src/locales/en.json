@@ -104,6 +104,48 @@
 "ctaDesc": "14 days free, no credit card, no commitment.",
 "ctaButton": "Start free"
   },
+  "leads": {
+  "total": "leads total",
+  "newLead": "New Lead",
+  "loading": "Loading...",
+  "clientName": "Client name *",
+  "description": "Description of interest",
+  "probability": "Close probability",
+  "statusNew": "New",
+  "statusContacted": "Contacted",
+  "statusNegotiating": "Negotiating",
+  "statusWon": "Won",
+  "statusLost": "Lost",
+  "all": "All",
+  "empty": "No leads",
+  "close": "Close",
+  "confirmDelete": "Delete this lead?",
+  "copy": "Copy",
+  "aiTitle": "Sales assistant",
+  "nameRequired": "Client name is required"
+},
+"common": {
+  "save": "Save",
+  "cancel": "Cancel",
+  "view": "View",
+  "saving": "Saving...",
+  "delete": "Delete",
+  "edit": "Edit",
+  "back": "Back",
+  "loading": "Loading..."
+},
+"auth": {
+  "loginTitle": "Sign in",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Invalid email",
+  "password": "Password",
+  "passwordRequired": "Password is required",
+  "passwordMin": "Minimum 8 characters",
+  "loginButton": "Sign in",
+  "loading": "Loading...",
+  "noAccount": "Don't have an account?",
+  "register": "Sign up"
+},
   "contact": {
     "title": "Talk to us",
     "subtitle": "Have questions? Write to us and we'll respond in less than 24 hours.",
