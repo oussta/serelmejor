@@ -61,7 +61,7 @@ function PublicNavbar() {
       {/* ── LANGUAGE PICKER MODAL ── */}
       {showLangPicker && (
         <div
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
+          style={{ position: 'sticky', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}
           onClick={() => switchLang(i18n.language)}
         >
           <div
