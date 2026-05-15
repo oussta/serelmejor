@@ -26,6 +26,14 @@ input, textarea, select {
   font-size: 20px;
   vertical-align: middle;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+  -webkit-text-fill-color: var(--input-text) !important;
+  caret-color: var(--input-text) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 @media (max-width: 768px) {
   /* Extra bottom padding for tab bar */
   main, .page-content, [class*="page"] {

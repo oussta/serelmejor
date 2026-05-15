@@ -286,7 +286,7 @@ function PublicPricing() {
 
                   {/* CTA */}
                   <button
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate('/payment')}
                     style={{
                       width:        '100%',
                       padding:      '14px',
@@ -343,7 +343,7 @@ function PublicPricing() {
               </p>
             </div>
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/payment')}
               style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '10px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', whiteSpace: 'nowrap', boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
             >
               Empezar con Suite →
@@ -472,7 +472,7 @@ function PublicPricing() {
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/payment')}
               style={{ padding: '14px 32px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 8px 24px rgba(37,99,235,0.4)' }}
             >
               Crear cuenta gratis

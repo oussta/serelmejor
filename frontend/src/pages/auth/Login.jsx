@@ -4,12 +4,13 @@ import { useTranslation } from 'react-i18next'
 import { login } from '../../services/authService'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
-import logo from '../../assets/logo.png'
 
 function Login() {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const isDark = theme === 'dark'
+  const { t }      = useTranslation()
+  const { theme }  = useTheme()
+  const isDark     = theme === 'dark'
+  const { saveAuth } = useAuth()
+  const navigate     = useNavigate()
 
   const [email,       setEmail]       = useState('')
   const [password,    setPassword]    = useState('')
@@ -18,16 +19,14 @@ function Login() {
   const [loading,     setLoading]     = useState(false)
   const [serverError, setServerError] = useState('')
 
-  const { saveAuth } = useAuth()
-  const navigate     = useNavigate()
-
-  const bg        = isDark ? '#0F172A' : '#F8FAFC'
-  const cardBg    = isDark ? '#1E293B' : '#FFFFFF'
-  const border    = isDark ? '#334155' : '#E2E8F0'
-  const textMain  = isDark ? '#F1F5F9' : '#0F172A'
-  const textSub   = isDark ? '#94A3B8' : '#64748B'
-  const inputBg   = isDark ? '#0F172A' : '#F8FAFC'
+  const bg       = isDark ? '#0F172A' : '#F0F4FF'
+  const cardBg   = isDark ? '#1E293B' : '#FFFFFF'
+  const border   = isDark ? '#334155' : '#E2E8F0'
+  const textMain = isDark ? '#F1F5F9' : '#0F172A'
+  const textSub  = isDark ? '#94A3B8' : '#64748B'
+  const inputBg  = isDark ? '#0F172A' : '#F8FAFC'
   const inputText = isDark ? '#F1F5F9' : '#0F172A'
+  const inputBorder = isDark ? '#334155' : '#CBD5E1'
 
   function validateField(name, value) {
     if (name === 'email') {
@@ -69,38 +68,113 @@ function Login() {
 
   const inputStyle = (fieldName) => ({
     width: '100%',
-    padding: '11px 14px',
-    border: `1.5px solid ${errors[fieldName] ? '#F43F5E' : border}`,
+    padding: '12px 14px',
+    border: `1.5px solid ${errors[fieldName] ? '#F43F5E' : inputBorder}`,
     borderRadius: '10px',
     fontSize: '15px',
     color: inputText,
-    background: inputBg,
+    backgroundColor: inputBg,
     outline: 'none',
     boxSizing: 'border-box',
     fontFamily: 'Plus Jakarta Sans, sans-serif',
     transition: 'border-color 0.15s',
+    WebkitTextFillColor: inputText,
+    caretColor: inputText,
   })
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: bg, fontFamily: 'Plus Jakarta Sans, sans-serif', padding: '20px' }}>
-      <div style={{ background: cardBg, padding: '40px', borderRadius: '20px', boxShadow: isDark ? '0 8px 32px rgba(0,0,0,0.4)' : '0 4px 24px rgba(15,23,42,0.10)', width: '100%', maxWidth: '420px', border: `1px solid ${border}` }}>
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: bg,
+      fontFamily: 'Plus Jakarta Sans, sans-serif',
+      padding: '20px',
+      position: 'relative',
+    }}>
 
-        {/* Logo + Brand */}
+      {/* Back to site */}
+      <a
+        href="/"
+        style={{
+          position: 'absolute',
+          top: '24px',
+          left: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          fontSize: '13px',
+          fontWeight: '600',
+          color: textSub,
+          textDecoration: 'none',
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          padding: '8px 14px',
+          borderRadius: '10px',
+          border: `1px solid ${border}`,
+          background: cardBg,
+          transition: 'all 0.15s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.color = '#2563EB'; e.currentTarget.style.borderColor = '#2563EB' }}
+        onMouseLeave={e => { e.currentTarget.style.color = textSub; e.currentTarget.style.borderColor = border }}
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_back</span>
+        Volver al sitio
+      </a>
+
+      {/* Card */}
+      <div style={{
+        background: cardBg,
+        padding: '40px',
+        borderRadius: '24px',
+        boxShadow: isDark ? '0 8px 40px rgba(0,0,0,0.5)' : '0 8px 40px rgba(37,99,235,0.12)',
+        width: '100%',
+        maxWidth: '420px',
+        border: `1px solid ${border}`,
+      }}>
+
+        {/* Logo area */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <img src={logo} alt="Salesek" style={{ height: '44px', width: 'auto', objectFit: 'contain', marginBottom: '16px' }} />
-          <h2 style={{ fontSize: '16px', color: textSub, fontWeight: '500' }}>
-            {t('auth.loginTitle') || 'Iniciar sesión'}
-          </h2>
+          {/* Logo circle */}
+          <div style={{
+            width: '56px', height: '56px', borderRadius: '16px',
+            background: 'linear-gradient(135deg, #2563EB, #0EA5E9)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            margin: '0 auto 14px',
+            boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
+          }}>
+            <span style={{ color: 'white', fontWeight: '800', fontSize: '24px', letterSpacing: '-1px' }}>S</span>
+          </div>
+          <h1 style={{ fontSize: '22px', fontWeight: '800', color: textMain, letterSpacing: '-0.5px', marginBottom: '4px' }}>
+            Salesek
+          </h1>
+          <p style={{ fontSize: '14px', color: textSub, fontWeight: '400' }}>
+            {t('auth.loginTitle') || 'Inicia sesión en tu cuenta'}
+          </p>
         </div>
 
+        {/* Server error */}
         {serverError && (
-          <div style={{ background: isDark ? 'rgba(244,63,94,0.15)' : '#FFF1F2', color: '#F43F5E', padding: '12px 14px', borderRadius: '10px', marginBottom: '20px', fontSize: '14px', border: '1px solid rgba(244,63,94,0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>error</span>
+          <div style={{
+            background: isDark ? 'rgba(244,63,94,0.12)' : '#FFF1F2',
+            color: '#F43F5E',
+            padding: '12px 14px',
+            borderRadius: '10px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            border: '1px solid rgba(244,63,94,0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+          }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', flexShrink: 0 }}>error</span>
             {serverError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="on">
+
           {/* Email */}
           <div style={{ marginBottom: '18px' }}>
             <label style={{ display: 'block', fontSize: '13px', color: textSub, marginBottom: '6px', fontWeight: '600' }}>
@@ -113,11 +187,11 @@ function Login() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               onBlur={handleBlur}
-              placeholder="tu@email.com"
+              placeholder="admin@salesek.com"
               autoComplete="email"
             />
             {errors.email && (
-              <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '5px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>error</span>
                 {errors.email}
               </p>
@@ -125,13 +199,13 @@ function Login() {
           </div>
 
           {/* Password */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '28px' }}>
             <label style={{ display: 'block', fontSize: '13px', color: textSub, marginBottom: '6px', fontWeight: '600' }}>
               {t('auth.password') || 'Contraseña'}
             </label>
             <div style={{ position: 'relative' }}>
               <input
-                style={{ ...inputStyle('password'), paddingRight: '44px' }}
+                style={{ ...inputStyle('password'), paddingRight: '48px' }}
                 type={showPass ? 'text' : 'password'}
                 name="password"
                 value={password}
@@ -143,7 +217,11 @@ function Login() {
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', color: textSub }}
+                style={{
+                  position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', color: textSub, padding: '4px',
+                }}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
                   {showPass ? 'visibility_off' : 'visibility'}
@@ -151,26 +229,45 @@ function Login() {
               </button>
             </div>
             {errors.password && (
-              <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '5px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>error</span>
                 {errors.password}
               </p>
             )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            style={{ width: '100%', padding: '13px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 4px 16px rgba(37,99,235,0.35)', opacity: loading ? 0.8 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', transition: 'opacity 0.15s' }}
+            style={{
+              width: '100%',
+              padding: '13px',
+              background: loading ? '#94A3B8' : 'linear-gradient(135deg, #2563EB, #0EA5E9)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: '700',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              fontFamily: 'Plus Jakarta Sans, sans-serif',
+              boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              transition: 'all 0.15s',
+            }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-              {loading ? 'hourglass_empty' : 'login'}
+            <span className="material-symbols-outlined" style={{ fontSize: '18px', animation: loading ? 'spin 1s linear infinite' : 'none' }}>
+              {loading ? 'refresh' : 'login'}
             </span>
             {loading ? (t('auth.loading') || 'Cargando...') : (t('auth.loginButton') || 'Entrar')}
           </button>
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: textSub }}>
+        {/* Register link */}
+        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: textSub }}>
           {t('auth.noAccount') || '¿No tienes cuenta?'}{' '}
           <Link to="/register" style={{ color: '#2563EB', fontWeight: '700', textDecoration: 'none' }}>
             {t('auth.register') || 'Regístrate'}
@@ -178,15 +275,36 @@ function Login() {
         </p>
 
         {/* Demo hint */}
-        <div style={{ marginTop: '20px', padding: '12px', background: isDark ? 'rgba(37,99,235,0.1)' : '#EFF6FF', borderRadius: '10px', border: `1px solid ${isDark ? 'rgba(37,99,235,0.3)' : '#BFDBFE'}` }}>
-          <p style={{ fontSize: '12px', color: isDark ? '#93C5FD' : '#2563EB', textAlign: 'center', fontWeight: '500' }}>
+        <div style={{
+          marginTop: '20px',
+          padding: '12px 16px',
+          background: isDark ? 'rgba(37,99,235,0.08)' : '#EFF6FF',
+          borderRadius: '10px',
+          border: `1px solid ${isDark ? 'rgba(37,99,235,0.2)' : '#BFDBFE'}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#2563EB', flexShrink: 0 }}>info</span>
+          <p style={{ fontSize: '12px', color: isDark ? '#93C5FD' : '#2563EB', fontWeight: '500', margin: 0 }}>
             Demo: admin@salesek.com / password
           </p>
         </div>
       </div>
 
       <style>{`
-        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+        @keyframes spin {
+          from { transform: rotate(0deg) }
+          to   { transform: rotate(360deg) }
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus {
+          -webkit-box-shadow: 0 0 0px 1000px ${inputBg} inset !important;
+          -webkit-text-fill-color: ${inputText} !important;
+          caret-color: ${inputText} !important;
+          transition: background-color 5000s ease-in-out 0s;
+        }
       `}</style>
     </div>
   )

@@ -29,12 +29,12 @@ function Navbar() {
     navigate('/login')
   }
 
-  function switchLang(code) {
-    i18n.changeLanguage(code)
-    localStorage.setItem('lang', code)
-    setLangOpen(false)
-  }
-
+ function switchLang(code) {
+  i18n.changeLanguage(code)
+  localStorage.setItem('lang', code)
+  setLangOpen(false)
+  setMenuOpen(false)
+}
   const langs = [
     { code: 'es', flag: '🇪🇸', label: 'Español' },
     { code: 'en', flag: '🇬🇧', label: 'English' },
