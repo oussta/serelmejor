@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-
+import HowItWorks from '../pages/landing/HowItWorks'
 import Team from '../pages/dashboard/Team'
 // Auth pages
 import Login from '../pages/auth/Login'
@@ -63,7 +63,7 @@ function AppRouter() {
       <Route path="/admin" element={
       <ProtectedRoute><AdminPanel /></ProtectedRoute>
       } />
-
+    <Route path="/como-funciona" element={<HowItWorks />} />
       {/* ── Protected ── */}
       <Route path="/pricing" element={
         <ProtectedRoute><Pricing /></ProtectedRoute>

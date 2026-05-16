@@ -272,6 +272,36 @@
   "aiInputPlaceholder": "Tapez votre question à l'assistant...",
   "aiError": "Erreur de traitement. Réessayez.", "clearChat": "Effacer l'historique du chat IA ?"
 },
+"productDetail": {
+  "totalSold": "Total vendu",
+  "totalReceived": "Total reçu",
+  "stockLevel": "Niveau de stock",
+  "units": "unités",
+  "minimum": "Minimum",
+  "totalValue": "Valeur en stock",
+  "movements": "Historique des mouvements",
+  "noMovements": "Aucun mouvement enregistré"
+},
+"supplier": {
+  "title": "Portail Fournisseur",
+  "welcome": "Bienvenue",
+  "subtitle": "Gérez vos commandes entrantes",
+  "loading": "Chargement des commandes...",
+  "loadError": "Erreur de chargement",
+  "toConfirm": "À confirmer",
+  "noOrders": "Aucune commande",
+  "noOrdersDesc": "Aucune commande dans cet état",
+  "confirmOrder": "Confirmer la commande",
+  "markDelivered": "Marquer comme livré",
+  "completed": "Complété",
+  "waitingShipment": "En attente d'envoi",
+  "confirmed": "Commande confirmée ✓",
+  "delivered": "Commande marquée comme livrée ✓",
+  "confirmError": "Erreur de confirmation",
+  "deliverError": "Erreur de marquage",
+  "infoTitle": "Portail en lecture seule",
+  "infoDesc": "Ce portail vous permet de voir les commandes envoyées, les confirmer et les marquer comme livrées."
+},
   "contact": {
     "title": "Parlons-nous",
     "subtitle": "Des questions ? Écrivez-nous et nous répondrons en moins de 24 heures.",
@@ -349,6 +379,21 @@
       "a6": "The Bridge est la connexion automatique entre le CRM et l'inventaire. Quand vous concluez une vente, le stock se met à jour automatiquement."
     }
   },
+  "footer": {
+  "product": "Produit", "company": "Entreprise", "access": "Accès",
+  "features": "Fonctionnalités", "pricing": "Tarifs",
+  "howItWorks": "Comment ça marche", "about": "À propos",
+  "blog": "Blog", "contact": "Contact",
+  "login": "Se connecter", "register": "Créer un compte", "supplier": "Portail fournisseur",
+  "tagline": "La plateforme tout-en-un pour les petites entreprises. CRM + Inventaire connectés en un seul endroit.",
+  "badge1": "🔒 RGPD", "badge2": "🇪🇸 Espagne",
+  "language": "Langue",
+  "ctaTitle": "Commencez gratuitement",
+  "ctaDesc": "14 jours gratuits. Sans carte. Sans engagement. À partir de 29€/mois après.",
+  "ctaButton": "Créer un compte gratuit", "ctaSecondary": "Voir les tarifs",
+  "rights": "Tous droits réservés.",
+  "privacy": "Confidentialité", "terms": "Conditions", "cookies": "Cookies"
+},
   "blog": {
     "title": "Ce que personne ne vous dit sur la gestion d'une PME",
     "subtitle": "Articles pratiques sur le CRM, l'inventaire et la gestion des clients. Sans jargon, juste ce qui fonctionne.",
@@ -420,15 +465,5 @@
         "date": "1 avril 2026"
       }
     }
-  },
-  "footer": {
-    "tagline": "CRM et inventaire pour PME",
-    "product": "Produit",
-    "company": "Entreprise",
-    "legal": "Légal",
-    "rights": "Tous droits réservés",
-    "privacy": "Confidentialité",
-    "terms": "Conditions",
-    "cookies": "Cookies"
   }
 }

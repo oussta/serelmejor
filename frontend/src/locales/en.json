@@ -272,6 +272,36 @@
   "aiInputPlaceholder": "Type your question to the assistant...",
   "aiError": "Error processing. Try again.", "clearChat": "Clear AI chat history?"
 },
+"productDetail": {
+  "totalSold": "Total sold",
+  "totalReceived": "Total received",
+  "stockLevel": "Stock level",
+  "units": "units",
+  "minimum": "Minimum",
+  "totalValue": "Stock value",
+  "movements": "Movement history",
+  "noMovements": "No movements registered yet"
+},
+"supplier": {
+  "title": "Supplier Portal",
+  "welcome": "Welcome",
+  "subtitle": "Manage your incoming orders",
+  "loading": "Loading orders...",
+  "loadError": "Error loading orders",
+  "toConfirm": "To confirm",
+  "noOrders": "No orders",
+  "noOrdersDesc": "No orders in this status",
+  "confirmOrder": "Confirm order",
+  "markDelivered": "Mark delivered",
+  "completed": "Completed",
+  "waitingShipment": "Waiting for shipment",
+  "confirmed": "Order confirmed ✓",
+  "delivered": "Order marked as delivered ✓",
+  "confirmError": "Error confirming order",
+  "deliverError": "Error marking as delivered",
+  "infoTitle": "Read-only portal",
+  "infoDesc": "This portal lets you view sent orders, confirm them and mark them as delivered."
+},
   "contact": {
     "title": "Talk to us",
     "subtitle": "Have questions? Write to us and we'll respond in less than 24 hours.",
@@ -373,6 +403,21 @@
       "subtitle": "CRM + inventory in one platform. 14 days free, no card, no commitment.",
       "button": "Start free"
     },
+    "footer": {
+  "product": "Product", "company": "Company", "access": "Access",
+  "features": "Features", "pricing": "Pricing",
+  "howItWorks": "How it works", "about": "About us",
+  "blog": "Blog", "contact": "Contact",
+  "login": "Sign in", "register": "Create account", "supplier": "Supplier portal",
+  "tagline": "The all-in-one platform for small businesses. CRM + Inventory connected in one place.",
+  "badge1": "🔒 GDPR", "badge2": "🇪🇸 Spain",
+  "language": "Language",
+  "ctaTitle": "Start free today",
+  "ctaDesc": "14 days free. No card. No commitment. From €29/month after.",
+  "ctaButton": "Create free account", "ctaSecondary": "See pricing",
+  "rights": "All rights reserved.",
+  "privacy": "Privacy", "terms": "Terms", "cookies": "Cookies"
+},
     "tags": {
       "all": "All",
       "crm": "CRM",
@@ -420,15 +465,5 @@
         "date": "April 1, 2026"
       }
     }
-  },
-  "footer": {
-    "tagline": "CRM and inventory for small businesses",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "rights": "All rights reserved",
-    "privacy": "Privacy",
-    "terms": "Terms",
-    "cookies": "Cookies"
   }
 }

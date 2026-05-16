@@ -350,6 +350,51 @@
   "aiInputPlaceholder": "Escribe tu pregunta al asistente...",
   "aiError": "Error al procesar. Intenta de nuevo.", "clearChat": "¿Limpiar el historial del chat IA?"
 },
+"productDetail": {
+  "totalSold": "Total vendido",
+  "totalReceived": "Total recibido",
+  "stockLevel": "Nivel de stock",
+  "units": "unidades",
+  "minimum": "Mínimo",
+  "totalValue": "Valor en stock",
+  "movements": "Historial de movimientos",
+  "noMovements": "Sin movimientos registrados aún"
+},
+"supplier": {
+  "title": "Portal de Proveedor",
+  "welcome": "Bienvenido",
+  "subtitle": "Gestiona tus pedidos entrantes",
+  "loading": "Cargando pedidos...",
+  "loadError": "Error cargando los pedidos",
+  "toConfirm": "Por confirmar",
+  "noOrders": "Sin pedidos",
+  "noOrdersDesc": "No tienes pedidos en este estado",
+  "confirmOrder": "Confirmar pedido",
+  "markDelivered": "Marcar entregado",
+  "completed": "Completado",
+  "waitingShipment": "Esperando envío",
+  "confirmed": "Pedido confirmado ✓",
+  "delivered": "Pedido marcado como entregado ✓",
+  "confirmError": "Error confirmando pedido",
+  "deliverError": "Error marcando como entregado",
+  "infoTitle": "Portal de solo lectura",
+  "infoDesc": "Este portal te permite ver los pedidos enviados, confirmarlos y marcarlos como entregados."
+},
+"footer": {
+  "product": "Producto", "company": "Empresa", "access": "Acceso",
+  "features": "Funcionalidades", "pricing": "Precios",
+  "howItWorks": "Cómo funciona", "about": "Sobre nosotros",
+  "blog": "Blog", "contact": "Contacto",
+  "login": "Iniciar sesión", "register": "Crear cuenta", "supplier": "Portal proveedor",
+  "tagline": "La plataforma todo-en-uno para pequeñas empresas. CRM + Inventario conectados en un solo lugar.",
+  "badge1": "🔒 RGPD", "badge2": "🇪🇸 España",
+  "language": "Idioma",
+  "ctaTitle": "Empieza gratis hoy mismo",
+  "ctaDesc": "14 días gratis. Sin tarjeta. Sin permanencia. Desde 29€/mes después.",
+  "ctaButton": "Crear cuenta gratis", "ctaSecondary": "Ver precios",
+  "rights": "Todos los derechos reservados.",
+  "privacy": "Privacidad", "terms": "Términos", "cookies": "Cookies"
+},
   "blog": {
     "title": "Lo que nadie te cuenta sobre gestionar una pyme",
     "subtitle": "Artículos prácticos sobre CRM, inventario y gestión de clientes. Sin tecnicismos, solo lo que te sirve.",
@@ -421,15 +466,5 @@
         "date": "1 abril 2026"
       }
     }
-  },
-  "footer": {
-    "tagline": "CRM e inventario para pymes españolas",
-    "product": "Producto",
-    "company": "Empresa",
-    "legal": "Legal",
-    "rights": "Todos los derechos reservados",
-    "privacy": "Privacidad",
-    "terms": "Términos",
-    "cookies": "Cookies"
   }
 }
