@@ -428,42 +428,48 @@
       "proveedores": "Suppliers"
     },
     "posts": {
-      "crm-para-pequenas-empresas-espana": {
-        "title": "CRM for small businesses in Spain: what you need and what you don't",
-        "description": "Most CRMs on the market are built for 50-person teams. If you have 5, here's what you actually need.",
-        "tag": "CRM",
-        "date": "May 2, 2026"
-      },
-      "como-dejar-de-gestionar-clientes-con-excel": {
-        "title": "How to stop managing your clients with Excel without going crazy",
-        "description": "Excel isn't bad. The problem is using it for something it wasn't designed for.",
-        "tag": "Management",
-        "date": "April 28, 2026"
-      },
-      "control-inventario-pymes-sin-complicaciones": {
-        "title": "Inventory management for small businesses: always know your stock",
-        "description": "Running out of product when sales are at their peak is the most expensive mistake a small business makes.",
-        "tag": "Inventory",
-        "date": "April 22, 2026"
-      },
-      "software-gestion-pymes-que-vale-la-pena": {
-        "title": "Business management software for small businesses: when it's worth paying for",
-        "description": "Not every business needs management software from day one. But there's a point where not having it costs more.",
-        "tag": "Software",
-        "date": "April 15, 2026"
-      },
-      "como-no-perder-clientes-por-falta-de-seguimiento": {
-        "title": "How to stop losing clients from lack of follow-up",
-        "description": "80% of sales close after the fifth contact. Most small businesses don't make it to the second.",
-        "tag": "Sales",
-        "date": "April 8, 2026"
-      },
-      "gestionar-proveedores-sin-llamadas-ni-emails": {
-        "title": "How to manage your suppliers without endless calls and emails",
-        "description": "Ordering stock by WhatsApp works up to a point. When the business grows, that system breaks down.",
-        "tag": "Suppliers",
-        "date": "April 1, 2026"
-      }
-    }
+  "crm-para-pequenas-empresas-espana": {
+    "title": "CRM for Small Businesses in Spain: What You Need and What You Don't",
+    "description": "Most CRMs on the market are designed for teams of 50 people. If you have 5, here's what you actually need.",
+    "tag": "CRM",
+    "date": "May 2, 2026",
+    "content": "<h2>Why traditional CRMs don't work for small businesses?</h2><p>Most CRM tools on the market were built for sales teams of 20, 50 or 100 people. They have approval flows, access hierarchies, quarterly forecasting modules — things that for a 3-person hardware store or an 8-employee distributor are pure noise. The result is that the small business owner installs the tool, sees 47 options in the sidebar, gets overwhelmed and goes back to their Excel spreadsheet.</p><h2>What a small business really needs from a CRM</h2><ul><li>See at a glance what stage each potential client is at</li><li>Get alerts when you've gone too long without contacting a lead</li><li>Save conversation history so you don't repeat yourself each time</li><li>Know the probability of closing each opportunity</li></ul><p>You don't need a CRM with predictive AI or integration with 200 tools. You need something that works and that your team actually uses.</p><h2>The mistake of buying by features</h2><p>More features means more complexity and more chances that nobody uses it correctly next month. The right question isn't what can this CRM do? but what do I specifically need?</p><h2>Visual pipeline: the only metric that matters at first</h2><p>Seeing all your leads on a Kanban board — New, Contacted, Negotiating, Won, Lost — is already a huge leap forward from spreadsheets. With that view you can answer in 10 seconds: how many leads do I have right now? Which ones have had no activity for two weeks?</p><h2>When does paying for a CRM make sense?</h2><p>When the cost of not having it exceeds the subscription price. That usually happens when you lose clients due to lack of follow-up, when you don't know where each opportunity stands, or when you bring someone new on and there's no record of what's been discussed with each client. At that point, €29/month is an investment, not an expense.</p>"
+  },
+  "como-dejar-de-gestionar-clientes-con-excel": {
+    "title": "How to Stop Managing Your Clients with Excel Without Going Crazy",
+    "description": "Excel isn't bad. The problem is using it for something it wasn't designed for. Here's how to make the switch without drama.",
+    "tag": "Management",
+    "date": "April 28, 2026",
+    "content": "<h2>Excel isn't the problem. How you use it is.</h2><p>Excel is a brilliant tool for what it was designed for: data analysis, spreadsheets, financial models. The problem comes when you turn it into your client database, conversation history and sales tracking system all at once. When the business grows it becomes a monster nobody can maintain.</p><h2>Signs you've outgrown it</h2><ul><li>You have multiple versions of the same file and don't know which is current</li><li>Someone modifies something and overwrites another person's data</li><li>You spend 10 minutes finding a client's conversation history</li><li>You can't see at a glance how many active leads you have right now</li><li>Every time someone new joins, you have to explain the cell color system</li></ul><h2>How to transition without losing data</h2><p>Most modern CRMs allow you to import directly from Excel or CSV. Export your spreadsheet, map the columns to the CRM fields and in 15 minutes all your contacts are migrated. What can't be imported automatically is implicit knowledge: that yellow color that meant important client or that margin note only you understand.</p><h2>The cultural change is harder than the technical one</h2><p>The biggest challenge isn't the tool. It's getting everyone to use it consistently. Start with something simple that anyone can learn in half an hour, and establish from day one that it's the only place where commercial activity is recorded. No exceptions.</p>"
+  },
+  "control-inventario-pymes-sin-complicaciones": {
+    "title": "Inventory Control for SMEs: Always Know How Much Stock You Have",
+    "description": "Running out of product exactly when sales are at their peak is the most expensive mistake a small business makes. Here's how to avoid it.",
+    "tag": "Inventory",
+    "date": "April 22, 2026",
+    "content": "<h2>The most expensive mistake a small business makes</h2><p>Running out of stock exactly when you're selling the most. Many small businesses still manage inventory by eye or in spreadsheets updated manually. The problem isn't lack of data — it's lack of real-time visibility.</p><h2>What inventory control really means</h2><p>It's about knowing at any time, from any device, how many units you have of each product, which are below the minimum you need, and when you last received or sold each item. With that information you can make decisions. Without it, you're guessing.</p><h2>The three levels of stock control</h2><ul><li><strong>Level 1 — By eye:</strong> works until the business grows a bit.</li><li><strong>Level 2 — Manual Excel:</strong> works until someone forgets to update it.</li><li><strong>Level 3 — Automated system:</strong> every movement is recorded automatically. Real-time visibility and alerts when stock drops below minimum.</li></ul><h2>Low stock alerts: your first line of defense</h2><p>Setting a minimum level for each product and receiving an automatic notification when you reach that point gives you reaction time. Instead of discovering you have no product when a customer asks, you find out days before and can place the order calmly.</p><h2>Automatic supplier orders</h2><p>When a product reaches its minimum, the system automatically generates the purchase order to the corresponding supplier and sends it by email. Without anyone having to remember. This doesn't just save time — it eliminates human risk: someone being on holiday, forgetting, thinking someone else already did it.</p>"
+  },
+  "software-gestion-pymes-que-vale-la-pena": {
+    "title": "Business Management Software for SMEs: When It's Worth Paying For",
+    "description": "Not every business needs software from day one. But there's a point where not having it starts costing you more.",
+    "tag": "Software",
+    "date": "April 15, 2026",
+    "content": "<h2>The right question isn't if you need software, but when</h2><p>There's a tipping point, different for each business, where manual processes start being the bottleneck of growth. Recognizing that moment is more important than choosing the right tool.</p><h2>Signs you've reached that point</h2><ul><li>You spend more than 2 hours a week updating spreadsheets</li><li>You've lost a sale because you didn't follow up in time</li><li>You don't know in real time how much stock you have of a specific product</li><li>When someone on the team is absent, there's information only they know</li></ul><h2>The real cost of not having a system</h2><p>Many small business owners calculate the cost of software but not the cost of not having it. That cost includes time on repetitive administrative tasks, sales lost due to lack of follow-up, inventory errors that generate returns, and the friction of scaling a team without documented processes. When you add all that up, €30-50 a month is usually profitable sooner than you think.</p><h2>What to check before subscribing to any software</h2><ul><li>Can I try it free for at least 14 days?</li><li>Can I export my data if I decide to leave?</li><li>Does the price include support or just the tool?</li><li>How long does my team need to learn it?</li></ul><p>A tool that nobody on your team uses correctly won't save you anything. Adoption time is as important as features.</p>"
+  },
+  "como-no-perder-clientes-por-falta-de-seguimiento": {
+    "title": "How to Stop Losing Clients Because of Poor Follow-Up",
+    "description": "80% of sales are closed after the fifth contact. Most SMEs don't even make it to the second.",
+    "tag": "Sales",
+    "date": "April 8, 2026",
+    "content": "<h2>Follow-up is where sales are won or lost</h2><p>Most sales are closed after the fifth contact. And most salespeople don't make it to the second. Not because they're bad salespeople, but because without a system reminding them when to act, follow-up happens when there's time. And there's never time.</p><h2>Why leads go cold so fast</h2><p>A potential client who's interested today might be buying from your competitor next week. Not because your proposal is worse, but because the competitor got there first with a reminder at the right moment. Response speed and consistency are as important as price or product.</p><h2>The simplest system that works</h2><ul><li>Record each lead with the date of last contact</li><li>Define maximum time without activity depending on pipeline stage</li><li>Receive automatic alerts when that time is exceeded</li></ul><p>That's what a basic CRM does. With just that, you prevent leads from falling through the cracks.</p><h2>The difference between follow-up and spam</h2><p>Following up doesn't mean calling every two days until the client runs. It means being present at the right moment with something valuable: a relevant article, an updated proposal, a similar client case study, or simply a brief email asking if they've made a decision.</p><h2>Automating without losing the personal touch</h2><p>Automatic reminders tell you when to act, but the action itself is still yours. The system tells you it's time to contact this client, you haven't spoken in 12 days. But the message you write is personal, with the context of your last conversation. That combination is what makes the difference.</p>"
+  },
+  "gestionar-proveedores-sin-llamadas-ni-emails": {
+    "title": "How to Manage Your Suppliers Without Endless Calls and Emails",
+    "description": "Ordering stock via WhatsApp works up to a point. When the business grows, that system breaks down.",
+    "tag": "Suppliers",
+    "date": "April 1, 2026",
+    "content": "<h2>The chaos of manual procurement</h2><p>In most small businesses, ordering stock from a supplier works like this: someone notices a product is low, makes a mental note, waits for the weekly order, calls or sends a WhatsApp, waits for confirmation. With 5 references and one supplier, it works. With 200 references and 8 suppliers, that system constantly breaks down.</p><h2>The most common failure points</h2><ul><li>Duplicate orders because two team members made the same order</li><li>Forgotten orders because the person who usually placed them was on leave</li><li>No traceability of what was ordered, when, to which supplier or what status it's at</li><li>Discrepancies between ordered and received discovered too late</li></ul><h2>What changes when you have an ordering system</h2><p>The main difference is traceability. Each order has a clear status: pending, sent, confirmed, delivered. At any time you can see exactly what you've ordered from each supplier and when to expect it. That eliminates the need to call to ask if the order arrived.</p><h2>The supplier portal</h2><p>Instead of receiving orders via WhatsApp, email and phone calls all mixed together, your suppliers receive a formal purchase order with all the necessary information: product, quantity, required delivery date. This reduces errors on their side and improves the commercial relationship.</p><h2>Order automation</h2><p>When a product drops below minimum stock, the system automatically generates the purchase order to the corresponding supplier and sends it. Without anyone having to remember. This doesn't eliminate human control — it focuses it on what matters: reviewing that the order is correct before confirming it.</p>"
+  }
+}
   }
 }

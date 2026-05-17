@@ -428,42 +428,48 @@
       "proveedores": "Fournisseurs"
     },
     "posts": {
-      "crm-para-pequenas-empresas-espana": {
-        "title": "CRM pour petites entreprises en Espagne : ce dont vous avez besoin",
-        "description": "La plupart des CRM sont conçus pour des équipes de 50 personnes. Si vous en avez 5, voici ce qu'il vous faut.",
-        "tag": "CRM",
-        "date": "2 mai 2026"
-      },
-      "como-dejar-de-gestionar-clientes-con-excel": {
-        "title": "Comment arrêter de gérer vos clients avec Excel sans devenir fou",
-        "description": "Excel n'est pas mauvais. Le problème c'est de l'utiliser pour quelque chose pour lequel il n'a pas été conçu.",
-        "tag": "Gestion",
-        "date": "28 avril 2026"
-      },
-      "control-inventario-pymes-sin-complicaciones": {
-        "title": "Gestion des stocks pour PME : toujours savoir ce que vous avez",
-        "description": "Manquer de produit juste quand les ventes sont au plus haut est l'erreur la plus coûteuse d'une petite entreprise.",
-        "tag": "Inventaire",
-        "date": "22 avril 2026"
-      },
-      "software-gestion-pymes-que-vale-la-pena": {
-        "title": "Logiciel de gestion pour PME : quand ça vaut la peine de payer",
-        "description": "Toute entreprise n'a pas besoin d'un logiciel de gestion dès le premier jour.",
-        "tag": "Logiciel",
-        "date": "15 avril 2026"
-      },
-      "como-no-perder-clientes-por-falta-de-seguimiento": {
-        "title": "Comment arrêter de perdre des clients par manque de suivi",
-        "description": "80% des ventes se concluent après le cinquième contact. La plupart des PME n'arrivent pas au deuxième.",
-        "tag": "Ventes",
-        "date": "8 avril 2026"
-      },
-      "gestionar-proveedores-sin-llamadas-ni-emails": {
-        "title": "Comment gérer vos fournisseurs sans appels ni emails interminables",
-        "description": "Commander du stock par WhatsApp fonctionne jusqu'à un certain point. Quand l'entreprise grandit, ce système se casse.",
-        "tag": "Fournisseurs",
-        "date": "1 avril 2026"
-      }
-    }
+  "crm-para-pequenas-empresas-espana": {
+    "title": "CRM pour petites entreprises en Espagne : ce dont vous avez besoin",
+    "description": "La plupart des CRM sont conçus pour des équipes de 50 personnes. Si vous en avez 5, voici ce qu'il vous faut.",
+    "tag": "CRM",
+    "date": "2 mai 2026",
+    "content": "<h2>Pourquoi les CRM traditionnels ne conviennent pas aux petites entreprises ?</h2><p>La plupart des outils CRM du marché ont été créés pour des équipes de vente de 20, 50 ou 100 personnes. Ils ont des flux d'approbation, des hiérarchies d'accès, des modules de prévision trimestrielle — des choses qui pour une quincaillerie de 3 personnes ou un distributeur de 8 employés ne sont que du bruit. Le résultat est que le propriétaire de la PME installe l'outil, voit 47 options dans la barre latérale et revient à son Excel.</p><h2>Ce dont une petite entreprise a vraiment besoin d'un CRM</h2><ul><li>Voir en un coup d'œil à quel stade se trouve chaque client potentiel</li><li>Recevoir des alertes quand trop de temps passe sans contacter un lead</li><li>Sauvegarder l'historique des conversations pour ne pas se répéter</li><li>Connaître la probabilité de clore chaque opportunité</li></ul><p>Vous n'avez pas besoin d'un CRM avec de l'IA prédictive. Vous avez besoin de quelque chose que votre équipe utilise vraiment.</p><h2>L'erreur d'acheter par fonctionnalités</h2><p>Plus de fonctionnalités signifie plus de complexité. La bonne question n'est pas que peut faire ce CRM ? mais de quoi ai-je spécifiquement besoin ?</p><h2>Pipeline visuel : la seule métrique qui compte au début</h2><p>Voir tous vos leads sur un tableau Kanban — Nouveau, Contacté, En négociation, Gagné, Perdu — représente déjà un énorme bond en avant. Avec cette vue vous pouvez répondre en 10 secondes : combien de prospects ai-je en ce moment ? Lesquels n'ont eu aucune activité depuis deux semaines ?</p><h2>Quand est-il judicieux de payer pour un CRM ?</h2><p>Quand le coût de ne pas en avoir dépasse le prix de l'abonnement. Cela se produit généralement quand vous perdez des clients par manque de suivi, quand vous ne savez pas où en est chaque opportunité, ou quand vous intégrez quelqu'un de nouveau et il n'existe aucun registre de ce qui a été discuté. À ce moment-là, 29€ par mois est un investissement, pas une dépense.</p>"
+  },
+  "como-dejar-de-gestionar-clientes-con-excel": {
+    "title": "Comment arrêter de gérer vos clients avec Excel sans devenir fou",
+    "description": "Excel n'est pas mauvais. Le problème c'est de l'utiliser pour quelque chose pour lequel il n'a pas été conçu.",
+    "tag": "Gestion",
+    "date": "28 avril 2026",
+    "content": "<h2>Excel n'est pas le problème. La façon dont vous l'utilisez, si.</h2><p>Excel est un outil brillant pour ce pour quoi il a été conçu : analyse de données, feuilles de calcul, modèles financiers. Le problème vient quand vous en faites votre base de données clients, votre historique de conversations et votre système de suivi des ventes en même temps. Quand l'entreprise grandit, ça devient un monstre que personne ne peut maintenir.</p><h2>Les signes que vous avez dépassé ses limites</h2><ul><li>Vous avez plusieurs versions du même fichier et ne savez pas laquelle est à jour</li><li>Quelqu'un modifie quelque chose et écrase les données d'une autre personne</li><li>Vous passez 10 minutes à trouver l'historique de conversations d'un client</li><li>Vous ne pouvez pas voir en un coup d'œil combien de leads actifs vous avez</li><li>Chaque fois que quelqu'un de nouveau arrive, il faut lui expliquer le système de couleurs</li></ul><h2>Comment effectuer la transition sans perdre de données</h2><p>La plupart des CRM modernes permettent d'importer directement depuis Excel ou CSV. Exportez votre feuille de calcul, mappez les colonnes aux champs du CRM et en 15 minutes tous vos contacts sont migrés.</p><h2>Le changement culturel est plus difficile que le technique</h2><p>La clé est de commencer avec quelque chose de simple que n'importe qui peut apprendre en une demi-heure, et d'établir dès le premier jour que c'est le seul endroit où l'activité commerciale est enregistrée. Sans exceptions.</p>"
+  },
+  "control-inventario-pymes-sin-complicaciones": {
+    "title": "Gestion des stocks pour PME : toujours savoir ce que vous avez",
+    "description": "Manquer de produit juste quand les ventes sont au plus haut est l'erreur la plus coûteuse d'une petite entreprise.",
+    "tag": "Inventaire",
+    "date": "22 avril 2026",
+    "content": "<h2>L'erreur la plus coûteuse d'une petite entreprise</h2><p>Manquer de stock exactement quand vous vendez le plus. Beaucoup de PME gèrent encore leur inventaire à vue ou dans des feuilles de calcul mises à jour manuellement. Le problème n'est pas le manque de données. C'est le manque de visibilité en temps réel.</p><h2>Que signifie vraiment contrôler l'inventaire ?</h2><p>Il s'agit de savoir à tout moment, depuis n'importe quel appareil, combien d'unités vous avez de chaque produit, lesquels sont en dessous du minimum et quand vous avez reçu ou vendu chaque référence pour la dernière fois.</p><h2>Les trois niveaux de contrôle des stocks</h2><ul><li><strong>Niveau 1 — À vue :</strong> fonctionne jusqu'à ce que l'entreprise grandisse un peu.</li><li><strong>Niveau 2 — Excel manuel :</strong> fonctionne jusqu'à ce que quelqu'un oublie de le mettre à jour.</li><li><strong>Niveau 3 — Système automatisé :</strong> chaque mouvement est enregistré automatiquement. Visibilité en temps réel et alertes quand le stock descend sous le minimum.</li></ul><h2>Alertes de stock bas : votre première ligne de défense</h2><p>Configurer un niveau minimum pour chaque produit et recevoir une notification automatique quand vous l'atteignez vous donne un temps de réaction. Au lieu de découvrir qu'il n'y a plus de produit quand un client le demande, vous le découvrez des jours avant.</p><h2>Commandes automatiques aux fournisseurs</h2><p>Quand un produit atteint son minimum, le système génère automatiquement le bon de commande au fournisseur correspondant et le lui envoie par email. Sans que personne n'ait besoin de s'en souvenir.</p>"
+  },
+  "software-gestion-pymes-que-vale-la-pena": {
+    "title": "Logiciel de gestion pour PME : quand ça vaut la peine de payer",
+    "description": "Toute entreprise n'a pas besoin d'un logiciel de gestion dès le premier jour.",
+    "tag": "Logiciel",
+    "date": "15 avril 2026",
+    "content": "<h2>La bonne question n'est pas si vous avez besoin d'un logiciel, mais quand</h2><p>Il y a un point de bascule, différent pour chaque entreprise, où les processus manuels commencent à être le goulot d'étranglement de la croissance. Reconnaître ce moment est plus important que choisir le bon outil.</p><h2>Signes que vous avez atteint ce point</h2><ul><li>Vous passez plus de 2 heures par semaine à mettre à jour des feuilles de calcul</li><li>Vous avez perdu une vente parce que vous n'avez pas fait de suivi à temps</li><li>Vous ne savez pas en temps réel combien de stock vous avez d'un produit spécifique</li><li>Quand quelqu'un de l'équipe est absent, il y a des informations que seul lui connaît</li></ul><h2>Le vrai coût de ne pas avoir de système</h2><p>Beaucoup de propriétaires de PME calculent le coût du logiciel mais pas le coût de ne pas en avoir. Ce coût inclut le temps sur des tâches administratives répétitives, les ventes perdues, les erreurs d'inventaire et la friction d'agrandir une équipe sans processus documentés. Quand vous additionnez tout ça, 30 à 50€ par mois sont généralement rentables plus tôt qu'on ne le pense.</p><h2>Ce qu'il faut vérifier avant de s'abonner</h2><ul><li>Puis-je l'essayer gratuitement au moins 14 jours ?</li><li>Puis-je exporter mes données si je décide de partir ?</li><li>Le prix inclut-il le support ou juste l'outil ?</li><li>Combien de temps mon équipe a-t-elle besoin pour l'apprendre ?</li></ul>"
+  },
+  "como-no-perder-clientes-por-falta-de-seguimiento": {
+    "title": "Comment arrêter de perdre des clients par manque de suivi",
+    "description": "80% des ventes se concluent après le cinquième contact. La plupart des PME n'arrivent pas au deuxième.",
+    "tag": "Ventes",
+    "date": "8 avril 2026",
+    "content": "<h2>Le suivi est là où les ventes se gagnent ou se perdent</h2><p>La plupart des ventes se concluent après le cinquième contact. Et la plupart des commerciaux n'arrivent pas au deuxième. Pas parce qu'ils sont mauvais vendeurs, mais parce que sans système pour leur rappeler quand agir, le suivi se fait quand il y a du temps. Et il n'y en a jamais.</p><h2>Pourquoi les leads refroidissent si vite</h2><p>Un client potentiel intéressé aujourd'hui peut acheter chez votre concurrent la semaine prochaine. Pas parce que votre proposition est moins bonne, mais parce que l'autre est arrivé en premier avec un rappel au bon moment.</p><h2>Le système le plus simple qui fonctionne</h2><ul><li>Enregistrer chaque lead avec la date du dernier contact</li><li>Définir le temps maximum sans activité selon l'étape du pipeline</li><li>Recevoir des alertes automatiques quand ce temps est dépassé</li></ul><p>C'est ce que fait un CRM de base. Avec ça seulement, vous évitez que les leads tombent dans l'oubli.</p><h2>La différence entre suivi et spam</h2><p>Faire un suivi ne signifie pas appeler tous les deux jours. Cela signifie être présent au bon moment avec quelque chose de valeur : un article pertinent, une proposition mise à jour, un cas client similaire.</p><h2>Automatiser sans perdre la touche personnelle</h2><p>Les rappels automatiques vous disent quand agir, mais l'action reste la vôtre. Le système vous dit qu'il est temps de contacter ce client, vous n'avez pas parlé depuis 12 jours. Mais le message que vous écrivez est personnel. Cette combinaison fait la différence.</p>"
+  },
+  "gestionar-proveedores-sin-llamadas-ni-emails": {
+    "title": "Comment gérer vos fournisseurs sans appels ni emails interminables",
+    "description": "Commander du stock par WhatsApp fonctionne jusqu'à un certain point. Quand l'entreprise grandit, ce système se casse.",
+    "tag": "Fournisseurs",
+    "date": "1 avril 2026",
+    "content": "<h2>Le chaos de l'approvisionnement manuel</h2><p>Dans la plupart des petites entreprises, commander du stock à un fournisseur fonctionne ainsi : quelqu'un remarque qu'un produit est bas, le note mentalement, attend la commande hebdomadaire, appelle ou envoie un WhatsApp. Avec 5 références et un fournisseur, ça marche. Avec 200 références et 8 fournisseurs, ce système tombe constamment en panne.</p><h2>Les points de défaillance les plus courants</h2><ul><li>Commandes en double parce que deux membres de l'équipe ont passé la même commande</li><li>Commandes oubliées parce que la personne habituelle était en congé</li><li>Aucune traçabilité de ce qui a été commandé, quand, à quel fournisseur</li><li>Écarts entre commandé et reçu découverts trop tard</li></ul><h2>Ce qui change quand vous avez un système de commandes</h2><p>La différence principale est la traçabilité. Chaque commande a un statut clair : en attente, envoyée, confirmée, livrée. Cela élimine le besoin d'appeler pour demander si la commande est arrivée.</p><h2>Le portail fournisseurs</h2><p>Au lieu de recevoir des commandes par WhatsApp, email et appels mélangés, vos fournisseurs reçoivent un bon de commande formel avec toutes les informations nécessaires. Cela réduit les erreurs et améliore la relation commerciale.</p><h2>Automatisation des commandes</h2><p>Quand un produit tombe sous le stock minimum, le système génère automatiquement le bon de commande au fournisseur correspondant et le lui envoie. Sans que personne n'ait besoin de s'en souvenir. Cela n'élimine pas le contrôle humain — il le concentre sur ce qui compte.</p>"
+  }
+}
   }
 }
