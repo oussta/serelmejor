@@ -102,6 +102,7 @@ class OrderController {
             return;
         }
 
+        // Create the order
         $stmt = $this->db->prepare("
             INSERT INTO purchase_orders (business_id, supplier_id, product_id, quantity, note)
             VALUES (:business_id, :supplier_id, :product_id, :quantity, :note)
@@ -114,7 +115,31 @@ class OrderController {
             ':quantity'    => $quantity,
             ':note'        => $note,
         ]);
-        Response::json($stmt->fetch(), 201);
+        $order = $stmt->fetch();
+
+        // Decrease stock immediately when order is created
+        $stmt = $this->db->prepare("
+            UPDATE products
+            SET current_stock = current_stock - :quantity
+            WHERE id = :product_id
+        ");
+        $stmt->execute([
+            ':quantity'   => $quantity,
+            ':product_id' => $productId,
+        ]);
+
+        // Record stock movement
+        $stmt = $this->db->prepare("
+            INSERT INTO stock_movements (product_id, type, quantity, note)
+            VALUES (:product_id, 'sale', :quantity, :note)
+        ");
+        $stmt->execute([
+            ':product_id' => $productId,
+            ':quantity'   => $quantity,
+            ':note'       => 'Venta — Pedido #' . $order['id'],
+        ]);
+
+        Response::json($order, 201);
     }
 
     // PUT /orders/:id
@@ -157,16 +182,40 @@ class OrderController {
     // DELETE /orders/:id
     public function delete(int $id): void {
         $user = AuthMiddleware::authenticate();
+
+        // Get order details before deleting to restore stock
         $stmt = $this->db->prepare("
-            DELETE FROM purchase_orders
+            SELECT * FROM purchase_orders
             WHERE id = :id AND business_id = :business_id
-            RETURNING id
         ");
         $stmt->execute([':id' => $id, ':business_id' => $user['business_id']]);
-        if (!$stmt->fetch()) {
+        $order = $stmt->fetch();
+
+        if (!$order) {
             Response::json(['error' => 'Pedido no encontrado'], 404);
             return;
         }
+
+        // Only restore stock if order is still pending (not yet sent/confirmed/delivered)
+        if ($order['status'] === 'pending') {
+            $stmt = $this->db->prepare("
+                UPDATE products
+                SET current_stock = current_stock + :quantity
+                WHERE id = :product_id
+            ");
+            $stmt->execute([
+                ':quantity'   => $order['quantity'],
+                ':product_id' => $order['product_id'],
+            ]);
+        }
+
+        // Delete the order
+        $stmt = $this->db->prepare("
+            DELETE FROM purchase_orders
+            WHERE id = :id AND business_id = :business_id
+        ");
+        $stmt->execute([':id' => $id, ':business_id' => $user['business_id']]);
+
         Response::json(['success' => true, 'message' => 'Pedido eliminado']);
     }
 
@@ -255,6 +304,7 @@ class OrderController {
             return;
         }
 
+        // Mark as delivered — stock already decreased at order creation
         $stmt = $this->db->prepare("
             UPDATE purchase_orders SET status = 'delivered'
             WHERE id = :id
@@ -262,28 +312,6 @@ class OrderController {
         ");
         $stmt->execute([':id' => $id]);
         $updated = $stmt->fetch();
-
-        // Restock the product
-        $stmt = $this->db->prepare("
-            UPDATE products
-            SET current_stock = current_stock + :quantity
-            WHERE id = :product_id
-        ");
-        $stmt->execute([
-            ':quantity'   => $order['quantity'],
-            ':product_id' => $order['product_id'],
-        ]);
-
-        // Record stock movement
-        $stmt = $this->db->prepare("
-            INSERT INTO stock_movements (product_id, type, quantity, note)
-            VALUES (:product_id, 'restock', :quantity, :note)
-        ");
-        $stmt->execute([
-            ':product_id' => $order['product_id'],
-            ':quantity'   => $order['quantity'],
-            ':note'       => 'Restock automático — Pedido #' . $id,
-        ]);
 
         Response::json(['success' => true, 'order' => $updated]);
     }
