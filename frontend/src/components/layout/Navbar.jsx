@@ -29,12 +29,13 @@ function Navbar() {
     navigate('/login')
   }
 
- function switchLang(code) {
-  i18n.changeLanguage(code)
-  localStorage.setItem('lang', code)
-  setLangOpen(false)
-  setMenuOpen(false)
-}
+  function switchLang(code) {
+    i18n.changeLanguage(code)
+    localStorage.setItem('lang', code)
+    setLangOpen(false)
+    setMenuOpen(false)
+  }
+
   const langs = [
     { code: 'es', flag: '🇪🇸', label: 'Español' },
     { code: 'en', flag: '🇬🇧', label: 'English' },
@@ -53,9 +54,13 @@ function Navbar() {
     ...(user?.role === 'supplier' ? [
       { path: '/supplier', label: 'Mis Pedidos', icon: 'local_shipping' },
     ] : []),
+    // Team: visible to owner and admin
     ...(user?.role === 'owner' || user?.role === 'admin' ? [
+      { path: '/team', label: 'Equipo', icon: 'group' },
+    ] : []),
+    // Admin panel: ONLY for admin role
+    ...(user?.role === 'admin' ? [
       { path: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
-      { path: '/team',  label: 'Equipo', icon: 'group' },
     ] : []),
   ]
 
@@ -63,7 +68,6 @@ function Navbar() {
   const border    = isDark ? '#334155' : '#E2E8F0'
   const textColor = isDark ? '#94A3B8' : '#64748B'
   const textMain  = isDark ? '#F1F5F9' : '#0F172A'
-  const pageBg    = isDark ? '#0F172A' : '#F8FAFC'
 
   // ── MOBILE bottom tab bar ──
   if (isMobile) {
@@ -83,7 +87,7 @@ function Navbar() {
           <img
             src={logo}
             alt="Salesek"
-            style={{ height: '26px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
+            style={{ height: '32px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
             onClick={() => navigate('/dashboard')}
           />
 
@@ -127,7 +131,8 @@ function Navbar() {
             </button>
 
             {/* User avatar */}
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}
+            <div
+              style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '700', cursor: 'pointer' }}
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {user?.name?.charAt(0).toUpperCase()}
@@ -224,11 +229,11 @@ function Navbar() {
         boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         fontFamily: 'Plus Jakarta Sans, sans-serif',
       }}>
-        {/* Logo */}
+        {/* Logo — slightly bigger */}
         <img
           src={logo}
           alt="Salesek"
-          style={{ height: '28px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
+          style={{ height: '34px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
           onClick={() => navigate('/dashboard')}
         />
 

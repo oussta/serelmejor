@@ -38,6 +38,13 @@ function ProtectedRoute({ children }) {
   return <Layout>{children}</Layout>
 }
 
+function AdminRoute({ children }) {
+  const { token, user } = useAuth()
+  if (!token) return <Navigate to="/login" replace />
+  if (user?.role !== 'admin') return <Navigate to="/dashboard" replace />
+  return <Layout>{children}</Layout>
+}
+
 function AppRouter() {
   return (
     <Routes>
@@ -50,26 +57,28 @@ function AppRouter() {
       <Route path="/contact"     element={<Contact />} />
       <Route path="/blog"        element={<Blog />} />
       <Route path="/blog/:slug"  element={<BlogPost />} />
-
-
-        <Route path="/supplier" element={
-        <ProtectedRoute><SupplierPortal /></ProtectedRoute>
-        } />
+      <Route path="/como-funciona" element={<HowItWorks />} />
 
       {/* ── Auth ── */}
       <Route path="/login"    element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      {/* ── Admin only ── */}
       <Route path="/admin" element={
-      <ProtectedRoute><AdminPanel /></ProtectedRoute>
+        <AdminRoute><AdminPanel /></AdminRoute>
       } />
-    <Route path="/como-funciona" element={<HowItWorks />} />
+
+      {/* ── Supplier ── */}
+      <Route path="/supplier" element={
+        <ProtectedRoute><SupplierPortal /></ProtectedRoute>
+      } />
+
       {/* ── Protected ── */}
       <Route path="/pricing" element={
         <ProtectedRoute><Pricing /></ProtectedRoute>
       } />
       <Route path="/team" element={
-      <ProtectedRoute><Team /></ProtectedRoute>
+        <ProtectedRoute><Team /></ProtectedRoute>
       } />
       <Route path="/payment" element={
         <ProtectedRoute><Payment /></ProtectedRoute>
