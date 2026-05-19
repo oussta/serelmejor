@@ -36,6 +36,8 @@ $parts  = explode('/', $path);
 // Parse request body once
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
 // ── Auth ──────────────────────────────────────────────────
+
+
 if ($path === 'register' && $method === 'POST') {
     AuthController::register();
 }

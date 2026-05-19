@@ -72,18 +72,33 @@ class OrderController {
         }
 
         // Verify supplier belongs to business
-        $stmt = $this->db->prepare("SELECT id FROM suppliers WHERE id = :id AND business_id = :business_id");
+        $stmt = $this->db->prepare("
+            SELECT id FROM suppliers
+            WHERE id = :id AND business_id = :business_id
+        ");
         $stmt->execute([':id' => $supplierId, ':business_id' => $user['business_id']]);
         if (!$stmt->fetch()) {
             Response::json(['error' => 'Proveedor no encontrado'], 404);
             return;
         }
 
-        // Verify product belongs to business
-        $stmt = $this->db->prepare("SELECT id FROM products WHERE id = :id AND business_id = :business_id");
+        // Verify product belongs to business and get stock info
+        $stmt = $this->db->prepare("
+            SELECT id, current_stock, name FROM products
+            WHERE id = :id AND business_id = :business_id
+        ");
         $stmt->execute([':id' => $productId, ':business_id' => $user['business_id']]);
-        if (!$stmt->fetch()) {
+        $product = $stmt->fetch();
+        if (!$product) {
             Response::json(['error' => 'Producto no encontrado'], 404);
+            return;
+        }
+
+        // Validate quantity does not exceed current stock
+        if ($quantity > $product['current_stock']) {
+            Response::json([
+                'error' => "Cantidad máxima permitida: {$product['current_stock']} unidades (stock actual)"
+            ], 422);
             return;
         }
 
@@ -106,7 +121,10 @@ class OrderController {
     public function update(int $id, array $body): void {
         $user = AuthMiddleware::authenticate();
 
-        $stmt = $this->db->prepare("SELECT id FROM purchase_orders WHERE id = :id AND business_id = :business_id");
+        $stmt = $this->db->prepare("
+            SELECT id FROM purchase_orders
+            WHERE id = :id AND business_id = :business_id
+        ");
         $stmt->execute([':id' => $id, ':business_id' => $user['business_id']]);
         if (!$stmt->fetch()) {
             Response::json(['error' => 'Pedido no encontrado'], 404);
@@ -153,7 +171,6 @@ class OrderController {
     }
 
     // POST /orders/:id/send
-    // Sends the order email to the supplier via SendGrid
     public function send(int $id): void {
         $user = AuthMiddleware::authenticate();
 
@@ -180,10 +197,8 @@ class OrderController {
             return;
         }
 
-        // Send email via SendGrid
         $emailSent = $this->sendOrderEmail($order);
 
-        // Update status to sent
         $stmt = $this->db->prepare("
             UPDATE purchase_orders SET status = 'sent'
             WHERE id = :id
@@ -200,7 +215,6 @@ class OrderController {
     }
 
     // PUT /orders/:id/confirm
-    // Called by supplier to confirm the order
     public function confirm(int $id): void {
         $user = AuthMiddleware::authenticate();
 
@@ -224,7 +238,6 @@ class OrderController {
     }
 
     // PUT /orders/:id/deliver
-    // Mark order as delivered and restock the product
     public function deliver(int $id): void {
         $user = AuthMiddleware::authenticate();
 
@@ -242,7 +255,6 @@ class OrderController {
             return;
         }
 
-        // Update order status
         $stmt = $this->db->prepare("
             UPDATE purchase_orders SET status = 'delivered'
             WHERE id = :id
@@ -278,7 +290,7 @@ class OrderController {
 
     // ── Private: send order email via SendGrid ────────────
     private function sendOrderEmail(array $order): bool {
-        $apiKey  = $_ENV['SENDGRID_KEY']  ?? '';
+        $apiKey    = $_ENV['SENDGRID_KEY']  ?? '';
         $fromEmail = $_ENV['SENDGRID_FROM'] ?? '';
 
         if (!$apiKey || !$fromEmail) {
