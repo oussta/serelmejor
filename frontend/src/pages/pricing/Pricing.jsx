@@ -151,12 +151,8 @@ function Pricing() {
   }
 
   function openPayment(plan) {
-    setSelectedPlan(plan)
-    setShowPayment(true)
-    setCard({ name: '', number: '', expiry: '', cvv: '' })
-    setCardError('')
-    setSuccess(false)
-  }
+  navigate('/payment', { state: { planId: plan.id } })
+}
 
   const brand = selectedPlan ? getCardBrand(card.number) : 'generic'
 
