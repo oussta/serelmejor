@@ -44,6 +44,15 @@ function Navbar() {
 
   const currentLang = langs.find(l => l.code === i18n.language) || langs[0]
 
+  function getPlanLabel(plan) {
+    if (plan === 'full')      return 'Suite Completa'
+    if (plan === 'salesflow') return 'SalesFlow'
+    if (plan === 'stockflow') return 'StockFlow'
+    return null
+  }
+
+  const planLabel = user?.plan && user.plan !== 'pending' ? getPlanLabel(user.plan) : null
+
   const links = [
     { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
     ...(user?.role !== 'supplier' ? [
@@ -54,11 +63,9 @@ function Navbar() {
     ...(user?.role === 'supplier' ? [
       { path: '/supplier', label: 'Mis Pedidos', icon: 'local_shipping' },
     ] : []),
-    // Team: visible to owner and admin
     ...(user?.role === 'owner' || user?.role === 'admin' ? [
       { path: '/team', label: 'Equipo', icon: 'group' },
     ] : []),
-    // Admin panel: ONLY for admin role
     ...(user?.role === 'admin' ? [
       { path: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
     ] : []),
@@ -69,12 +76,11 @@ function Navbar() {
   const textColor = isDark ? '#94A3B8' : '#64748B'
   const textMain  = isDark ? '#F1F5F9' : '#0F172A'
 
-  // ── MOBILE bottom tab bar ──
+  // ── MOBILE ──────────────────────────────────────────────
   if (isMobile) {
     const bottomLinks = links.slice(0, 5)
     return (
       <>
-        {/* Mobile top header */}
         <nav style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 16px', height: '56px',
@@ -83,15 +89,12 @@ function Navbar() {
           boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
           fontFamily: 'Plus Jakarta Sans, sans-serif',
         }}>
-          {/* Logo */}
           <img
-            src={logo}
-            alt="Salesek"
+            src={logo} alt="Salesek"
             style={{ height: '32px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
             onClick={() => navigate('/dashboard')}
           />
 
-          {/* Right actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             {/* Language */}
             <div style={{ position: 'relative' }}>
@@ -140,7 +143,7 @@ function Navbar() {
           </div>
         </nav>
 
-        {/* User dropdown menu */}
+        {/* Mobile user dropdown */}
         {menuOpen && (
           <div style={{ position: 'fixed', top: '56px', right: '16px', background: navBg, border: `1px solid ${border}`, borderRadius: '16px', padding: '12px', boxShadow: '0 8px 32px rgba(0,0,0,0.2)', zIndex: 200, minWidth: '200px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 10px', marginBottom: '8px' }}>
@@ -150,6 +153,11 @@ function Navbar() {
               <div>
                 <p style={{ fontSize: '13px', fontWeight: '700', color: textMain }}>{user?.name}</p>
                 <p style={{ fontSize: '11px', color: textColor, textTransform: 'capitalize' }}>{user?.role}</p>
+                {planLabel && (
+                  <p style={{ fontSize: '9px', fontWeight: '700', color: '#7C3AED', background: 'rgba(124,58,237,0.08)', padding: '1px 6px', borderRadius: '99px', marginTop: '3px', display: 'inline-block' }}>
+                    {planLabel}
+                  </p>
+                )}
               </div>
             </div>
             <div style={{ height: '1px', background: border, marginBottom: '8px' }} />
@@ -171,7 +179,7 @@ function Navbar() {
           />
         )}
 
-        {/* ── BOTTOM TAB BAR ── */}
+        {/* Bottom tab bar */}
         <div style={{
           position: 'fixed', bottom: 0, left: 0, right: 0,
           height: '64px', background: navBg,
@@ -212,13 +220,12 @@ function Navbar() {
           })}
         </div>
 
-        {/* Bottom padding so content isn't hidden behind tab bar */}
         <div style={{ height: '64px' }} />
       </>
     )
   }
 
-  // ── DESKTOP ──
+  // ── DESKTOP ──────────────────────────────────────────────
   return (
     <>
       <nav style={{
@@ -229,15 +236,13 @@ function Navbar() {
         boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         fontFamily: 'Plus Jakarta Sans, sans-serif',
       }}>
-        {/* Logo — slightly bigger */}
         <img
-          src={logo}
-          alt="Salesek"
+          src={logo} alt="Salesek"
           style={{ height: '34px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
           onClick={() => navigate('/dashboard')}
         />
 
-        {/* Desktop links */}
+        {/* Nav links */}
         <div style={{ display: 'flex', gap: '2px' }}>
           {links.map(link => {
             const active = location.pathname === link.path
@@ -308,7 +313,7 @@ function Navbar() {
             </span>
           </button>
 
-          {/* User */}
+          {/* User info */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 10px', background: isDark ? '#0F172A' : '#F8FAFC', borderRadius: '10px', border: `1px solid ${border}` }}>
             <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '700' }}>
               {user?.name?.charAt(0).toUpperCase()}
@@ -316,6 +321,11 @@ function Navbar() {
             <div>
               <p style={{ fontSize: '12px', fontWeight: '600', color: textMain, lineHeight: 1 }}>{user?.name}</p>
               <p style={{ fontSize: '10px', color: textColor, textTransform: 'capitalize', lineHeight: 1, marginTop: '2px' }}>{user?.role}</p>
+              {planLabel && (
+                <p style={{ fontSize: '9px', fontWeight: '700', color: '#7C3AED', background: 'rgba(124,58,237,0.08)', padding: '1px 6px', borderRadius: '99px', marginTop: '3px', lineHeight: 1.4, display: 'inline-block' }}>
+                  {planLabel}
+                </p>
+              )}
             </div>
           </div>
 

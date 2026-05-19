@@ -72,7 +72,7 @@ function Register() {
       )
       saveAuth(data.token, data.user)
       localStorage.removeItem('register_form')
-      navigate('/pricing')
+      navigate('/payment', { state: { planId: 'full' } })
     } catch (err) {
       setServerError(err.message)
     } finally {

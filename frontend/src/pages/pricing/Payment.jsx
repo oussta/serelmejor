@@ -391,7 +391,7 @@ function Payment() {
                     {sending ? 'Procesando...' : `Pagar €${plan.price}/mes`}
                   </button>
                 </div>
-                <p style={{ fontSize: '11px', color: textSub, textAlign: 'center', marginTop: '12px' }}>🔒 Pago seguro — Proyecto DAW</p>
+               
               </div>
             )}
           </div>
