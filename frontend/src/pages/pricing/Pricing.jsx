@@ -1,234 +1,460 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { selectPlan } from '../../services/authService'
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '../../context/ThemeContext'
 import { useAuth } from '../../context/AuthContext'
+import { selectPlan } from '../../services/authService'
+
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 function Pricing() {
-  const [loading, setLoading]     = useState('')
-  const [error, setError]         = useState('')
+  const { t }                     = useTranslation()
+  const { theme }                 = useTheme()
   const { token, user, saveAuth } = useAuth()
   const navigate                  = useNavigate()
+  const isDark                    = theme === 'dark'
 
- async function handleSelectPlan(plan) {
-    try {
-      setLoading(plan)
-      setError('')
-      await selectPlan(plan, token)
-      saveAuth(token, { ...user, plan })
-      navigate('/dashboard')
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading('')
-    }
-  }
+  const [selectedPlan, setSelectedPlan] = useState(null)
+  const [showPayment,  setShowPayment]  = useState(false)
+  const [loading,      setLoading]      = useState(false)
+  const [error,        setError]        = useState('')
+  const [success,      setSuccess]      = useState(false)
+
+  // Card form state
+  const [card, setCard] = useState({
+    name:   '',
+    number: '',
+    expiry: '',
+    cvv:    '',
+  })
+  const [cardError,  setCardError]  = useState('')
+  const [cardFocus,  setCardFocus]  = useState('')
+
+  const bg      = isDark ? '#0F172A' : '#F8FAFC'
+  const cardBg  = isDark ? '#1E293B' : '#FFFFFF'
+  const border  = isDark ? '#334155' : '#E2E8F0'
+  const textMain= isDark ? '#F1F5F9' : '#0F172A'
+  const textSub = isDark ? '#94A3B8' : '#64748B'
+  const inputBg = isDark ? '#0F172A' : '#F8FAFC'
 
   const plans = [
     {
-      id: 'free',
-      name: 'Gratis',
-      price: '0',
-      color: 'var(--color-text-secondary)',
+      id:      'salesflow',
+      name:    'SalesFlow',
+      role:    t('pricing.plans.salesflow.name') || 'SalesFlow',
+      price:   29,
+      color:   '#2563EB',
+      gradient:'linear-gradient(135deg, #2563EB, #3B82F6)',
+      icon:    'contacts',
+      desc:    t('pricing.plans.salesflow.desc'),
+      badge:   null,
       features: [
-        'Hasta 5 leads',
-        'Hasta 10 productos',
-        'Sin IA',
-        'Sin notificaciones',
-        'Soporte por email',
-      ]
+        t('pricing.plans.salesflow.f1'),
+        t('pricing.plans.salesflow.f2'),
+        t('pricing.plans.salesflow.f3'),
+        t('pricing.plans.salesflow.f4'),
+        t('pricing.plans.salesflow.f5'),
+        t('pricing.plans.salesflow.f6'),
+      ],
     },
     {
-      id: 'salesflow',
-      name: 'SalesFlow CRM',
-      price: '29',
-      color: 'var(--color-brand)',
+      id:      'full',
+      name:    'Suite Completa',
+      role:    t('pricing.plans.suite.name') || 'Suite Completa',
+      price:   49,
+      color:   '#7C3AED',
+      gradient:'linear-gradient(135deg, #7C3AED, #2563EB)',
+      icon:    'rocket_launch',
+      desc:    t('pricing.plans.suite.desc'),
+      badge:   t('pricing.popular') || 'Más popular',
       features: [
-        'Leads ilimitados',
-        'Pipeline Kanban',
-        'Historial de mensajes',
-        'Recordatorios de seguimiento',
-        'Respuestas con IA',
-      ]
+        t('pricing.plans.suite.f1'),
+        t('pricing.plans.suite.f2'),
+        t('pricing.plans.suite.f3'),
+        t('pricing.plans.suite.f4'),
+        t('pricing.plans.suite.f5'),
+        t('pricing.plans.suite.f6'),
+        t('pricing.plans.suite.f7'),
+        t('pricing.plans.suite.f8'),
+      ],
     },
     {
-      id: 'full',
-      name: 'Full Suite',
-      price: '49',
-      color: 'var(--color-accent)',
-      badge: '⭐ Más popular',
+      id:      'stockflow',
+      name:    'StockFlow',
+      role:    t('pricing.plans.stockflow.name') || 'StockFlow',
+      price:   29,
+      color:   '#10B981',
+      gradient:'linear-gradient(135deg, #10B981, #0EA5E9)',
+      icon:    'inventory_2',
+      desc:    t('pricing.plans.stockflow.desc'),
+      badge:   null,
       features: [
-        'Todo de SalesFlow CRM',
-        'Todo de StockFlow',
-        'Bridge CRM ↔ Inventario',
-        'Notificaciones en tiempo real',
-        'Panel de administración',
-      ]
-    },
-    {
-      id: 'stockflow',
-      name: 'StockFlow',
-      price: '29',
-      color: 'var(--color-success)',
-      features: [
-        'Productos ilimitados',
-        'Control de stock',
-        'Alertas de stock bajo',
-        'Órdenes automáticas',
-        'Sugerencias con IA',
-      ]
+        t('pricing.plans.stockflow.f1'),
+        t('pricing.plans.stockflow.f2'),
+        t('pricing.plans.stockflow.f3'),
+        t('pricing.plans.stockflow.f4'),
+        t('pricing.plans.stockflow.f5'),
+        t('pricing.plans.stockflow.f6'),
+      ],
     },
   ]
 
+  function formatCardNumber(val) {
+    return val.replace(/\D/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ').trim()
+  }
+
+  function formatExpiry(val) {
+    const digits = val.replace(/\D/g, '').slice(0, 4)
+    if (digits.length >= 3) return digits.slice(0, 2) + '/' + digits.slice(2)
+    return digits
+  }
+
+  function getCardBrand(number) {
+    const n = number.replace(/\s/g, '')
+    if (n.startsWith('4')) return 'visa'
+    if (n.startsWith('5') || n.startsWith('2')) return 'mastercard'
+    if (n.startsWith('34') || n.startsWith('37')) return 'amex'
+    return 'generic'
+  }
+
+  function validateCard() {
+    if (!card.name.trim()) return 'El nombre en la tarjeta es obligatorio'
+    const digits = card.number.replace(/\s/g, '')
+    if (digits.length < 16) return 'Número de tarjeta inválido'
+    if (!card.expiry.match(/^\d{2}\/\d{2}$/)) return 'Fecha de expiración inválida (MM/AA)'
+    const [mm, yy] = card.expiry.split('/').map(Number)
+    if (mm < 1 || mm > 12) return 'Mes inválido'
+    const now = new Date()
+    const expDate = new Date(2000 + yy, mm - 1)
+    if (expDate < now) return 'La tarjeta ha expirado'
+    if (card.cvv.length < 3) return 'CVV inválido'
+    return null
+  }
+
+  async function handlePay() {
+    const err = validateCard()
+    if (err) { setCardError(err); return }
+    setCardError('')
+    setLoading(true)
+    try {
+      // Simulate payment processing then activate plan
+      await new Promise(r => setTimeout(r, 1800))
+      await selectPlan(selectedPlan.id, token)
+      saveAuth(token, { ...user, plan: selectedPlan.id })
+      setSuccess(true)
+      setTimeout(() => navigate('/dashboard'), 2000)
+    } catch (e) {
+      setCardError(e.message || 'Error procesando el pago')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function openPayment(plan) {
+    setSelectedPlan(plan)
+    setShowPayment(true)
+    setCard({ name: '', number: '', expiry: '', cvv: '' })
+    setCardError('')
+    setSuccess(false)
+  }
+
+  const brand = selectedPlan ? getCardBrand(card.number) : 'generic'
+
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h1 style={styles.title}>Salesek</h1>
-        <h2 style={styles.subtitle}>Elige tu plan</h2>
-        <p style={styles.trial}>✅ 14 días gratis — no se requiere tarjeta</p>
+    <div style={{ minHeight: '100vh', background: bg, padding: '40px 20px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.2)', borderRadius: '99px', padding: '6px 16px', marginBottom: '16px' }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#2563EB' }}>verified</span>
+          <span style={{ fontSize: '13px', fontWeight: '600', color: '#2563EB' }}>{t('pricing.badge') || 'Precios transparentes'}</span>
+        </div>
+        <h1 style={{ fontSize: '36px', fontWeight: '800', color: textMain, letterSpacing: '-1px', marginBottom: '12px' }}>
+          {t('pricing.title') || 'Elige lo que necesita tu negocio'}
+        </h1>
+        <p style={{ fontSize: '16px', color: textSub, maxWidth: '500px', margin: '0 auto 16px' }}>
+          {t('pricing.subtitle') || 'Sin letra pequeña. Sin sorpresas.'}
+        </p>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '20px', background: isDark ? '#1E293B' : 'white', border: `1px solid ${border}`, borderRadius: '99px', padding: '8px 20px' }}>
+          {[
+            { icon: 'check_circle', text: t('pricing.free') || '14 días gratis' },
+            { icon: 'credit_card_off', text: t('pricing.noCard') || 'Sin tarjeta' },
+            { icon: 'lock', text: 'SSL seguro' },
+          ].map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#10B981' }}>{item.icon}</span>
+              <span style={{ fontSize: '13px', color: textSub, fontWeight: '500' }}>{item.text}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {error && <p style={styles.error}>{error}</p>}
-
-      <div style={styles.grid}>
-        {plans.map(plan => (
-          <div key={plan.id} style={{
-            ...styles.card,
-            borderColor: plan.id === 'full' ? plan.color : 'var(--color-border)',
-            borderWidth: plan.id === 'full' ? '2px' : '1px',
-          }}>
+      {/* Plans grid */}
+      <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '1100px', margin: '0 auto' }}>
+        {plans.map((plan, idx) => (
+          <div
+            key={plan.id}
+            style={{
+              background: plan.badge ? plan.gradient : cardBg,
+              border: `2px solid ${plan.badge ? 'transparent' : border}`,
+              borderRadius: '24px',
+              padding: '32px',
+              width: '300px',
+              position: 'relative',
+              boxShadow: plan.badge ? `0 20px 60px rgba(124,58,237,0.3)` : '0 4px 16px rgba(0,0,0,0.06)',
+              transform: plan.badge ? 'scale(1.04)' : 'scale(1)',
+              transition: 'transform 0.2s, box-shadow 0.2s',
+              cursor: 'default',
+            }}
+            onMouseEnter={e => { if (!plan.badge) e.currentTarget.style.transform = 'translateY(-4px)' }}
+            onMouseLeave={e => { if (!plan.badge) e.currentTarget.style.transform = 'translateY(0)' }}
+          >
+            {/* Popular badge */}
             {plan.badge && (
-              <div style={{...styles.badge, background: plan.color}}>
-                {plan.badge}
+              <div style={{ position: 'absolute', top: '-14px', left: '50%', transform: 'translateX(-50%)', background: 'linear-gradient(135deg, #F59E0B, #F43F5E)', color: 'white', padding: '4px 18px', borderRadius: '99px', fontSize: '12px', fontWeight: '700', whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(245,158,11,0.4)' }}>
+                ⭐ {plan.badge}
               </div>
             )}
-            <h3 style={{...styles.planName, color: plan.color}}>{plan.name}</h3>
-            <div style={styles.priceRow}>
-              <span style={styles.price}>€{plan.price}</span>
-              <span style={styles.period}>/mes</span>
+
+            {/* Icon + name */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: plan.badge ? 'rgba(255,255,255,0.2)' : `${plan.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '22px', color: plan.badge ? 'white' : plan.color }}>{plan.icon}</span>
+              </div>
+              <div>
+                <p style={{ fontSize: '18px', fontWeight: '800', color: plan.badge ? 'white' : textMain }}>{plan.role}</p>
+                <p style={{ fontSize: '12px', color: plan.badge ? 'rgba(255,255,255,0.7)' : textSub }}>{plan.desc?.slice(0, 50)}...</p>
+              </div>
             </div>
-            <ul style={styles.features}>
-              {plan.features.map((f, i) => (
-                <li key={i} style={styles.feature}>✓ {f}</li>
-              ))}
-            </ul>
+
+            {/* Price */}
+            <div style={{ marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '48px', fontWeight: '800', color: plan.badge ? 'white' : textMain, letterSpacing: '-2px' }}>€{plan.price}</span>
+                <span style={{ fontSize: '14px', color: plan.badge ? 'rgba(255,255,255,0.7)' : textSub }}>{t('pricing.month') || '/mes'}</span>
+              </div>
+              <p style={{ fontSize: '12px', color: plan.badge ? 'rgba(255,255,255,0.6)' : textSub, marginTop: '4px' }}>Sin IVA · {t('pricing.noPermanence') || 'Sin permanencia'}</p>
+            </div>
+
+            {/* CTA button */}
             <button
-              style={{...styles.button, background: plan.color}}
-              onClick={() => handleSelectPlan(plan.id)}
-              disabled={loading === plan.id}
+              onClick={() => openPayment(plan)}
+              style={{
+                width: '100%', padding: '14px', marginBottom: '24px',
+                background: plan.badge ? 'white' : plan.gradient,
+                color: plan.badge ? plan.color : 'white',
+                border: 'none', borderRadius: '12px',
+                fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+                fontFamily: 'Plus Jakarta Sans, sans-serif',
+                boxShadow: plan.badge ? '0 4px 16px rgba(255,255,255,0.3)' : `0 4px 16px ${plan.color}40`,
+                transition: 'transform 0.15s, box-shadow 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)' }}
             >
-              {loading === plan.id ? 'Procesando...' : plan.id === 'free' ? 'Empezar gratis' : 'Elegir plan'}
+              {t('pricing.cta') || 'Empezar 14 días gratis'}
             </button>
+
+            {/* Features */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {plan.features.map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px', color: plan.badge ? 'rgba(255,255,255,0.8)' : plan.color, flexShrink: 0 }}>check_circle</span>
+                  <span style={{ fontSize: '13px', color: plan.badge ? 'rgba(255,255,255,0.85)' : textSub }}>{f}</span>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
+
+      {/* PAYMENT MODAL */}
+      {showPayment && selectedPlan && (
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: '20px', backdropFilter: 'blur(4px)' }}
+          onClick={() => !loading && setShowPayment(false)}
+        >
+          <div
+            style={{ background: cardBg, borderRadius: '24px', padding: '32px', width: '100%', maxWidth: '460px', boxShadow: '0 24px 80px rgba(0,0,0,0.4)', border: `1px solid ${border}`, animation: 'slideUp 0.3s ease' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {success ? (
+              // Success state
+              <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'linear-gradient(135deg, #10B981, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', boxShadow: '0 8px 32px rgba(16,185,129,0.4)' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '36px', color: 'white' }}>check</span>
+                </div>
+                <h3 style={{ fontSize: '22px', fontWeight: '800', color: textMain, marginBottom: '8px' }}>¡Pago completado! 🎉</h3>
+                <p style={{ fontSize: '14px', color: textSub }}>Redirigiendo al dashboard...</p>
+              </div>
+            ) : (
+              <>
+                {/* Modal header */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+                  <div>
+                    <h2 style={{ fontSize: '20px', fontWeight: '800', color: textMain }}>Pago seguro</h2>
+                    <p style={{ fontSize: '13px', color: textSub, marginTop: '2px' }}>Plan {selectedPlan.role} · €{selectedPlan.price}/mes</p>
+                  </div>
+                  <button onClick={() => setShowPayment(false)} style={{ width: '36px', height: '36px', borderRadius: '10px', border: `1px solid ${border}`, background: 'none', cursor: 'pointer', color: textSub, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>close</span>
+                  </button>
+                </div>
+
+                {/* Visual card preview */}
+                <div style={{
+                  background: selectedPlan.gradient,
+                  borderRadius: '16px', padding: '24px', marginBottom: '24px',
+                  position: 'relative', overflow: 'hidden',
+                  boxShadow: `0 8px 32px ${selectedPlan.color}40`,
+                }}>
+                  {/* Card decoration circles */}
+                  <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+                  <div style={{ position: 'absolute', bottom: '-30px', right: '40px', width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+                    <div style={{ width: '40px', height: '28px', background: 'rgba(255,255,255,0.9)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{ width: '24px', height: '16px', borderRadius: '2px', background: 'linear-gradient(135deg, #F59E0B, #F43F5E)' }} />
+                    </div>
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: 'rgba(255,255,255,0.8)', letterSpacing: '2px' }}>
+                      {brand === 'visa' ? 'VISA' : brand === 'mastercard' ? 'MC' : brand === 'amex' ? 'AMEX' : ''}
+                    </span>
+                  </div>
+
+                  <p style={{ fontSize: '18px', fontWeight: '600', color: 'white', letterSpacing: '3px', marginBottom: '16px', fontVariantNumeric: 'tabular-nums' }}>
+                    {card.number || '•••• •••• •••• ••••'}
+                  </p>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+                    <div>
+                      <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.6)', marginBottom: '2px', letterSpacing: '1px' }}>TITULAR</p>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: 'white' }}>{card.name || 'NOMBRE APELLIDO'}</p>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.6)', marginBottom: '2px', letterSpacing: '1px' }}>EXPIRA</p>
+                      <p style={{ fontSize: '13px', fontWeight: '600', color: 'white' }}>{card.expiry || 'MM/AA'}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Form fields */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
+                  {/* Name */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '600', color: textSub, display: 'block', marginBottom: '6px', letterSpacing: '0.5px' }}>NOMBRE EN LA TARJETA</label>
+                    <input
+                      value={card.name}
+                      onChange={e => setCard(c => ({ ...c, name: e.target.value.toUpperCase() }))}
+                      onFocus={() => setCardFocus('name')}
+                      onBlur={() => setCardFocus('')}
+                      placeholder="JUAN GARCIA"
+                      style={{ width: '100%', padding: '12px 14px', border: `2px solid ${cardFocus === 'name' ? selectedPlan.color : border}`, borderRadius: '10px', fontSize: '14px', fontFamily: 'Plus Jakarta Sans, sans-serif', background: inputBg, color: textMain, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s', letterSpacing: '1px' }}
+                    />
+                  </div>
+
+                  {/* Card number */}
+                  <div>
+                    <label style={{ fontSize: '12px', fontWeight: '600', color: textSub, display: 'block', marginBottom: '6px', letterSpacing: '0.5px' }}>NÚMERO DE TARJETA</label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        value={card.number}
+                        onChange={e => setCard(c => ({ ...c, number: formatCardNumber(e.target.value) }))}
+                        onFocus={() => setCardFocus('number')}
+                        onBlur={() => setCardFocus('')}
+                        placeholder="1234 5678 9012 3456"
+                        maxLength={19}
+                        style={{ width: '100%', padding: '12px 44px 12px 14px', border: `2px solid ${cardFocus === 'number' ? selectedPlan.color : border}`, borderRadius: '10px', fontSize: '16px', fontFamily: 'monospace', background: inputBg, color: textMain, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s', letterSpacing: '2px' }}
+                      />
+                      <span className="material-symbols-outlined" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontSize: '20px', color: textSub }}>credit_card</span>
+                    </div>
+                  </div>
+
+                  {/* Expiry + CVV */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '600', color: textSub, display: 'block', marginBottom: '6px', letterSpacing: '0.5px' }}>FECHA EXPIRACIÓN</label>
+                      <input
+                        value={card.expiry}
+                        onChange={e => setCard(c => ({ ...c, expiry: formatExpiry(e.target.value) }))}
+                        onFocus={() => setCardFocus('expiry')}
+                        onBlur={() => setCardFocus('')}
+                        placeholder="MM/AA"
+                        maxLength={5}
+                        style={{ width: '100%', padding: '12px 14px', border: `2px solid ${cardFocus === 'expiry' ? selectedPlan.color : border}`, borderRadius: '10px', fontSize: '15px', fontFamily: 'monospace', background: inputBg, color: textMain, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s', letterSpacing: '2px' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '12px', fontWeight: '600', color: textSub, display: 'block', marginBottom: '6px', letterSpacing: '0.5px' }}>CVV</label>
+                      <div style={{ position: 'relative' }}>
+                        <input
+                          value={card.cvv}
+                          onChange={e => setCard(c => ({ ...c, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
+                          onFocus={() => setCardFocus('cvv')}
+                          onBlur={() => setCardFocus('')}
+                          placeholder="•••"
+                          maxLength={4}
+                          type="password"
+                          style={{ width: '100%', padding: '12px 14px', border: `2px solid ${cardFocus === 'cvv' ? selectedPlan.color : border}`, borderRadius: '10px', fontSize: '15px', fontFamily: 'monospace', background: inputBg, color: textMain, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.15s' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Error */}
+                {cardError && (
+                  <div style={{ background: isDark ? 'rgba(244,63,94,0.1)' : '#FFF1F2', border: '1px solid rgba(244,63,94,0.3)', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', color: '#F43F5E', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>error</span>
+                    {cardError}
+                  </div>
+                )}
+
+                {/* Pay button */}
+                <button
+                  onClick={handlePay}
+                  disabled={loading}
+                  style={{
+                    width: '100%', padding: '16px',
+                    background: loading ? textSub : selectedPlan.gradient,
+                    color: 'white', border: 'none', borderRadius: '12px',
+                    fontSize: '16px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    boxShadow: loading ? 'none' : `0 8px 24px ${selectedPlan.color}50`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  {loading ? (
+                    <>
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px', animation: 'spin 1s linear infinite' }}>progress_activity</span>
+                      Procesando pago...
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>lock</span>
+                      Pagar €{selectedPlan.price}/mes
+                    </>
+                  )}
+                </button>
+
+                {/* Security note */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '12px' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '14px', color: textSub }}>shield</span>
+                  <p style={{ fontSize: '12px', color: textSub, textAlign: 'center' }}>
+                    Pago seguro SSL · Cancela cuando quieras
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes slideUp { from { opacity: 0; transform: translateY(24px) } to { opacity: 1; transform: translateY(0) } }
+        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+      `}</style>
     </div>
   )
-}
-
-const styles = {
-  container: {
-    minHeight: '100vh',
-    backgroundColor: 'var(--color-surface)',
-    padding: '40px 20px',
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: '40px',
-  },
-  title: {
-    fontSize: 'var(--text-2xl)',
-    color: 'var(--color-brand)',
-    marginBottom: '8px',
-  },
-  subtitle: {
-    fontSize: 'var(--text-xl)',
-    color: 'var(--color-text-primary)',
-    marginBottom: '12px',
-  },
-  trial: {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--color-success)',
-    fontWeight: '600',
-  },
-  error: {
-    background: 'var(--color-error-light)',
-    color: 'var(--color-error)',
-    padding: '12px',
-    borderRadius: 'var(--radius-sm)',
-    marginBottom: '16px',
-    textAlign: 'center',
-    maxWidth: '400px',
-    margin: '0 auto 20px',
-  },
-  grid: {
-    display: 'flex',
-    gap: '24px',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    maxWidth: '1100px',
-    margin: '0 auto',
-  },
-  card: {
-    background: 'var(--color-white)',
-    borderRadius: 'var(--radius-lg)',
-    border: '1px solid var(--color-border)',
-    padding: '32px',
-    width: '240px',
-    boxShadow: 'var(--shadow-sm)',
-    position: 'relative',
-  },
-  badge: {
-    position: 'absolute',
-    top: '-12px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    color: 'white',
-    padding: '4px 16px',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-xs)',
-    fontWeight: '600',
-    whiteSpace: 'nowrap',
-  },
-  planName: {
-    fontSize: 'var(--text-lg)',
-    fontWeight: '700',
-    marginBottom: '16px',
-    textAlign: 'center',
-  },
-  priceRow: {
-    textAlign: 'center',
-    marginBottom: '24px',
-  },
-  price: {
-    fontSize: 'var(--text-3xl)',
-    fontWeight: '700',
-    color: 'var(--color-text-primary)',
-  },
-  period: {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--color-text-muted)',
-  },
-  features: {
-    listStyle: 'none',
-    marginBottom: '24px',
-    padding: 0,
-  },
-  feature: {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--color-text-secondary)',
-    padding: '6px 0',
-    borderBottom: '1px solid var(--color-surface-2)',
-  },
-  button: {
-    width: '100%',
-    padding: '12px',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-sm)',
-    fontSize: 'var(--text-base)',
-    fontWeight: '600',
-    cursor: 'pointer',
-  }
 }
 
 export default Pricing
