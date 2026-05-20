@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
@@ -33,15 +33,15 @@ function formatExpiry(value) {
 }
 
 function Payment() {
-  const { user, token, saveAuth } = useAuth()
-  const { theme }                 = useTheme()
-  const { t }                     = useTranslation()
-  const navigate                  = useNavigate()
-  const location                  = useLocation()
-  const isDark                    = theme === 'dark'
+  const { user, token, clearAuth } = useAuth()
+  const { theme }                  = useTheme()
+  const { t }                      = useTranslation()
+  const navigate                   = useNavigate()
+  const location                   = useLocation()
+  const isDark                     = theme === 'dark'
 
   const [selectedPlan, setSelectedPlan] = useState(location.state?.planId || 'full')
-  const [step,         setStep]         = useState('plan') // plan | card | confirm | done
+  const [step,         setStep]         = useState('plan')
   const [cardData,     setCardData]     = useState({ number: '', name: '', expiry: '', cvv: '' })
   const [errors,       setErrors]       = useState({})
   const [sending,      setSending]      = useState(false)
@@ -70,11 +70,16 @@ function Payment() {
   function validateCard() {
     const e = {}
     const num = cardData.number.replace(/\s/g, '')
-    if (!num || num.length < 16)                                    e.number = 'Número de tarjeta inválido'
-    if (!cardData.name.trim())                                      e.name   = 'Nombre requerido'
+    if (!num || num.length < 16) e.number = 'Número de tarjeta inválido'
+    if (!cardData.name.trim())   e.name   = 'Nombre requerido'
     const [m, y] = cardData.expiry.split('/')
-    if (!m || !y || parseInt(m) > 12 || cardData.expiry.length < 5) e.expiry = 'Fecha inválida'
-    if (!cardData.cvv || cardData.cvv.length < 3)                   e.cvv    = 'CVV inválido'
+    if (!m || !y || parseInt(m) > 12 || cardData.expiry.length < 5) {
+      e.expiry = 'Fecha inválida'
+    } else {
+      const expDate = new Date(2000 + parseInt(y), parseInt(m) - 1)
+      if (expDate < new Date()) e.expiry = 'La tarjeta ha expirado'
+    }
+    if (!cardData.cvv || cardData.cvv.length < 3) e.cvv = 'CVV inválido'
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -85,7 +90,6 @@ function Payment() {
     try {
       await new Promise(r => setTimeout(r, 1800))
       await selectPlan(selectedPlan, token)
-      saveAuth(token, { ...user, plan: selectedPlan })
 
       const payment = {
         plan:      selectedPlan,
@@ -105,16 +109,16 @@ function Payment() {
           method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
           body: JSON.stringify({
-            name:    user?.name || 'Usuario',
+            name:    user?.name || '',
             email:   user?.email || '',
             company: plan.name,
-            message: `Confirmación de pago — Plan: ${plan.name} — ${plan.price}€/mes — Tarjeta: **** **** **** ${payment.cardLast4}`,
+            message: `Nueva suscripción — Plan: ${plan.name} — ${plan.price}€/mes — Tarjeta: **** **** **** ${payment.cardLast4}`,
           }),
         })
       } catch {}
 
       setStep('done')
-    } catch (e) {
+    } catch {
       setStep('done')
     } finally {
       setSending(false)
@@ -144,6 +148,7 @@ function Payment() {
           <p style={{ fontSize: '15px', color: textSub, marginBottom: '28px', lineHeight: '1.6' }}>
             Hemos enviado un email de confirmación a <strong style={{ color: textMain }}>{user?.email}</strong>
           </p>
+
           <div style={{ background: isDark ? '#0F172A' : '#F8FAFC', border: `1px solid ${border}`, borderRadius: '14px', padding: '20px', marginBottom: '28px', textAlign: 'left' }}>
             {[
               { label: 'Plan',    value: payment.planName },
@@ -160,12 +165,17 @@ function Payment() {
               </div>
             ))}
           </div>
+
+          {/* KEY CHANGE: clear auth and go to login */}
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => { clearAuth(); navigate('/login') }}
             style={{ width: '100%', padding: '14px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
-            Ir al dashboard →
+            Iniciar sesión para acceder →
           </button>
+          <p style={{ fontSize: '12px', color: textSub, marginTop: '10px' }}>
+            Inicia sesión con tu email y contraseña para acceder a la plataforma.
+          </p>
         </div>
       </div>
     )
@@ -320,14 +330,14 @@ function Payment() {
                 {/* Inputs */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Número de tarjeta</label>
-                    <input style={inputStyle('number')} value={cardData.number} onChange={e => handleCardChange('number', e.target.value)} placeholder="1234 5678 9012 3456" maxLength={19} onFocus={() => setFlipped(false)} />
-                    {errors.number && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.number}</p>}
-                  </div>
-                  <div>
                     <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Nombre del titular</label>
                     <input style={inputStyle('name')} value={cardData.name} onChange={e => handleCardChange('name', e.target.value.toUpperCase())} placeholder="NOMBRE APELLIDO" onFocus={() => setFlipped(false)} />
                     {errors.name && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.name}</p>}
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Número de tarjeta</label>
+                    <input style={inputStyle('number')} value={cardData.number} onChange={e => handleCardChange('number', e.target.value)} placeholder="1234 5678 9012 3456" maxLength={19} onFocus={() => setFlipped(false)} />
+                    {errors.number && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.number}</p>}
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <div>
@@ -343,7 +353,15 @@ function Payment() {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
+                {/* Cancel anytime notice */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: isDark ? 'rgba(16,185,129,0.08)' : '#ECFDF5', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '10px', margin: '20px 0 0' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#10B981', flexShrink: 0 }}>info</span>
+                  <p style={{ fontSize: '12px', color: '#10B981', fontWeight: '500' }}>
+                    Cancela cuando quieras. Sin permanencia ni penalizaciones.
+                  </p>
+                </div>
+
+                <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
                   <button onClick={() => setStep('plan')} style={{ flex: 1, padding: '13px', background: 'none', border: `1px solid ${border}`, borderRadius: '12px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: textSub, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Atrás</button>
                   <button onClick={() => { if (validateCard()) setStep('confirm') }} style={{ flex: 2, padding: '13px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Revisar pedido</button>
                 </div>
@@ -391,7 +409,10 @@ function Payment() {
                     {sending ? 'Procesando...' : `Pagar €${plan.price}/mes`}
                   </button>
                 </div>
-               
+
+                <p style={{ fontSize: '11px', color: textSub, textAlign: 'center', marginTop: '12px' }}>
+                  🔒 Cancela cuando quieras · Sin permanencia
+                </p>
               </div>
             )}
           </div>
@@ -430,7 +451,12 @@ function Payment() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {['14 días gratis incluidos', 'Sin permanencia', 'Cancela cuando quieras', 'Soporte prioritario'].map(feature => (
+              {[
+                '14 días gratis incluidos',
+                'Sin permanencia',
+                'Cancela cuando quieras',
+                'Soporte prioritario',
+              ].map(feature => (
                 <div key={feature} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: textSub }}>
                   <span className="material-symbols-outlined" style={{ fontSize: '14px', color: '#10B981' }}>check_circle</span>
                   {feature}
