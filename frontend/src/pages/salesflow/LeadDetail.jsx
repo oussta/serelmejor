@@ -196,20 +196,25 @@ function LeadDetail() {
     return () => window.removeEventListener('resize', h)
   }, [])
 
-  async function loadAll() {
-    try {
-      setLoading(true)
-      const [leads, msgs, fups] = await Promise.all([
-        getLeads(token), getMessages(id, token), getFollowups(id, token),
-      ])
-      const found = leads.find(l => l.id === parseInt(id))
-      if (!found) { navigate('/leads'); return }
-      setLead(found)
-      setMessages(Array.isArray(msgs) ? msgs : [])
-      setFollowups(Array.isArray(fups) ? fups : [])
-    } catch (err) { setError(err.message) }
-    finally { setLoading(false) }
+async function loadAll() {
+  try {
+    setLoading(true)
+    const [leadData, msgs, fups] = await Promise.all([
+      request('GET', `/leads/${id}`, null, token),
+      getMessages(id, token),
+      getFollowups(id, token),
+    ])
+    if (!leadData || leadData.error) { navigate('/leads'); return }
+    setLead(leadData)
+    setMessages(Array.isArray(msgs) ? msgs : [])
+    setFollowups(Array.isArray(fups) ? fups : [])
+  } catch (err) {
+    setError(err.message)
+    navigate('/leads')
+  } finally {
+    setLoading(false)
   }
+}
 
   async function loadProducts() {
     try {

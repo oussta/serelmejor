@@ -238,7 +238,7 @@ function Navbar() {
       }}>
         <img
           src={logo} alt="Salesek"
-          style={{ height: '34px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
+          style={{ height: '42px', width: 'auto', cursor: 'pointer', objectFit: 'contain' }}
           onClick={() => navigate('/dashboard')}
         />
 

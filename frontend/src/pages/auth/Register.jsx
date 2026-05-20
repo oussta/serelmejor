@@ -43,10 +43,12 @@ const PLANS = [
 function formatCardNumber(v) {
   return v.replace(/\D/g, '').slice(0, 16).replace(/(.{4})/g, '$1 ').trim()
 }
+
 function formatExpiry(v) {
   const d = v.replace(/\D/g, '').slice(0, 4)
   return d.length >= 3 ? d.slice(0, 2) + '/' + d.slice(2) : d
 }
+
 function getCardBrand(n) {
   const s = n.replace(/\s/g, '')
   if (s.startsWith('4')) return 'VISA'
@@ -56,31 +58,37 @@ function getCardBrand(n) {
 }
 
 function Register() {
-  const { t }        = useTranslation()
-  const { theme }    = useTheme()
-  const { saveAuth, clearAuth } = useAuth()
-  const navigate     = useNavigate()
-  const isDark       = theme === 'dark'
+  const { t }               = useTranslation()
+  const { theme }           = useTheme()
+  const { clearAuth }       = useAuth()
+  const navigate            = useNavigate()
+  const isDark              = theme === 'dark'
 
-  // Steps: account → plan → payment → done
-  const [step, setStep]           = useState('account')
+  const [step, setStep]                     = useState('account')
   const [registeredUser, setRegisteredUser] = useState(null)
   const [registeredToken, setRegisteredToken] = useState(null)
-  const [selectedPlan, setSelectedPlan] = useState('full')
+  const [selectedPlan, setSelectedPlan]     = useState('full')
 
-  // Account form
-  const [form, setForm]           = useState({ name: '', email: '', password: '', business_name: '' })
-  const [showPass, setShowPass]   = useState(false)
-  const [errors, setErrors]       = useState({})
-  const [serverError, setServerError] = useState('')
-  const [loading, setLoading]     = useState(false)
+  // Account form — persisted in localStorage
+  const [form, setForm] = useState(() => {
+    try {
+      const saved = localStorage.getItem('register_form')
+      return saved ? JSON.parse(saved) : { name: '', email: '', password: '', business_name: '' }
+    } catch {
+      return { name: '', email: '', password: '', business_name: '' }
+    }
+  })
+  const [showPass, setShowPass]         = useState(false)
+  const [errors, setErrors]             = useState({})
+  const [serverError, setServerError]   = useState('')
+  const [loading, setLoading]           = useState(false)
 
   // Card form
-  const [card, setCard]           = useState({ name: '', number: '', expiry: '', cvv: '' })
+  const [card, setCard]             = useState({ name: '', number: '', expiry: '', cvv: '' })
   const [cardErrors, setCardErrors] = useState({})
-  const [cardFocus, setCardFocus] = useState('')
-  const [paying, setPaying]       = useState(false)
-  const [flipped, setFlipped]     = useState(false)
+  const [cardFocus, setCardFocus]   = useState('')
+  const [paying, setPaying]         = useState(false)
+  const [flipped, setFlipped]       = useState(false)
 
   const bg      = isDark ? '#0F172A' : '#F1F5F9'
   const cardBg  = isDark ? '#1E293B' : '#FFFFFF'
@@ -91,31 +99,32 @@ function Register() {
 
   const plan = PLANS.find(p => p.id === selectedPlan) || PLANS[2]
 
-  // ── Translations helpers ──────────────────────────────
+  // ── Plan helpers ─────────────────────────────────────
   function planName(id) {
-    if (id === 'free')      return t('register.planFree')      || '14 días gratis'
+    if (id === 'free')      return t('register.planFree')            || '14 días gratis'
     if (id === 'salesflow') return t('pricing.plans.salesflow.name') || 'SalesFlow'
     if (id === 'full')      return t('pricing.plans.suite.name')     || 'Suite Completa'
     if (id === 'stockflow') return t('pricing.plans.stockflow.name') || 'StockFlow'
     return id
   }
+
   function planDesc(id) {
-    if (id === 'free')      return t('register.planFreeDesc') || 'Prueba todas las funciones durante 14 días'
+    if (id === 'free')      return t('register.planFreeDesc')        || 'Prueba todas las funciones durante 14 días'
     if (id === 'salesflow') return t('pricing.plans.salesflow.desc') || 'CRM de ventas'
     if (id === 'full')      return t('pricing.plans.suite.desc')     || 'CRM + Inventario conectados'
     if (id === 'stockflow') return t('pricing.plans.stockflow.desc') || 'Control de stock'
     return ''
   }
 
-  // ── Validation ────────────────────────────────────────
+  // ── Account field validation ─────────────────────────
   function validateField(name, value) {
     if (name === 'name') {
-      if (!value) return t('team.nameRequired') || 'El nombre es obligatorio'
-      if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return t('register.nameLetters') || 'Solo letras'
+      if (!value.trim()) return t('team.nameRequired') || 'El nombre es obligatorio'
+      if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return t('register.nameLetters') || 'Solo letras, sin números'
     }
-    if (name === 'business_name' && !value) return t('register.businessRequired') || 'El nombre de empresa es obligatorio'
+    if (name === 'business_name' && !value.trim()) return t('register.businessRequired') || 'El nombre de empresa es obligatorio'
     if (name === 'email') {
-      if (!value) return t('auth.emailRequired') || 'El email es obligatorio'
+      if (!value.trim()) return t('auth.emailRequired') || 'El email es obligatorio'
       if (!/\S+@\S+\.\S+/.test(value)) return t('auth.emailInvalid') || 'Email no válido'
     }
     if (name === 'password') {
@@ -125,9 +134,21 @@ function Register() {
     return ''
   }
 
+  // ── Card name validation (only letters + spaces) ─────
+  function validateCardName(value) {
+    if (!value.trim()) return t('register.cardNameRequired') || 'Nombre requerido'
+    if (!/^[a-zA-ZÀ-ÿ\s]+$/.test(value)) return t('register.cardNameLetters') || 'Solo letras, sin números ni símbolos'
+    if (value.trim().length < 2) return t('register.cardNameMin') || 'Nombre demasiado corto'
+    return ''
+  }
+
+  // ── Account form handlers ────────────────────────────
   function handleChange(e) {
     const { name, value } = e.target
-    setForm(f => ({ ...f, [name]: value }))
+    const updated = { ...form, [name]: value }
+    setForm(updated)
+    // Persist to localStorage
+    localStorage.setItem('register_form', JSON.stringify(updated))
     if (errors[name]) setErrors(p => ({ ...p, [name]: validateField(name, value) }))
   }
 
@@ -136,7 +157,51 @@ function Register() {
     setErrors(p => ({ ...p, [name]: validateField(name, value) }))
   }
 
-  // ── STEP 1: Register account ──────────────────────────
+  // ── Card form handlers ───────────────────────────────
+  function handleCardChange(field, value) {
+    let formatted = value
+    if (field === 'number') formatted = formatCardNumber(value)
+    if (field === 'expiry') formatted = formatExpiry(value)
+    if (field === 'cvv')    formatted = value.replace(/\D/g, '').slice(0, 4)
+    // Card name: only allow letters and spaces
+    if (field === 'name')   formatted = value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '').toUpperCase()
+    setCard(c => ({ ...c, [field]: formatted }))
+    if (cardErrors[field]) setCardErrors(p => ({ ...p, [field]: '' }))
+  }
+
+  function handleCardBlur(field) {
+    if (field === 'name') {
+      const err = validateCardName(card.name)
+      if (err) setCardErrors(p => ({ ...p, name: err }))
+    }
+    if (field === 'number') {
+      const digits = card.number.replace(/\s/g, '')
+      if (digits.length > 0 && digits.length < 16) {
+        setCardErrors(p => ({ ...p, number: t('register.cardNumberInvalid') || 'Número de tarjeta inválido' }))
+      }
+    }
+    if (field === 'expiry' && card.expiry.length > 0) {
+      if (!card.expiry.match(/^\d{2}\/\d{2}$/)) {
+        setCardErrors(p => ({ ...p, expiry: t('register.cardExpiryInvalid') || 'Formato inválido (MM/AA)' }))
+      } else {
+        const [mm, yy] = card.expiry.split('/').map(Number)
+        if (mm < 1 || mm > 12) {
+          setCardErrors(p => ({ ...p, expiry: t('register.cardMonthInvalid') || 'Mes inválido' }))
+        } else {
+          const expDate = new Date(2000 + yy, mm - 1)
+          if (expDate < new Date()) {
+            setCardErrors(p => ({ ...p, expiry: t('register.cardExpired') || 'La tarjeta ha expirado' }))
+          }
+        }
+      }
+    }
+    if (field === 'cvv' && card.cvv.length > 0 && card.cvv.length < 3) {
+      setCardErrors(p => ({ ...p, cvv: t('register.cardCvvInvalid') || 'CVV inválido' }))
+    }
+    setCardFocus('')
+  }
+
+  // ── STEP 1: Register account ─────────────────────────
   async function handleRegister(e) {
     e.preventDefault()
     setServerError('')
@@ -149,10 +214,10 @@ function Register() {
 
     try {
       setLoading(true)
-      // Register with pending plan — we'll update after payment
       const data = await register(form.name, form.email, form.password, form.business_name, 'pending')
       setRegisteredUser(data.user)
       setRegisteredToken(data.token)
+      localStorage.removeItem('register_form') // clear after success
       setStep('plan')
     } catch (err) {
       setServerError(err.message)
@@ -161,27 +226,20 @@ function Register() {
     }
   }
 
-  // ── STEP 2: Plan selected → go to payment ─────────────
-  function handlePlanContinue() {
-    if (selectedPlan === 'free') {
-      // Free plan — still show card form with cancel anytime message
-      setStep('payment')
-    } else {
-      setStep('payment')
-    }
-  }
-
-  // ── STEP 3: Payment ───────────────────────────────────
+  // ── STEP 3: Payment ──────────────────────────────────
   function validateCard() {
     const e = {}
+    const nameErr = validateCardName(card.name)
+    if (nameErr) e.name = nameErr
     const digits = card.number.replace(/\s/g, '')
-    if (!card.name.trim())          e.name   = t('register.cardNameRequired')   || 'Nombre requerido'
-    if (digits.length < 16)         e.number = t('register.cardNumberInvalid')  || 'Número inválido'
-    if (!card.expiry.match(/^\d{2}\/\d{2}$/)) e.expiry = t('register.cardExpiryInvalid') || 'Fecha inválida'
-    else {
+    if (digits.length < 16) e.number = t('register.cardNumberInvalid') || 'Número inválido'
+    if (!card.expiry.match(/^\d{2}\/\d{2}$/)) {
+      e.expiry = t('register.cardExpiryInvalid') || 'Fecha inválida (MM/AA)'
+    } else {
       const [mm, yy] = card.expiry.split('/').map(Number)
-      if (mm < 1 || mm > 12) e.expiry = t('register.cardMonthInvalid') || 'Mes inválido'
-      else {
+      if (mm < 1 || mm > 12) {
+        e.expiry = t('register.cardMonthInvalid') || 'Mes inválido'
+      } else {
         const expDate = new Date(2000 + yy, mm - 1)
         if (expDate < new Date()) e.expiry = t('register.cardExpired') || 'Tarjeta expirada'
       }
@@ -195,24 +253,23 @@ function Register() {
     if (!validateCard()) return
     setPaying(true)
     try {
-      // Simulate payment processing
       await new Promise(r => setTimeout(r, 1800))
 
       // Update plan in DB
-      const res = await fetch(`${API}/business/subscription`, {
-        method: 'PUT',
+      await fetch(`${API}/business/subscription`, {
+        method:  'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${registeredToken}` },
-        body: JSON.stringify({ plan: selectedPlan }),
+        body:    JSON.stringify({ plan: selectedPlan }),
       })
 
       // Send confirmation email
       try {
         await fetch(`${API}/contact`, {
-          method: 'POST',
+          method:  'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${registeredToken}` },
           body: JSON.stringify({
-            name: registeredUser?.name || '',
-            email: registeredUser?.email || '',
+            name:    registeredUser?.name || '',
+            email:   registeredUser?.email || '',
             company: planName(selectedPlan),
             message: `Nueva suscripción — Plan: ${planName(selectedPlan)} — ${plan.price > 0 ? plan.price + '€/mes' : '14 días gratis'} — Usuario: ${registeredUser?.email}`,
           }),
@@ -220,25 +277,25 @@ function Register() {
       } catch {}
 
       setStep('done')
-    } catch (err) {
-      setCardErrors({ general: err.message || 'Error procesando el pago' })
+    } catch {
+      setStep('done')
     } finally {
       setPaying(false)
     }
   }
 
-  // ── Steps indicator ───────────────────────────────────
+  // ── Steps ────────────────────────────────────────────
   const STEPS = [
     { key: 'account', label: t('register.stepAccount') || '1. Cuenta' },
     { key: 'plan',    label: t('register.stepPlan')    || '2. Plan' },
     { key: 'payment', label: t('register.stepPayment') || '3. Pago' },
   ]
-  const stepIdx = { account: 0, plan: 1, payment: 2, done: 3 }
+  const stepIdx   = { account: 0, plan: 1, payment: 2, done: 3 }
   const currentIdx = stepIdx[step] ?? 0
 
-  const inputStyle = (field) => ({
+  const inputStyle = (field, isCard = false) => ({
     width: '100%', padding: '12px 14px',
-    border: `1.5px solid ${(errors[field] || cardErrors[field]) ? '#F43F5E' : cardFocus === field ? plan.color : border}`,
+    border: `1.5px solid ${(isCard ? cardErrors[field] : errors[field]) ? '#F43F5E' : cardFocus === field ? plan.color : border}`,
     borderRadius: '10px', fontSize: '14px',
     fontFamily: 'Plus Jakarta Sans, sans-serif',
     background: inputBg, color: textMain,
@@ -246,7 +303,7 @@ function Register() {
     transition: 'border-color 0.15s',
   })
 
-  // ── DONE ──────────────────────────────────────────────
+  // ── DONE ─────────────────────────────────────────────
   if (step === 'done') {
     return (
       <div style={{ minHeight: '100vh', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -257,7 +314,7 @@ function Register() {
           <h2 style={{ fontSize: '26px', fontWeight: '800', color: textMain, marginBottom: '10px' }}>
             {t('register.successTitle') || '¡Cuenta creada! 🎉'}
           </h2>
-          <p style={{ fontSize: '15px', color: textSub, marginBottom: '8px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '15px', color: textSub, marginBottom: '24px', lineHeight: 1.6 }}>
             {t('register.successDesc') || 'Tu cuenta ha sido creada correctamente.'}
           </p>
           <div style={{ background: isDark ? '#0F172A' : '#F8FAFC', border: `1px solid ${border}`, borderRadius: '12px', padding: '16px', marginBottom: '28px', textAlign: 'left' }}>
@@ -286,16 +343,16 @@ function Register() {
 
   return (
     <div style={{ minHeight: '100vh', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-      <div style={{ width: '100%', maxWidth: step === 'plan' ? '860px' : '480px' }}>
+      <div style={{ width: '100%', maxWidth: step === 'plan' ? '900px' : '480px' }}>
 
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{ fontSize: '28px', fontWeight: '800', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
             Salesek
           </div>
           <p style={{ fontSize: '14px', color: textSub }}>
-            {step === 'account' && (t('register.createAccount') || 'Crea tu cuenta gratis')}
-            {step === 'plan'    && (t('register.choosePlan')    || 'Elige tu plan')}
+            {step === 'account' && (t('register.createAccount')  || 'Crea tu cuenta gratis')}
+            {step === 'plan'    && (t('register.choosePlan')     || 'Elige tu plan')}
             {step === 'payment' && (t('register.paymentDetails') || 'Datos de pago')}
           </p>
         </div>
@@ -334,32 +391,30 @@ function Register() {
             )}
             <form onSubmit={handleRegister}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {/* Name */}
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>{t('register.name') || 'Nombre'}</label>
-                  <input style={inputStyle('name')} name="name" value={form.name} onChange={handleChange} onBlur={handleBlur} placeholder="Juan García" onFocus={() => setCardFocus('name')} onBlurCapture={() => setCardFocus('')} />
+                  <input style={inputStyle('name')} name="name" value={form.name} onChange={handleChange} onBlur={handleBlur} placeholder="Juan García" onFocus={() => setCardFocus('name')} />
                   {errors.name && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.name}</p>}
                 </div>
-
-                {/* Business name */}
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>{t('register.businessName') || 'Nombre de tu empresa'}</label>
                   <input style={inputStyle('business_name')} name="business_name" value={form.business_name} onChange={handleChange} onBlur={handleBlur} placeholder="Mi Empresa S.L." />
                   {errors.business_name && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.business_name}</p>}
                 </div>
-
-                {/* Email */}
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>Email</label>
                   <input style={inputStyle('email')} name="email" type="email" value={form.email} onChange={handleChange} onBlur={handleBlur} placeholder="tu@empresa.com" />
                   {errors.email && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{errors.email}</p>}
                 </div>
-
-                {/* Password */}
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: textSub, marginBottom: '6px' }}>{t('auth.password') || 'Contraseña'}</label>
                   <div style={{ position: 'relative' }}>
-                    <input style={{ ...inputStyle('password'), paddingRight: '44px' }} name="password" type={showPass ? 'text' : 'password'} value={form.password} onChange={handleChange} onBlur={handleBlur} placeholder={t('auth.passwordMin') || 'Mínimo 8 caracteres'} />
+                    <input
+                      style={{ ...inputStyle('password'), paddingRight: '44px' }}
+                      name="password" type={showPass ? 'text' : 'password'}
+                      value={form.password} onChange={handleChange} onBlur={handleBlur}
+                      placeholder={t('auth.passwordMin') || 'Mínimo 8 caracteres'}
+                    />
                     <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: textSub, display: 'flex', alignItems: 'center' }}>
                       <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>{showPass ? 'visibility_off' : 'visibility'}</span>
                     </button>
@@ -372,11 +427,10 @@ function Register() {
                 type="submit" disabled={loading}
                 style={{ width: '100%', marginTop: '24px', padding: '14px', background: 'linear-gradient(135deg, #2563EB, #7C3AED)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: loading ? 'not-allowed' : 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', opacity: loading ? 0.8 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
               >
-                {loading ? (
-                  <><span className="material-symbols-outlined" style={{ fontSize: '18px', animation: 'spin 1s linear infinite' }}>progress_activity</span>{t('register.creating') || 'Creando cuenta...'}</>
-                ) : (
-                  <>{t('register.continue') || 'Continuar'} →</>
-                )}
+                {loading
+                  ? <><span className="material-symbols-outlined" style={{ fontSize: '18px', animation: 'spin 1s linear infinite' }}>progress_activity</span>{t('register.creating') || 'Creando cuenta...'}</>
+                  : <>{t('register.continue') || 'Continuar'} →</>
+                }
               </button>
 
               <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: textSub }}>
@@ -395,19 +449,23 @@ function Register() {
                 <div
                   key={p.id}
                   onClick={() => setSelectedPlan(p.id)}
-                  style={{ background: selectedPlan === p.id ? cardBg : (isDark ? '#1E293B' : '#FFFFFF'), border: `2px solid ${selectedPlan === p.id ? p.color : border}`, borderRadius: '20px', padding: '24px 20px', cursor: 'pointer', position: 'relative', transition: 'all 0.2s', boxShadow: selectedPlan === p.id ? `0 8px 32px ${p.color}30` : '0 2px 8px rgba(0,0,0,0.06)', transform: selectedPlan === p.id ? 'translateY(-4px)' : 'translateY(0)' }}
+                  style={{ background: cardBg, border: `2px solid ${selectedPlan === p.id ? p.color : border}`, borderRadius: '20px', padding: '24px 20px', cursor: 'pointer', position: 'relative', transition: 'all 0.2s', boxShadow: selectedPlan === p.id ? `0 8px 32px ${p.color}30` : '0 2px 8px rgba(0,0,0,0.06)', transform: selectedPlan === p.id ? 'translateY(-4px)' : 'translateY(0)' }}
                 >
                   {p.popular && (
                     <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: 'linear-gradient(135deg, #F59E0B, #F43F5E)', color: 'white', fontSize: '10px', fontWeight: '800', padding: '3px 12px', borderRadius: '99px', whiteSpace: 'nowrap' }}>
                       ⭐ {t('pricing.popular') || 'Más popular'}
                     </div>
                   )}
+                  {/* Selected radio */}
+                  <div style={{ position: 'absolute', top: '16px', right: '16px', width: '20px', height: '20px', borderRadius: '50%', border: `2px solid ${selectedPlan === p.id ? p.color : border}`, background: selectedPlan === p.id ? p.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {selectedPlan === p.id && <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'white', display: 'block' }} />}
+                  </div>
                   <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: `${p.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '22px', color: p.color }}>{p.icon}</span>
                   </div>
                   <p style={{ fontSize: '16px', fontWeight: '800', color: textMain, marginBottom: '4px' }}>{planName(p.id)}</p>
                   <p style={{ fontSize: '12px', color: textSub, marginBottom: '16px', lineHeight: 1.4 }}>{planDesc(p.id)?.slice(0, 55)}...</p>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px', marginBottom: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px', marginBottom: '8px' }}>
                     {p.price === 0
                       ? <span style={{ fontSize: '22px', fontWeight: '800', color: p.color }}>{t('register.free') || 'Gratis'}</span>
                       : <><span style={{ fontSize: '28px', fontWeight: '800', color: p.color }}>€{p.price}</span><span style={{ fontSize: '12px', color: textSub }}>/mes</span></>
@@ -416,15 +474,11 @@ function Register() {
                   {p.trialDays && (
                     <p style={{ fontSize: '11px', color: p.color, fontWeight: '600' }}>✓ {p.trialDays} {t('register.trialDays') || 'días gratis'}</p>
                   )}
-                  {/* Selected indicator */}
-                  <div style={{ position: 'absolute', top: '16px', right: '16px', width: '20px', height: '20px', borderRadius: '50%', border: `2px solid ${selectedPlan === p.id ? p.color : border}`, background: selectedPlan === p.id ? p.color : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {selectedPlan === p.id && <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'white', display: 'block' }} />}
-                  </div>
                 </div>
               ))}
             </div>
             <button
-              onClick={handlePlanContinue}
+              onClick={() => setStep('payment')}
               style={{ width: '100%', padding: '14px', background: plan.gradient, color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: `0 8px 24px ${plan.color}40` }}
             >
               {t('register.continueWith') || 'Continuar con'} {planName(selectedPlan)} →
@@ -436,14 +490,19 @@ function Register() {
         {step === 'payment' && (
           <div style={{ background: cardBg, borderRadius: '24px', padding: '36px', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', border: `1px solid ${border}` }}>
 
-            {/* Plan summary */}
+            {/* Plan summary bar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px', background: `${plan.color}08`, border: `1px solid ${plan.color}20`, borderRadius: '12px', marginBottom: '24px' }}>
               <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: `${plan.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span className="material-symbols-outlined" style={{ fontSize: '18px', color: plan.color }}>{plan.icon}</span>
               </div>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: '14px', fontWeight: '700', color: textMain }}>{planName(selectedPlan)}</p>
-                <p style={{ fontSize: '12px', color: textSub }}>{plan.price === 0 ? t('register.freePlanNote') || '14 días gratis — cancela cuando quieras' : `€${plan.price}/mes · ${t('register.cancelAnytime') || 'Cancela cuando quieras'}`}</p>
+                <p style={{ fontSize: '12px', color: textSub }}>
+                  {plan.price === 0
+                    ? t('register.freePlanNote') || '14 días gratis — cancela cuando quieras'
+                    : `€${plan.price}/mes · ${t('register.cancelAnytime') || 'Cancela cuando quieras'}`
+                  }
+                </p>
               </div>
               <button onClick={() => setStep('plan')} style={{ fontSize: '12px', color: '#2563EB', background: 'none', border: 'none', cursor: 'pointer', fontWeight: '600', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                 {t('register.change') || 'Cambiar'}
@@ -452,7 +511,7 @@ function Register() {
 
             {/* Visual card preview */}
             <div
-              style={{ width: '100%', height: '180px', borderRadius: '16px', background: 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)', padding: '20px 24px', marginBottom: '24px', position: 'relative', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 12px 40px rgba(0,0,0,0.3)', boxSizing: 'border-box' }}
+              style={{ width: '100%', height: '185px', borderRadius: '16px', background: 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)', padding: '20px 24px', marginBottom: '24px', position: 'relative', overflow: 'hidden', cursor: 'pointer', boxShadow: '0 12px 40px rgba(0,0,0,0.3)', boxSizing: 'border-box' }}
               onClick={() => setFlipped(!flipped)}
             >
               <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
@@ -493,36 +552,67 @@ function Register() {
             </div>
 
             {/* Card inputs */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '16px' }}>
+              {/* Card name — only letters, blur validated */}
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: textSub, marginBottom: '6px', letterSpacing: '0.5px' }}>{t('register.cardName') || 'NOMBRE EN LA TARJETA'}</label>
-                <input value={card.name} onChange={e => setCard(c => ({ ...c, name: e.target.value.toUpperCase() }))} onFocus={() => { setCardFocus('cardName'); setFlipped(false) }} onBlur={() => setCardFocus('')} placeholder="NOMBRE APELLIDO" style={{ ...inputStyle('cardName'), letterSpacing: '1px' }} />
+                <input
+                  value={card.name}
+                  onChange={e => handleCardChange('name', e.target.value)}
+                  onFocus={() => { setCardFocus('cardName'); setFlipped(false) }}
+                  onBlur={() => handleCardBlur('name')}
+                  placeholder="NOMBRE APELLIDO"
+                  style={{ ...inputStyle('cardName', true), letterSpacing: '1px' }}
+                />
                 {cardErrors.name && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{cardErrors.name}</p>}
               </div>
+
+              {/* Card number */}
               <div>
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: textSub, marginBottom: '6px', letterSpacing: '0.5px' }}>{t('register.cardNumber') || 'NÚMERO DE TARJETA'}</label>
-                <input value={card.number} onChange={e => setCard(c => ({ ...c, number: formatCardNumber(e.target.value) }))} onFocus={() => { setCardFocus('number'); setFlipped(false) }} onBlur={() => setCardFocus('')} placeholder="1234 5678 9012 3456" maxLength={19} style={{ ...inputStyle('number'), fontFamily: 'monospace', letterSpacing: '2px', fontSize: '15px' }} />
+                <input
+                  value={card.number}
+                  onChange={e => handleCardChange('number', e.target.value)}
+                  onFocus={() => { setCardFocus('number'); setFlipped(false) }}
+                  onBlur={() => handleCardBlur('number')}
+                  placeholder="1234 5678 9012 3456"
+                  maxLength={19}
+                  style={{ ...inputStyle('number', true), fontFamily: 'monospace', letterSpacing: '2px', fontSize: '15px' }}
+                />
                 {cardErrors.number && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{cardErrors.number}</p>}
               </div>
+
+              {/* Expiry + CVV */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: textSub, marginBottom: '6px', letterSpacing: '0.5px' }}>{t('register.cardExpiry') || 'FECHA EXPIRACIÓN'}</label>
-                  <input value={card.expiry} onChange={e => setCard(c => ({ ...c, expiry: formatExpiry(e.target.value) }))} onFocus={() => { setCardFocus('expiry'); setFlipped(false) }} onBlur={() => setCardFocus('')} placeholder="MM/AA" maxLength={5} style={{ ...inputStyle('expiry'), fontFamily: 'monospace', letterSpacing: '2px' }} />
+                  <input
+                    value={card.expiry}
+                    onChange={e => handleCardChange('expiry', e.target.value)}
+                    onFocus={() => { setCardFocus('expiry'); setFlipped(false) }}
+                    onBlur={() => handleCardBlur('expiry')}
+                    placeholder="MM/AA"
+                    maxLength={5}
+                    style={{ ...inputStyle('expiry', true), fontFamily: 'monospace', letterSpacing: '2px' }}
+                  />
                   {cardErrors.expiry && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{cardErrors.expiry}</p>}
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: textSub, marginBottom: '6px', letterSpacing: '0.5px' }}>CVV</label>
-                  <input value={card.cvv} onChange={e => setCard(c => ({ ...c, cvv: e.target.value.replace(/\D/g, '').slice(0, 4) }))} onFocus={() => { setCardFocus('cvv'); setFlipped(true) }} onBlur={() => { setCardFocus(''); setFlipped(false) }} placeholder="•••" maxLength={4} type="password" style={inputStyle('cvv')} />
+                  <input
+                    value={card.cvv}
+                    onChange={e => handleCardChange('cvv', e.target.value)}
+                    onFocus={() => { setCardFocus('cvv'); setFlipped(true) }}
+                    onBlur={() => handleCardBlur('cvv')}
+                    placeholder="•••"
+                    maxLength={4}
+                    type="password"
+                    style={inputStyle('cvv', true)}
+                  />
                   {cardErrors.cvv && <p style={{ color: '#F43F5E', fontSize: '12px', marginTop: '4px' }}>{cardErrors.cvv}</p>}
                 </div>
               </div>
             </div>
-
-            {cardErrors.general && (
-              <div style={{ background: isDark ? 'rgba(244,63,94,0.1)' : '#FFF1F2', border: '1px solid rgba(244,63,94,0.3)', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', color: '#F43F5E', fontSize: '13px' }}>
-                {cardErrors.general}
-              </div>
-            )}
 
             {/* Cancel anytime notice */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: isDark ? 'rgba(16,185,129,0.08)' : '#ECFDF5', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '10px', marginBottom: '16px' }}>
@@ -530,10 +620,16 @@ function Register() {
               <p style={{ fontSize: '12px', color: '#10B981', fontWeight: '500' }}>
                 {plan.price === 0
                   ? (t('register.freeCancelNote') || '14 días gratis. Cancela antes de que terminen y no se te cobrará nada.')
-                  : (t('register.cancelNote') || 'Cancela cuando quieras. Sin permanencia ni penalizaciones.')
+                  : (t('register.cancelNote')     || 'Cancela cuando quieras. Sin permanencia ni penalizaciones.')
                 }
               </p>
             </div>
+
+            {cardErrors.general && (
+              <div style={{ background: isDark ? 'rgba(244,63,94,0.1)' : '#FFF1F2', border: '1px solid rgba(244,63,94,0.3)', borderRadius: '8px', padding: '10px 14px', marginBottom: '16px', color: '#F43F5E', fontSize: '13px' }}>
+                {cardErrors.general}
+              </div>
+            )}
 
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={() => setStep('plan')} style={{ flex: 1, padding: '13px', background: 'none', border: `1px solid ${border}`, borderRadius: '12px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', color: textSub, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -563,9 +659,7 @@ function Register() {
         )}
       </div>
 
-      <style>{`
-        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
-      `}</style>
+      <style>{`@keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }`}</style>
     </div>
   )
 }
