@@ -209,8 +209,9 @@ async function loadAll() {
     setMessages(Array.isArray(msgs) ? msgs : [])
     setFollowups(Array.isArray(fups) ? fups : [])
   } catch (err) {
+    console.error('LeadDetail error:', err) // ← ADD THIS
     setError(err.message)
-    navigate('/leads')
+    // REMOVE navigate('/leads') temporarily
   } finally {
     setLoading(false)
   }
