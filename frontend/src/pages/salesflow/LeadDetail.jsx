@@ -199,19 +199,23 @@ function LeadDetail() {
 async function loadAll() {
   try {
     setLoading(true)
-    const [leadData, msgs, fups] = await Promise.all([
-      request('GET', `/leads/${id}`, null, token),
-      getMessages(id, token),
-      getFollowups(id, token),
-    ])
+    
+    const leadData = await request('GET', `/leads/${id}`, null, token)
+    console.log('lead ok:', leadData)
+    
+    const msgs = await getMessages(id, token)
+    console.log('messages ok:', msgs)
+    
+    const fups = await getFollowups(id, token)
+    console.log('followups ok:', fups)
+    
     if (!leadData || leadData.error) { navigate('/leads'); return }
     setLead(leadData)
     setMessages(Array.isArray(msgs) ? msgs : [])
     setFollowups(Array.isArray(fups) ? fups : [])
   } catch (err) {
-    console.error('LeadDetail error:', err) // ← ADD THIS
+    console.error('FAILED AT:', err.message)
     setError(err.message)
-    // REMOVE navigate('/leads') temporarily
   } finally {
     setLoading(false)
   }
