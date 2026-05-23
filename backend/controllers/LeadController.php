@@ -61,17 +61,25 @@ class LeadController {
 
     // GET /leads/:id
     public static function getOne($id) {
-        $user = AuthMiddleware::authenticate();
-        $pdo  = getDB();
+    $user = AuthMiddleware::authenticate();
+    $pdo  = getDB();
+    
+    // TEMP DEBUG
+    Response::json([
+        'debug_user' => $user,
+        'debug_id' => $id,
+        'debug_business_id' => $user['business_id'] ?? 'NOT SET'
+    ]);
+    return;
 
-        $stmt = $pdo->prepare("SELECT * FROM leads WHERE id = ? AND business_id = ?");
-        $stmt->execute([$id, $user['business_id']]);
-        $lead = $stmt->fetch();
+    $stmt = $pdo->prepare("SELECT * FROM leads WHERE id = ? AND business_id = ?");
+    $stmt->execute([$id, $user['business_id']]);
+    $lead = $stmt->fetch();
 
-        if (!$lead) Response::error("Lead not found", 404);
+    if (!$lead) Response::error("Lead not found", 404);
 
-        Response::json($lead);
-    }
+    Response::json($lead);
+}
 
     // PUT /leads/:id
     public static function update($id) {
