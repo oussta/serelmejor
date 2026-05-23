@@ -1,15 +1,102 @@
 {
-  "nav": {
-    "home": "Home",
-    "features": "Features",
-    "pricing": "Pricing",
-    "about": "About",
-    "contact": "Contact",
-    "blog": "Blog",
-    "login": "Log in",
-    "register": "Get started free",
-    "cta": "Get started free"
+ "nav": {
+  "home": "Home",
+  "features": "Features",
+  "howItWorks": "How it works",
+  "pricing": "Pricing",
+  "about": "About",
+  "contact": "Contact",
+  "blog": "Blog",
+  "login": "Log in",
+  "register": "Get started free",
+  "cta": "Get started free"
+},
+"howItWorks": {
+  "badge": "How it works?",
+  "title": "Everything your business needs,",
+  "titleAccent": "explained",
+  "subtitle": "Salesek connects your sales CRM with your inventory. Two modules, one platform, zero spreadsheets.",
+  "tryFree": "Try free for 14 days",
+  "talkToUs": "Talk to us",
+  "modulesTitle": "3 modules, one goal",
+  "modulesSubtitle": "Each part of Salesek solves a real problem for small businesses.",
+  "stepsTitle": "How does each module work?",
+  "stepsSubtitle": "Select a module to see the step-by-step flow",
+  "flowTitle": "The complete Salesek flow",
+  "flowSubtitle": "How the platform works from start to finish",
+  "forWhoTitle": "Who is Salesek for?",
+  "forWhoSubtitle": "Designed for businesses of 1 to 10 people",
+  "faqTitle": "Frequently asked questions",
+  "faqSubtitle": "We answer everything before you start",
+  "contactTitle": "Have a question?",
+  "contactDesc": "We're here to help. Our team responds in less than 24 hours. We're not bots — we're real people who understand your business.",
+  "contactBtn": "Contact us →",
+  "ctaTitle": "Start today",
+  "ctaDesc": "14 days free. No card. No commitment. Set up your account in 5 minutes.",
+  "ctaRegister": "Create free account",
+  "ctaPricing": "See pricing",
+  "salesflow": {
+    "title": "Manage your sales without losing any client",
+    "desc": "SalesFlow is your visual sales pipeline. See the status of each lead at a glance and never miss a follow-up.",
+    "s1t": "Add a lead", "s1d": "Create the contact in 10 seconds with name, description and close probability.",
+    "s2t": "Move it through the pipeline", "s2d": "Drag from New → Contacted → Negotiating → Won. All visual.",
+    "s3t": "Message history", "s3d": "Every conversation is recorded in the client's profile.",
+    "s4t": "AI generates the reply", "s4d": "Press the AI button and get a professional draft tailored to the lead.",
+    "s5t": "Automatic reminders", "s5d": "The system alerts you when a lead has been inactive too long.",
+    "s6t": "Real-time statistics", "s6d": "See your conversion rate, pipeline value and which stage fails."
   },
+  "stockflow": {
+    "title": "Full inventory control without spreadsheets",
+    "desc": "StockFlow tells you exactly how much you have in stock and acts automatically when it drops below the minimum.",
+    "s1t": "Add your products", "s1d": "Create products with category, initial stock and minimum level.",
+    "s2t": "Automatic alerts", "s2d": "When stock drops below minimum you get an instant notification.",
+    "s3t": "Register sales", "s3d": "Log each sale and stock deducts automatically.",
+    "s4t": "Restock fast", "s4d": "One click to register a restock with note and automatic date.",
+    "s5t": "AI suggests quantities", "s5d": "AI analyzes your 30-day sales and recommends how much to order.",
+    "s6t": "Automatic order", "s6d": "Generate and send the supplier order by email from the app."
+  },
+  "bridge": {
+    "title": "CRM and inventory connected — The magic of Salesek",
+    "desc": "When you close a sale in the CRM, inventory updates automatically. No manual steps, no errors.",
+    "s1t": "You close a sale", "s1d": "Mark a lead as Won in SalesFlow CRM.",
+    "s2t": "The Bridge acts", "s2d": "The system detects the close and deducts stock automatically.",
+    "s3t": "Checks the minimum", "s3d": "If stock falls below minimum, generates a supplier order.",
+    "s4t": "Order to supplier", "s4d": "Automatic email to supplier with the purchase order.",
+    "s5t": "Whole team notified", "s5d": "Real-time WebSocket notifications for your entire team.",
+    "s6t": "Unified report", "s6d": "See sales and inventory in one single dashboard."
+  },
+  "mods": {
+    "salesflow": "Visual sales pipeline. Manage leads, messages, reminders and statistics. Never lose a client from lack of follow-up.",
+    "stockflow": "Full inventory control. Low stock alerts, movements, automatic supplier orders and AI suggestions.",
+    "bridge": "When you close a sale, inventory updates automatically. CRM and inventory connected in real time. No manual work."
+  },
+  "flow": {
+    "f1l": "New lead arrives", "f1s": "You add it to the CRM",
+    "f2l": "Advances in pipeline", "f2s": "Contacted → Negotiating",
+    "f3l": "You close the sale", "f3s": "Status = Won",
+    "f4l": "The Bridge acts", "f4s": "Stock deducted automatically",
+    "f5l": "Automatic order", "f5s": "Email to supplier",
+    "f6l": "Business grows", "f6s": "No manual work"
+  },
+  "who": {
+    "w1t": "Shops & retail", "w1d": "Stock and client control in one place",
+    "w2t": "Workshops & services", "w2d": "Manage parts, clients and quotes",
+    "w3t": "Distributors", "w3d": "Mass inventory and automatic orders",
+    "w4t": "Sales teams", "w4d": "Visual pipeline and effortless follow-ups",
+    "w5t": "Pharmacies", "w5d": "Critical stock with instant alerts",
+    "w6t": "Hospitality", "w6d": "Ingredients and suppliers under control",
+    "w7t": "Construction", "w7d": "Materials and corporate clients",
+    "w8t": "Academies", "w8d": "Student CRM and commercial follow-up"
+  },
+  "faq": {
+    "q1": "Do I need to install anything?", "a1": "No. Salesek is 100% web. Works in any browser, mobile, tablet and PC. No installations.",
+    "q2": "Can I use just one module?", "a2": "Yes. SalesFlow and StockFlow are contracted separately at €29/month each. The Full Suite includes both at €49/month.",
+    "q3": "How does the AI work?", "a3": "We use the Claude API (Anthropic) to generate lead replies and order suggestions based on your sales history.",
+    "q4": "Is my data secure?", "a4": "Yes. JWT + bcrypt for authentication, HTTPS at all times, and PostgreSQL database in the cloud with daily backups.",
+    "q5": "Can I cancel anytime?", "a5": "Of course. No commitment, no penalties. Cancel in one click from your profile.",
+    "q6": "Is there support if I have problems?", "a6": "Yes. You can contact us anytime from the contact page. We respond in less than 24h."
+  }
+},
   "hero": {
     "badge": "CRM + Inventory for small businesses",
     "title": "Stop losing clients and money from poor management",

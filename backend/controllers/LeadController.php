@@ -9,7 +9,7 @@ class LeadController {
 
     // GET /leads
     public static function getAll() {
-        $user   = AuthMiddleware::handle();
+        $user   = AuthMiddleware::authenticate();
         $pdo    = getDB();
         $status = $_GET['status'] ?? null;
 
@@ -26,14 +26,14 @@ class LeadController {
 
     // POST /leads
     public static function create() {
-        $user  = AuthMiddleware::handle();
+        $user  = AuthMiddleware::authenticate();
         $data  = json_decode(file_get_contents("php://input"), true);
         $error = Validator::required($data, ['client_name']);
         if ($error) Response::error($error, 400);
 
-        $client_name      = Validator::sanitize($data['client_name']);
-        $inquiry_text     = isset($data['inquiry_text']) ? Validator::sanitize($data['inquiry_text']) : null;
-        $close_probability = isset($data['close_probability']) ? (int)$data['close_probability'] : 0;
+        $client_name       = Validator::sanitize($data['client_name']);
+        $inquiry_text      = isset($data['inquiry_text'])      ? Validator::sanitize($data['inquiry_text']) : null;
+        $close_probability = isset($data['close_probability']) ? (int)$data['close_probability']           : 0;
 
         $pdo  = getDB();
         $stmt = $pdo->prepare("INSERT INTO leads (business_id, client_name, inquiry_text, close_probability) VALUES (?, ?, ?, ?) RETURNING *");
@@ -44,7 +44,7 @@ class LeadController {
 
     // GET /leads/stats
     public static function stats() {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $pdo  = getDB();
 
         $stmt = $pdo->prepare("SELECT status, COUNT(*) as count FROM leads WHERE business_id = ? GROUP BY status");
@@ -61,7 +61,7 @@ class LeadController {
 
     // GET /leads/:id
     public static function getOne($id) {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $pdo  = getDB();
 
         $stmt = $pdo->prepare("SELECT * FROM leads WHERE id = ? AND business_id = ?");
@@ -75,18 +75,17 @@ class LeadController {
 
     // PUT /leads/:id
     public static function update($id) {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $data = json_decode(file_get_contents("php://input"), true);
         $pdo  = getDB();
 
-        // Check lead belongs to business
         $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
         $stmt->execute([$id, $user['business_id']]);
         if (!$stmt->fetch()) Response::error("Lead not found", 404);
 
-        $client_name       = isset($data['client_name'])       ? Validator::sanitize($data['client_name'])       : null;
-        $inquiry_text      = isset($data['inquiry_text'])      ? Validator::sanitize($data['inquiry_text'])      : null;
-        $close_probability = isset($data['close_probability']) ? (int)$data['close_probability']                : null;
+        $client_name       = isset($data['client_name'])       ? Validator::sanitize($data['client_name'])  : null;
+        $inquiry_text      = isset($data['inquiry_text'])      ? Validator::sanitize($data['inquiry_text']) : null;
+        $close_probability = isset($data['close_probability']) ? (int)$data['close_probability']            : null;
 
         $stmt = $pdo->prepare("UPDATE leads SET
             client_name       = COALESCE(?, client_name),
@@ -100,7 +99,7 @@ class LeadController {
 
     // DELETE /leads/:id
     public static function delete($id) {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $pdo  = getDB();
 
         $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
@@ -113,59 +112,58 @@ class LeadController {
     }
 
     // PUT /leads/:id/status
-   public static function updateStatus($id) {
-    $user  = AuthMiddleware::handle();
-    $data  = json_decode(file_get_contents("php://input"), true);
-    $error = Validator::required($data, ['status']);
-    if ($error) Response::error($error, 400);
+    public static function updateStatus($id) {
+        $user  = AuthMiddleware::authenticate();
+        $data  = json_decode(file_get_contents("php://input"), true);
+        $error = Validator::required($data, ['status']);
+        if ($error) Response::error($error, 400);
 
-    $validStatuses = ['new', 'contacted', 'negotiating', 'won', 'lost'];
-    if (!in_array($data['status'], $validStatuses)) {
-        Response::error("Invalid status", 400);
-    }
-
-    $pdo  = getDB();
-    $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
-    $stmt->execute([$id, $user['business_id']]);
-    if (!$stmt->fetch()) Response::error("Lead not found", 404);
-
-    $stmt = $pdo->prepare("UPDATE leads SET status = ? WHERE id = ? RETURNING *");
-    $stmt->execute([$data['status'], $id]);
-    $lead = $stmt->fetch();
-
-    $bridge = null;
-
-    // ── The Bridge — triggers when lead is marked as Won ──
-    if ($data['status'] === 'won') {
-        $productId = isset($data['product_id']) ? (int)$data['product_id'] : null;
-        $quantity  = isset($data['quantity'])   ? (int)$data['quantity']   : 1;
-        $userId    = $user['user_id'] ?? $user['id'] ?? 0;
-
-        if ($productId) {
-            require_once __DIR__ . '/../services/BridgeService.php';
-            $bridgeService = new BridgeService($pdo);
-            $bridge = $bridgeService->trigger(
-                (int)$id,
-                $productId,
-                $quantity,
-                (int)$user['business_id'],
-                (int)$userId
-            );
+        $validStatuses = ['new', 'contacted', 'negotiating', 'won', 'lost'];
+        if (!in_array($data['status'], $validStatuses)) {
+            Response::error("Invalid status", 400);
         }
-    }
 
-    Response::json([
-        'lead'   => $lead,
-        'bridge' => $bridge,
-    ]);
-}
+        $pdo  = getDB();
+        $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
+        $stmt->execute([$id, $user['business_id']]);
+        if (!$stmt->fetch()) Response::error("Lead not found", 404);
+
+        $stmt = $pdo->prepare("UPDATE leads SET status = ? WHERE id = ? RETURNING *");
+        $stmt->execute([$data['status'], $id]);
+        $lead = $stmt->fetch();
+
+        $bridge = null;
+
+        // ── The Bridge — triggers when lead is marked as Won ──
+        if ($data['status'] === 'won') {
+            $productId = isset($data['product_id']) ? (int)$data['product_id'] : null;
+            $quantity  = isset($data['quantity'])   ? (int)$data['quantity']   : 1;
+            $userId    = $user['user_id'] ?? $user['id'] ?? 0;
+
+            if ($productId) {
+                require_once __DIR__ . '/../services/BridgeService.php';
+                $bridgeService = new BridgeService($pdo);
+                $bridge = $bridgeService->trigger(
+                    (int)$id,
+                    $productId,
+                    $quantity,
+                    (int)$user['business_id'],
+                    (int)$userId
+                );
+            }
+        }
+
+        Response::json([
+            'lead'   => $lead,
+            'bridge' => $bridge,
+        ]);
+    }
 
     // GET /leads/:id/messages
     public static function getMessages($id) {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $pdo  = getDB();
 
-        // Verify lead belongs to business
         $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
         $stmt->execute([$id, $user['business_id']]);
         if (!$stmt->fetch()) Response::error("Lead not found", 404);
@@ -178,7 +176,7 @@ class LeadController {
 
     // POST /leads/:id/messages
     public static function addMessage($id) {
-        $user  = AuthMiddleware::handle();
+        $user  = AuthMiddleware::authenticate();
         $data  = json_decode(file_get_contents("php://input"), true);
         $error = Validator::required($data, ['content']);
         if ($error) Response::error($error, 400);
@@ -199,7 +197,7 @@ class LeadController {
 
     // PUT /leads/:id/messages/:msgId
     public static function updateMessage($id, $msgId) {
-        $user  = AuthMiddleware::handle();
+        $user  = AuthMiddleware::authenticate();
         $data  = json_decode(file_get_contents("php://input"), true);
         $error = Validator::required($data, ['content']);
         if ($error) Response::error($error, 400);
@@ -218,7 +216,7 @@ class LeadController {
 
     // DELETE /leads/:id/messages/:msgId
     public static function deleteMessage($id, $msgId) {
-        AuthMiddleware::handle();
+        AuthMiddleware::authenticate();
         $pdo  = getDB();
 
         $stmt = $pdo->prepare("SELECT id FROM lead_messages WHERE id = ? AND lead_id = ?");
@@ -232,7 +230,7 @@ class LeadController {
 
     // GET /leads/:id/followups
     public static function getFollowups($id) {
-        $user = AuthMiddleware::handle();
+        $user = AuthMiddleware::authenticate();
         $pdo  = getDB();
 
         $stmt = $pdo->prepare("SELECT id FROM leads WHERE id = ? AND business_id = ?");
@@ -247,7 +245,7 @@ class LeadController {
 
     // POST /leads/:id/followups
     public static function createFollowup($id) {
-        $user  = AuthMiddleware::handle();
+        $user  = AuthMiddleware::authenticate();
         $data  = json_decode(file_get_contents("php://input"), true);
         $error = Validator::required($data, ['scheduled_at']);
         if ($error) Response::error($error, 400);
@@ -265,11 +263,11 @@ class LeadController {
 
     // PUT /leads/:id/followups/:fId
     public static function updateFollowup($id, $fId) {
-        AuthMiddleware::handle();
+        AuthMiddleware::authenticate();
         $data = json_decode(file_get_contents("php://input"), true);
         $pdo  = getDB();
 
-        $sent    = isset($data['sent'])    ? (bool)$data['sent']              : null;
+        $sent    = isset($data['sent'])    ? (bool)$data['sent']                   : null;
         $outcome = isset($data['outcome']) ? Validator::sanitize($data['outcome']) : null;
 
         $stmt = $pdo->prepare("UPDATE followups SET

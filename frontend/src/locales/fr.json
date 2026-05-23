@@ -1,15 +1,103 @@
 {
-  "nav": {
-    "home": "Accueil",
-    "features": "Fonctionnalités",
-    "pricing": "Tarifs",
-    "about": "À propos",
-    "contact": "Contact",
-    "blog": "Blog",
-    "login": "Connexion",
-    "register": "Commencer gratuitement",
-    "cta": "Commencer gratuitement"
+ "nav": {
+  "home": "Accueil",
+  "features": "Fonctionnalités",
+  "howItWorks": "Comment ça marche",
+  "pricing": "Tarifs",
+  "about": "À propos",
+  "contact": "Contact",
+  "blog": "Blog",
+  "login": "Connexion",
+  "register": "Commencer gratuitement",
+  "cta": "Commencer gratuitement"
+},
+"howItWorks": {
+  "badge": "Comment ça marche ?",
+  "title": "Tout ce dont votre entreprise a besoin,",
+  "titleAccent": "expliqué",
+  "subtitle": "Salesek connecte votre CRM de ventes avec votre inventaire. Deux modules, une plateforme, zéro tableur.",
+  "tryFree": "Essayer gratuitement 14 jours",
+  "talkToUs": "Nous contacter",
+  "modulesTitle": "3 modules, un seul objectif",
+  "modulesSubtitle": "Chaque partie de Salesek résout un vrai problème pour les petites entreprises.",
+  "stepsTitle": "Comment fonctionne chaque module ?",
+  "stepsSubtitle": "Sélectionnez un module pour voir le flux étape par étape",
+  "flowTitle": "Le flux complet de Salesek",
+  "flowSubtitle": "Comment fonctionne la plateforme du début à la fin",
+  "forWhoTitle": "Pour qui est Salesek ?",
+  "forWhoSubtitle": "Conçu pour les entreprises de 1 à 10 personnes",
+  "faqTitle": "Questions fréquentes",
+  "faqSubtitle": "Nous répondons à tout avant que vous commenciez",
+  "contactTitle": "Vous avez une question ?",
+  "contactDesc": "Nous sommes là pour vous aider. Notre équipe répond en moins de 24 heures. Nous ne sommes pas des bots — nous sommes de vraies personnes qui comprennent votre entreprise.",
+  "contactBtn": "Nous contacter →",
+  "ctaTitle": "Commencez aujourd'hui",
+  "ctaDesc": "14 jours gratuits. Sans carte. Sans engagement. Configurez votre compte en 5 minutes.",
+  "ctaRegister": "Créer un compte gratuit",
+  "ctaPricing": "Voir les tarifs",
+  "salesflow": {
+    "title": "Gérez vos ventes sans perdre aucun client",
+    "desc": "SalesFlow est votre pipeline de ventes visuel. Voyez le statut de chaque lead d'un coup d'œil et ne ratez jamais un suivi.",
+    "s1t": "Ajoutez un lead", "s1d": "Créez le contact en 10 secondes avec nom, description et probabilité de clôture.",
+    "s2t": "Déplacez-le dans le pipeline", "s2d": "Glissez de Nouveau → Contacté → Négociation → Gagné. Tout en visuel.",
+    "s3t": "Historique des messages", "s3d": "Chaque conversation est enregistrée dans la fiche du client.",
+    "s4t": "L'IA génère la réponse", "s4d": "Appuyez sur le bouton IA et obtenez un brouillon professionnel adapté au lead.",
+    "s5t": "Rappels automatiques", "s5d": "Le système vous alerte quand un lead est inactif depuis trop longtemps.",
+    "s6t": "Statistiques en temps réel", "s6d": "Voyez votre taux de conversion, la valeur du pipeline et quelle étape échoue."
   },
+  "stockflow": {
+    "title": "Contrôle total de votre inventaire sans tableurs",
+    "desc": "StockFlow vous dit exactement ce que vous avez en stock et agit automatiquement quand il tombe sous le minimum.",
+    "s1t": "Ajoutez vos produits", "s1d": "Créez des produits avec catégorie, stock initial et niveau minimum.",
+    "s2t": "Alertes automatiques", "s2d": "Quand le stock tombe sous le minimum vous recevez une notification instantanée.",
+    "s3t": "Enregistrez les ventes", "s3d": "Notez chaque vente et le stock se déduit automatiquement.",
+    "s4t": "Réapprovisionnez vite", "s4d": "Un clic pour enregistrer un réapprovisionnement avec note et date automatique.",
+    "s5t": "L'IA suggère les quantités", "s5d": "L'IA analyse vos ventes des 30 derniers jours et recommande combien commander.",
+    "s6t": "Commande automatique", "s6d": "Générez et envoyez la commande au fournisseur par email depuis l'appli."
+  },
+  "bridge": {
+    "title": "CRM et inventaire connectés — La magie de Salesek",
+    "desc": "Quand vous clôturez une vente dans le CRM, l'inventaire se met à jour automatiquement. Sans étapes manuelles, sans erreurs.",
+    "s1t": "Vous clôturez une vente", "s1d": "Marquez un lead comme Gagné dans le CRM SalesFlow.",
+    "s2t": "The Bridge agit", "s2d": "Le système détecte la clôture et déduit le stock automatiquement.",
+    "s3t": "Vérifie le minimum", "s3d": "Si le stock tombe sous le minimum, génère une commande fournisseur.",
+    "s4t": "Commande au fournisseur", "s4d": "Email automatique au fournisseur avec le bon de commande.",
+    "s5t": "Toute l'équipe est informée", "s5d": "Notifications WebSocket en temps réel pour toute votre équipe.",
+    "s6t": "Rapport unifié", "s6d": "Voyez ventes et inventaire dans un seul tableau de bord."
+  },
+  "mods": {
+    "salesflow": "Pipeline de ventes visuel. Gérez leads, messages, rappels et statistiques. Ne perdez jamais un client par manque de suivi.",
+    "stockflow": "Contrôle total des stocks. Alertes stock bas, mouvements, commandes automatiques aux fournisseurs et suggestions IA.",
+    "bridge": "Quand vous clôturez une vente, l'inventaire se met à jour automatiquement. CRM et inventaire connectés en temps réel. Sans travail manuel."
+  },
+  "flow": {
+    "f1l": "Nouveau lead arrive", "f1s": "Vous l'ajoutez au CRM",
+    "f2l": "Avance dans le pipeline", "f2s": "Contacté → Négociation",
+    "f3l": "Vous clôturez la vente", "f3s": "Statut = Gagné",
+    "f4l": "The Bridge agit", "f4s": "Stock déduit automatiquement",
+    "f5l": "Commande automatique", "f5s": "Email au fournisseur",
+    "f6l": "L'entreprise grandit", "f6s": "Sans travail manuel"
+  },
+  "who": {
+    "w1t": "Magasins & commerce", "w1d": "Contrôle des stocks et clients en un seul endroit",
+    "w2t": "Ateliers & services", "w2d": "Gérez pièces, clients et devis",
+    "w3t": "Distributeurs", "w3d": "Inventaire massif et commandes automatiques",
+    "w4t": "Équipes commerciales", "w4d": "Pipeline visuel et suivis sans effort",
+    "w5t": "Pharmacies", "w5d": "Stock critique avec alertes instantanées",
+    "w6t": "Hôtellerie", "w6d": "Ingrédients et fournisseurs sous contrôle",
+    "w7t": "Construction", "w7d": "Matériaux et clients corporatifs",
+    "w8t": "Académies", "w8d": "CRM étudiants et suivi commercial"
+  },
+  "faq": {
+    "q1": "Dois-je installer quelque chose ?", "a1": "Non. Salesek est 100% web. Fonctionne dans n'importe quel navigateur, mobile, tablette et PC. Sans installations.",
+    "q2": "Puis-je utiliser un seul module ?", "a2": "Oui. SalesFlow et StockFlow se contractent séparément à 29€/mois chacun. La Suite Complète inclut les deux à 49€/mois.",
+    "q3": "Comment fonctionne l'IA ?", "a3": "Nous utilisons l'API Claude (Anthropic) pour générer des réponses aux leads et des suggestions de commande basées sur votre historique de ventes.",
+    "q4": "Mes données sont-elles sécurisées ?", "a4": "Oui. JWT + bcrypt pour l'authentification, HTTPS en permanence, et base de données PostgreSQL dans le cloud avec sauvegardes quotidiennes.",
+    "q5": "Puis-je annuler quand je veux ?", "a5": "Bien sûr. Sans engagement, sans pénalités. Annulez en un clic depuis votre profil.",
+    "q6": "Y a-t-il un support si j'ai des problèmes ?", "a6": "Oui. Vous pouvez nous contacter à tout moment depuis la page de contact. Nous répondons en moins de 24h."
+  }
+}
+,
   "hero": {
     "badge": "CRM + Inventaire pour PME",
     "title": "Arrêtez de perdre des clients et de l'argent par mauvaise gestion",

@@ -1,15 +1,103 @@
 {
   "nav": {
-    "home": "Inicio",
-    "features": "Funcionalidades",
-    "pricing": "Precios",
-    "about": "Nosotros",
-    "contact": "Contacto",
-    "blog": "Blog",
-    "login": "Iniciar sesión",
-    "register": "Empezar gratis",
-    "cta": "Empezar gratis"
+  "home": "Inicio",
+  "features": "Funcionalidades",
+  "howItWorks": "Cómo funciona",
+  "pricing": "Precios",
+  "about": "Nosotros",
+  "contact": "Contacto",
+  "blog": "Blog",
+  "login": "Iniciar sesión",
+  "register": "Empezar gratis",
+  "cta": "Empezar gratis"
+},
+"howItWorks": {
+  "badge": "¿Cómo funciona?",
+  "title": "Todo lo que necesita",
+  "titleAccent": "tu negocio, explicado",
+  "subtitle": "Salesek conecta tu CRM de ventas con tu inventario. Dos módulos, una plataforma, cero hojas de Excel.",
+  "tryFree": "Pruébalo gratis 14 días",
+  "talkToUs": "Hablar con nosotros",
+  "modulesTitle": "3 módulos, un solo objetivo",
+  "modulesSubtitle": "Cada parte de Salesek resuelve un problema real de las pequeñas empresas.",
+  "stepsTitle": "¿Cómo funciona cada módulo?",
+  "stepsSubtitle": "Selecciona el módulo para ver el flujo paso a paso",
+  "flowTitle": "El flujo completo de Salesek",
+  "flowSubtitle": "Así funciona la plataforma de principio a fin",
+  "forWhoTitle": "¿Para quién es Salesek?",
+  "forWhoSubtitle": "Diseñado para negocios de 1 a 10 personas",
+  "faqTitle": "Preguntas frecuentes",
+  "faqSubtitle": "Respondemos todo antes de que empieces",
+  "contactTitle": "¿Tienes alguna duda?",
+  "contactDesc": "Estamos aquí para ayudarte. Nuestro equipo responde en menos de 24 horas. No somos bots — somos personas reales que entienden tu negocio.",
+  "contactBtn": "Contactar ahora →",
+  "ctaTitle": "Empieza hoy mismo",
+  "ctaDesc": "14 días gratis. Sin tarjeta. Sin compromiso. Configura tu cuenta en 5 minutos.",
+  "ctaRegister": "Crear cuenta gratis",
+  "ctaPricing": "Ver precios",
+  "salesflow": {
+    "title": "Gestiona tus ventas sin perder ningún cliente",
+    "desc": "SalesFlow es tu pipeline visual de ventas. Ve el estado de cada lead de un vistazo y nunca pierdas un seguimiento.",
+    "s1t": "Añade un lead", "s1d": "Crea el contacto en 10 segundos con nombre, descripción y probabilidad de cierre.",
+    "s2t": "Muévelo por el pipeline", "s2d": "Arrastra de Nuevo → Contactado → Negociando → Ganado. Todo visual.",
+    "s3t": "Historial de mensajes", "s3d": "Cada conversación queda registrada en la ficha del cliente.",
+    "s4t": "IA genera la respuesta", "s4d": "Pulsa el botón IA y obtén un borrador profesional adaptado al lead.",
+    "s5t": "Recordatorios automáticos", "s5d": "El sistema te avisa cuando un lead lleva demasiado tiempo sin actividad.",
+    "s6t": "Estadísticas en tiempo real", "s6d": "Ve tu tasa de conversión, el valor del pipeline y qué etapa falla."
   },
+  "stockflow": {
+    "title": "Control total de tu inventario sin hojas de cálculo",
+    "desc": "StockFlow te dice exactamente cuánto tienes en almacén y actúa solo cuando el stock baja del mínimo.",
+    "s1t": "Añade tus productos", "s1d": "Crea productos con categoría, stock inicial y nivel mínimo.",
+    "s2t": "Alertas automáticas", "s2d": "Cuando el stock baja del mínimo recibes una notificación al instante.",
+    "s3t": "Registra ventas", "s3d": "Anota cada venta y el stock se descuenta automáticamente.",
+    "s4t": "Reabastece rápido", "s4d": "Un clic para registrar un restock con nota y fecha automática.",
+    "s5t": "IA sugiere cantidades", "s5d": "La IA analiza tus ventas de 30 días y recomienda cuánto pedir.",
+    "s6t": "Pedido automático", "s6d": "Genera y envía la orden al proveedor por email desde la app."
+  },
+  "bridge": {
+    "title": "CRM e inventario conectados — La magia de Salesek",
+    "desc": "Cuando cierras una venta en el CRM, el inventario se actualiza solo. Sin pasos manuales, sin errores.",
+    "s1t": "Cierras una venta", "s1d": "Marcas un lead como Ganado en el CRM de SalesFlow.",
+    "s2t": "The Bridge actúa", "s2d": "El sistema detecta el cierre y descuenta el stock automáticamente.",
+    "s3t": "Comprueba el mínimo", "s3d": "Si el stock cae bajo el mínimo, genera un pedido al proveedor.",
+    "s4t": "Pedido al proveedor", "s4d": "Email automático al proveedor con la orden de compra.",
+    "s5t": "Todo el equipo se entera", "s5d": "Notificaciones WebSocket en tiempo real para todo tu equipo.",
+    "s6t": "Reporte unificado", "s6d": "Ve ventas e inventario en un solo dashboard."
+  },
+  "mods": {
+    "salesflow": "CRM visual de ventas. Gestiona leads, mensajes, recordatorios y estadísticas. Nunca pierdas un cliente por falta de seguimiento.",
+    "stockflow": "Control total de inventario. Alertas de stock bajo, movimientos, pedidos automáticos a proveedores y sugerencias con IA.",
+    "bridge": "Cuando cierras una venta, el inventario se actualiza solo. CRM e inventario conectados en tiempo real. Sin trabajo manual."
+  },
+  "flow": {
+    "f1l": "Nuevo lead entra", "f1s": "Lo añades al CRM",
+    "f2l": "Avanza en pipeline", "f2s": "Contactado → Negociando",
+    "f3l": "Cierras la venta", "f3s": "Estado = Ganado",
+    "f4l": "The Bridge actúa", "f4s": "Stock se descuenta solo",
+    "f5l": "Pedido automático", "f5s": "Email al proveedor",
+    "f6l": "Negocio crece", "f6s": "Sin trabajo manual"
+  },
+  "who": {
+    "w1t": "Tiendas y comercios", "w1d": "Control de stock y clientes en un solo lugar",
+    "w2t": "Talleres y servicios", "w2d": "Gestiona piezas, clientes y presupuestos",
+    "w3t": "Distribuidoras", "w3d": "Inventario masivo y pedidos automáticos",
+    "w4t": "Equipos comerciales", "w4d": "Pipeline visual y seguimientos sin esfuerzo",
+    "w5t": "Farmacias", "w5d": "Stock crítico con alertas inmediatas",
+    "w6t": "Hostelería", "w6d": "Ingredientes y proveedores bajo control",
+    "w7t": "Construcción", "w7d": "Materiales y clientes corporativos",
+    "w8t": "Academias", "w8d": "CRM de alumnos y seguimiento comercial"
+  },
+  "faq": {
+    "q1": "¿Necesito instalar algo?", "a1": "No. Salesek es 100% web. Funciona en cualquier navegador, móvil, tablet y PC. Sin instalaciones.",
+    "q2": "¿Puedo usar solo un módulo?", "a2": "Sí. SalesFlow y StockFlow se contratan por separado a 29€/mes cada uno. La Suite Completa incluye ambos a 49€/mes.",
+    "q3": "¿Cómo funciona la IA?", "a3": "Usamos la API de Claude (Anthropic) para generar respuestas a leads y sugerencias de pedido basadas en tu historial de ventas.",
+    "q4": "¿Mis datos están seguros?", "a4": "Sí. JWT + bcrypt para autenticación, HTTPS en todo momento, y base de datos PostgreSQL en la nube con backups diarios.",
+    "q5": "¿Puedo cancelar cuando quiera?", "a5": "Por supuesto. Sin permanencia, sin penalizaciones. Cancelas en un clic desde tu perfil.",
+    "q6": "¿Hay soporte si tengo problemas?", "a6": "Sí. Puedes contactarnos en cualquier momento desde la página de contacto. Respondemos en menos de 24h."
+  }
+}
+,
   "register": {
   "stepAccount": "1. Cuenta",
   "stepPlan": "2. Plan",
