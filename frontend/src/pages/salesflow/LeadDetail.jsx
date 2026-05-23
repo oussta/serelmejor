@@ -200,21 +200,30 @@ async function loadAll() {
   try {
     setLoading(true)
     
-    const leadData = await request('GET', `/leads/${id}`, null, token)
-    console.log('lead ok:', leadData)
+    const results = await Promise.allSettled([
+      request('GET', `/leads/${id}`, null, token),
+      getMessages(id, token),
+      getFollowups(id, token),
+    ])
     
-    const msgs = await getMessages(id, token)
-    console.log('messages ok:', msgs)
+    console.log('lead result:', results[0])
+    console.log('messages result:', results[1])
+    console.log('followups result:', results[2])
     
-    const fups = await getFollowups(id, token)
-    console.log('followups ok:', fups)
+    const leadData = results[0].status === 'fulfilled' ? results[0].value : null
+    const msgs     = results[1].status === 'fulfilled' ? results[1].value : []
+    const fups     = results[2].status === 'fulfilled' ? results[2].value : []
     
-    if (!leadData || leadData.error) { navigate('/leads'); return }
+    if (!leadData) {
+      setError('Error loading lead: ' + (results[0].reason?.message || 'unknown'))
+      return
+    }
+    
     setLead(leadData)
     setMessages(Array.isArray(msgs) ? msgs : [])
     setFollowups(Array.isArray(fups) ? fups : [])
   } catch (err) {
-    console.error('FAILED AT:', err.message)
+    console.error('loadAll error:', err)
     setError(err.message)
   } finally {
     setLoading(false)

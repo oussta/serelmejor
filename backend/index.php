@@ -4,10 +4,13 @@ ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 // Catch fatal errors and return JSON instead of HTML
+
+
 set_error_handler(function($severity, $message, $file, $line) {
+    error_log("PHP ERROR: $message in $file on line $line");
     header("Content-Type: application/json");
     http_response_code(500);
-    echo json_encode(['error' => 'Server error', 'detail' => $message]);
+    echo json_encode(['error' => 'Server error', 'detail' => "$message in $file:$line"]);
     exit();
 });
 
