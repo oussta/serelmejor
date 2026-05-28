@@ -36,8 +36,6 @@ $parts  = explode('/', $path);
 // Parse request body once
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
 // ── Auth ──────────────────────────────────────────────────
-
-
 if ($path === 'register' && $method === 'POST') {
     AuthController::register();
 }
@@ -55,9 +53,6 @@ elseif ($path === 'forgot-password' && $method === 'POST') {
 }
 elseif ($path === 'reset-password' && $method === 'POST') {
     AuthController::resetPassword();
-}
-elseif ($path === 'cancel-subscription' && $method === 'POST') {
-    AuthController::cancelSubscription();
 }
 elseif ($path === 'verify-email' && $method === 'POST') {
     AuthController::verifyEmail();

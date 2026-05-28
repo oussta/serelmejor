@@ -104,37 +104,38 @@ class AuthController {
             Response::error("Email already registered", 409);
         }
 
-        $hash = password_hash($data['password'], PASSWORD_BCRYPT);
-
-        // Generate 6-digit verification code
+        $hash   = password_hash($data['password'], PASSWORD_BCRYPT);
         $code   = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-        $expiry = date('Y-m-d H:i:s', time() + 3600); // 1 hour
+        $expiry = date('Y-m-d H:i:s', time() + 3600);
 
         $stmt = $pdo->prepare("INSERT INTO businesses (name, subscription_plan) VALUES (?, ?) RETURNING id");
         $stmt->execute([$business_name, $plan]);
         $business_id = $stmt->fetch()['id'];
 
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password_hash, role, business_id, email_verified, verification_code, verification_code_expiry) VALUES (?, ?, ?, 'owner', ?, FALSE, ?, ?) RETURNING id");
+        $stmt = $pdo->prepare("
+            INSERT INTO users (name, email, password_hash, role, business_id, email_verified, verification_code, verification_code_expiry)
+            VALUES (?, ?, ?, 'owner', ?, FALSE, ?, ?) RETURNING id
+        ");
         $stmt->execute([$name, $email, $hash, $business_id, $code, $expiry]);
         $user_id = $stmt->fetch()['id'];
 
         $stmt = $pdo->prepare("INSERT INTO subscriptions (business_id, plan, price) VALUES (?, ?, ?)");
         $stmt->execute([$business_id, $plan, $price]);
 
-        // ── Send verification code email ──────────────────
+        // Send verification code email
         $content = "
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
                 Hola <strong style='color: #0F172A;'>{$name}</strong>, gracias por registrarte en Salesek.
             </p>
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Usa este código para verificar tu email y acceder a tu cuenta:
+                Usa este código para verificar tu email:
             </p>
             <div style='text-align: center; margin: 32px 0;'>
                 <div style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; font-size: 40px; font-weight: 800; letter-spacing: 12px; padding: 20px 32px; border-radius: 16px; font-family: monospace;'>
                     {$code}
                 </div>
             </div>
-            <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px; margin-top: 8px;'>
+            <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px;'>
                 <p style='color: #92400E; font-size: 13px; margin: 0;'>
                     ⏱️ Este código expira en <strong>1 hora</strong>.
                     Si no creaste esta cuenta, ignora este email.
@@ -147,7 +148,6 @@ class AuthController {
             self::emailWrapper('Verifica tu email 📧', $content)
         );
 
-        // Return token but mark as unverified
         $token = JWTHelper::generate([
             'user_id'        => $user_id,
             'role'           => 'owner',
@@ -185,27 +185,19 @@ class AuthController {
         $user = $stmt->fetch();
 
         if (!$user) Response::error("Usuario no encontrado", 404);
-
-        if ($user['verification_code'] !== $code) {
-            Response::error("Código incorrecto", 400);
-        }
-
+        if ($user['verification_code'] !== $code) Response::error("Código incorrecto", 400);
         if (strtotime($user['verification_code_expiry']) < time()) {
             Response::error("El código ha expirado. Solicita uno nuevo.", 400);
         }
 
-        // Mark as verified
         $stmt = $pdo->prepare("UPDATE users SET email_verified = TRUE, verification_code = NULL, verification_code_expiry = NULL WHERE id = ?");
         $stmt->execute([$user['id']]);
 
         // Send welcome email
         $content = "
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hola <strong style='color: #0F172A;'>{$user['name']}</strong>, 
+                Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
                 tu email ha sido verificado correctamente. 🎉
-            </p>
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Ya puedes acceder a todas las funcionalidades de Salesek.
             </p>
             <a href='https://serelmejor.vercel.app/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
                 Acceder a Salesek →
@@ -214,10 +206,9 @@ class AuthController {
         self::sendEmail(
             $email,
             '¡Email verificado! Bienvenido/a a Salesek',
-            self::emailWrapper('¡Cuenta verificada con éxito! ✅', $content)
+            self::emailWrapper('¡Cuenta verificada! ✅', $content)
         );
 
-        // Generate new verified token
         $token = JWTHelper::generate([
             'user_id'        => $user['id'],
             'role'           => $user['role'],
@@ -263,9 +254,7 @@ class AuthController {
         $content = "
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
                 Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
-            </p>
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Aquí tienes tu nuevo código de verificación:
+                aquí tienes tu nuevo código:
             </p>
             <div style='text-align: center; margin: 32px 0;'>
                 <div style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; font-size: 40px; font-weight: 800; letter-spacing: 12px; padding: 20px 32px; border-radius: 16px; font-family: monospace;'>
@@ -280,7 +269,7 @@ class AuthController {
 
         self::sendEmail(
             $email,
-            'Tu nuevo código de verificación Salesek: ' . $code,
+            'Tu nuevo código Salesek: ' . $code,
             self::emailWrapper('Nuevo código de verificación 🔄', $content)
         );
 
@@ -297,7 +286,13 @@ class AuthController {
         $email = Validator::sanitize($data['email']);
         $pdo   = getDB();
 
-        $stmt = $pdo->prepare("SELECT u.*, COALESCE(s.plan, 'pending') as plan FROM users u LEFT JOIN subscriptions s ON s.business_id = u.business_id AND s.id = (SELECT MAX(id) FROM subscriptions WHERE business_id = u.business_id) WHERE u.email = ?");
+        $stmt = $pdo->prepare("
+            SELECT u.*, COALESCE(s.plan, 'pending') as sub_plan
+            FROM users u
+            LEFT JOIN subscriptions s ON s.business_id = u.business_id
+            AND s.id = (SELECT MAX(id) FROM subscriptions WHERE business_id = u.business_id)
+            WHERE u.email = ?
+        ");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -309,20 +304,20 @@ class AuthController {
             'user_id'        => $user['id'],
             'role'           => $user['role'],
             'business_id'    => $user['business_id'],
-            'email_verified' => (bool)$user['email_verified'],
+            'email_verified' => (bool)($user['email_verified'] ?? true),
         ]);
 
         Response::json([
             "token"          => $token,
-            "email_verified" => (bool)$user['email_verified'],
+            "email_verified" => (bool)($user['email_verified'] ?? true),
             "user"           => [
                 "id"             => $user['id'],
                 "name"           => $user['name'],
                 "email"          => $user['email'],
                 "role"           => $user['role'],
                 "business_id"    => $user['business_id'],
-                "plan"           => $user['plan'] ?? 'pending',
-                "email_verified" => (bool)$user['email_verified'],
+                "plan"           => $user['sub_plan'] ?? 'pending',
+                "email_verified" => (bool)($user['email_verified'] ?? true),
             ]
         ]);
     }
@@ -333,7 +328,13 @@ class AuthController {
         $current = AuthMiddleware::authenticate();
 
         $pdo  = getDB();
-        $stmt = $pdo->prepare("SELECT u.*, COALESCE(s.plan, 'pending') as plan FROM users u LEFT JOIN subscriptions s ON s.business_id = u.business_id AND s.id = (SELECT MAX(id) FROM subscriptions WHERE business_id = u.business_id) WHERE u.id = ?");
+        $stmt = $pdo->prepare("
+            SELECT u.*, COALESCE(s.plan, 'pending') as sub_plan
+            FROM users u
+            LEFT JOIN subscriptions s ON s.business_id = u.business_id
+            AND s.id = (SELECT MAX(id) FROM subscriptions WHERE business_id = u.business_id)
+            WHERE u.id = ?
+        ");
         $stmt->execute([$current['user_id']]);
         $user = $stmt->fetch();
 
@@ -378,15 +379,14 @@ class AuthController {
                 Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
             </p>
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hemos recibido una solicitud para restablecer la contraseña de tu cuenta Salesek.
+                Hemos recibido una solicitud para restablecer tu contraseña.
             </p>
             <a href='{$resetUrl}' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
                 Restablecer contraseña →
             </a>
-            <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px; margin-top: 8px;'>
+            <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px;'>
                 <p style='color: #92400E; font-size: 13px; margin: 0;'>
-                    ⏱️ Este enlace expira en <strong>1 hora</strong>.
-                    Si no solicitaste este cambio, ignora este email.
+                    ⏱️ Expira en <strong>1 hora</strong>. Si no lo solicitaste, ignora este email.
                 </p>
             </div>";
 
@@ -438,7 +438,7 @@ class AuthController {
         self::sendEmail(
             $user['email'],
             'Tu contraseña de Salesek ha sido cambiada',
-            self::emailWrapper('Contraseña actualizada correctamente ✓', $content)
+            self::emailWrapper('Contraseña actualizada ✓', $content)
         );
 
         Response::json(["message" => "Password reset successfully"]);
@@ -450,7 +450,13 @@ class AuthController {
         $current = AuthMiddleware::authenticate();
 
         $pdo  = getDB();
-        $stmt = $pdo->prepare("SELECT u.name, u.email, s.plan FROM users u JOIN subscriptions s ON s.business_id = u.business_id WHERE u.id = ? ORDER BY s.id DESC LIMIT 1");
+        $stmt = $pdo->prepare("
+            SELECT u.name, u.email, s.plan
+            FROM users u
+            JOIN subscriptions s ON s.business_id = u.business_id
+            WHERE u.id = ?
+            ORDER BY s.id DESC LIMIT 1
+        ");
         $stmt->execute([$current['user_id']]);
         $data = $stmt->fetch();
 
@@ -471,7 +477,7 @@ class AuthController {
                 Hola <strong style='color: #0F172A;'>{$data['name']}</strong>,
             </p>
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hemos procesado la cancelación de tu suscripción <strong>{$planName}</strong>.
+                Tu suscripción <strong>{$planName}</strong> ha sido cancelada.
                 Seguirás teniendo acceso hasta el final del período facturado.
             </p>
             <a href='https://serelmejor.vercel.app/pricing' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
