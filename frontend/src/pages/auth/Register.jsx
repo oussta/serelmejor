@@ -286,12 +286,13 @@ function Register() {
 
   // ── Steps ────────────────────────────────────────────
   const STEPS = [
-    { key: 'account', label: t('register.stepAccount') || '1. Cuenta' },
-    { key: 'plan',    label: t('register.stepPlan')    || '2. Plan' },
-    { key: 'payment', label: t('register.stepPayment') || '3. Pago' },
-  ]
-  const stepIdx   = { account: 0, plan: 1, payment: 2, done: 3 }
-  const currentIdx = stepIdx[step] ?? 0
+  { key: 'account', label: t('register.stepAccount')  || '1. Cuenta' },
+  { key: 'plan',    label: t('register.stepPlan')     || '2. Plan' },
+  { key: 'payment', label: t('register.stepPayment')  || '3. Pago' },
+  { key: 'verify',  label: t('register.stepVerify')   || '4. Verificar' },
+]
+const stepIdx    = { account: 0, plan: 1, payment: 2, verify: 3, done: 4 }
+const currentIdx = stepIdx[step] ?? 0
 
   const inputStyle = (field, isCard = false) => ({
     width: '100%', padding: '12px 14px',

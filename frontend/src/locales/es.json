@@ -141,7 +141,8 @@
   "email": "Email",
   "plan": "Plan",
   "goToLogin": "Iniciar sesión →",
-  "successNote": "Inicia sesión con tu email y contraseña para acceder."
+  "successNote": "Inicia sesión con tu email y contraseña para acceder.",
+  "stepVerify": "4. Verificar"
 },
   "orders": {
   "title": "Pedidos a proveedores",

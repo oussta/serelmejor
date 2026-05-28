@@ -478,7 +478,8 @@
   "email": "Email",
   "plan": "Plan",
   "goToLogin": "Sign in →",
-  "successNote": "Sign in with your email and password to access."
+  "successNote": "Sign in with your email and password to access.",
+  "stepVerify": "4. Verify"
 },
   "contact": {
     "title": "Talk to us",

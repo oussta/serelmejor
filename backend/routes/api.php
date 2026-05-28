@@ -59,6 +59,15 @@ elseif ($path === 'reset-password' && $method === 'POST') {
 elseif ($path === 'cancel-subscription' && $method === 'POST') {
     AuthController::cancelSubscription();
 }
+elseif ($path === 'verify-email' && $method === 'POST') {
+    AuthController::verifyEmail();
+}
+elseif ($path === 'resend-code' && $method === 'POST') {
+    AuthController::resendCode();
+}
+elseif ($path === 'cancel-subscription' && $method === 'POST') {
+    AuthController::cancelSubscription();
+}
 
 // ── Business ──────────────────────────────────────────────
 elseif ($path === 'business' && $method === 'GET') {

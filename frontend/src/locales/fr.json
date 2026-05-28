@@ -571,7 +571,8 @@
   "email": "Email",
   "plan": "Plan",
   "goToLogin": "Se connecter →",
-  "successNote": "Connectez-vous avec votre email et mot de passe pour accéder."
+  "successNote": "Connectez-vous avec votre email et mot de passe pour accéder.",
+  "stepVerify": "4. Vérifier"
 },
   "blog": {
     "title": "Ce que personne ne vous dit sur la gestion d'une PME",
