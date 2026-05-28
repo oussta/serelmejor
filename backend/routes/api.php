@@ -56,6 +56,9 @@ elseif ($path === 'forgot-password' && $method === 'POST') {
 elseif ($path === 'reset-password' && $method === 'POST') {
     AuthController::resetPassword();
 }
+elseif ($path === 'cancel-subscription' && $method === 'POST') {
+    AuthController::cancelSubscription();
+}
 
 // ── Business ──────────────────────────────────────────────
 elseif ($path === 'business' && $method === 'GET') {
@@ -94,6 +97,7 @@ elseif ($path === 'payment/confirm' && $method === 'POST') {
     require_once __DIR__ . '/../controllers/PaymentController.php';
     PaymentController::confirm();
 }
+
 
 // ── Leads ─────────────────────────────────────────────────
 elseif ($path === 'leads' && $method === 'GET') {
