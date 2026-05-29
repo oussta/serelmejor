@@ -15,7 +15,7 @@ if ($debugPath === 'debug') {
 }
 
 // rest of your existing code below...
-require_once __DIR__ . '/../controllers/AuthController.php';
+
 
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/BusinessController.php';
@@ -165,6 +165,10 @@ elseif ($parts[0] === 'leads' && isset($parts[1]) && isset($parts[2]) && $parts[
 elseif ($path === 'ai/draft-response' && $method === 'POST') {
     require_once __DIR__ . '/../controllers/AIController.php';
     AIController::draftResponse();
+}
+elseif ($path === 'ai/suggest-order' && $method === 'POST') {
+    require_once __DIR__ . '/../controllers/AIController.php';
+    AIController::suggestOrder();
 }
 
 // ── Contact ───────────────────────────────────────────────
