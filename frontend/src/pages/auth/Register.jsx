@@ -65,12 +65,12 @@ export default function Register() {
   const plan = PLANS.find(p => p.id === selectedPlan) || PLANS[2]
 
   // ── Steps ─────────────────────────────────────────────
-  const STEPS = [
-    { key: 'account', label: t('register.stepAccount') || 'Cuenta',     icon: 'person' },
-    { key: 'verify',  label: t('register.stepVerify')  || 'Verificar',  icon: 'mark_email_read' },
-    { key: 'plan',    label: t('register.stepPlan')    || 'Plan',       icon: 'star' },
-    { key: 'payment', label: t('register.stepPayment') || 'Pago',       icon: 'credit_card' },
-  ]
+ const STEPS = [
+  { key: 'account', label: t('register.stepAccount') || 'Cuenta',    icon: 'person' },
+  { key: 'verify',  label: t('register.stepVerify')  || 'Verificar', icon: 'mark_email_read' },
+  { key: 'plan',    label: t('register.stepPlan')    || 'Plan',      icon: 'star' },
+  { key: 'payment', label: t('register.stepPayment') || 'Pago',      icon: 'credit_card' },
+]
   const stepIdx    = { account: 0, verify: 1, plan: 2, payment: 3, done: 4 }
   const currentIdx = stepIdx[step] ?? 0
 
