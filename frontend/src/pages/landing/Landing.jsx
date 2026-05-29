@@ -358,7 +358,7 @@ function Landing() {
             ))}
           </div>
           <button
-            onClick={() => navigate('/precios')}
+            onClick={() => { navigate('/precios'); window.scrollTo(0, 0) }}
             style={{ padding: '12px 28px', background: 'none', border: `1px solid ${cardBorder}`, borderRadius: '10px', fontSize: '14px', fontWeight: '600', color: textSub, cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}
           >
             {t('hero.pricingCta') || 'Ver todos los planes →'}
@@ -385,7 +385,7 @@ function Landing() {
               {t('hero.ctaButton') || 'Empieza gratis — 14 días'}
             </button>
             <button
-              onClick={() => navigate('/precios')}
+              onClick={() => { navigate('/precios'); window.scrollTo(0, 0) }}
               style={{ padding: '14px 32px', background: 'rgba(255,255,255,0.08)', color: '#94A3B8', border: '1px solid #334155', borderRadius: '12px', fontSize: isMobile ? '15px' : '16px', fontWeight: '500', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', width: isMobile ? '100%' : 'auto' }}
             >
               {t('pricing.cta') || 'Ver precios'}
