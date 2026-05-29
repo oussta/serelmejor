@@ -111,8 +111,10 @@ function Contact() {
   async function handleSubmit() {
     setTouched({ name: true, email: true, company: true, message: true })
     const newErrors = {
-      name: validate('name', form.name, lang), email: validate('email', form.email, lang),
-      company: validate('company', form.company, lang), message: validate('message', form.message, lang),
+      name:    validate('name',    form.name,    lang),
+      email:   validate('email',   form.email,   lang),
+      company: validate('company', form.company, lang),
+      message: validate('message', form.message, lang),
     }
     setErrors(newErrors)
     if (!isFormValid()) return
@@ -128,12 +130,11 @@ function Contact() {
         localStorage.removeItem('contact_form_draft')
         setForm({ name: '', email: '', company: '', message: '' })
         setTouched({ name: false, email: false, company: false, message: false })
-      } else { setStatus('error') }
+      } else {
+        setStatus('error')
+      }
     } catch {
-      setStatus('sent')
-      localStorage.removeItem('contact_form_draft')
-      setForm({ name: '', email: '', company: '', message: '' })
-      setTouched({ name: false, email: false, company: false, message: false })
+      setStatus('error')
     }
   }
 
@@ -172,10 +173,10 @@ function Contact() {
   }
 
   const info = [
-    { icon: 'mail',          color: '#2563EB', label: 'Email',      value: 'hola@salesek.com' },
-    { icon: 'schedule',      color: '#10B981', label: 'Horario',    value: 'Lun–Vie, 9:00–18:00' },
-    { icon: 'location_on',   color: '#F59E0B', label: 'Ubicación',  value: 'España' },
-    { icon: 'support_agent', color: '#0EA5E9', label: 'Soporte',    value: 'Respuesta en < 24h' },
+    { icon: 'mail',          color: '#2563EB', label: t('contact.infoEmail'),    value: 'hola@salesek.com' },
+    { icon: 'schedule',      color: '#10B981', label: t('contact.infoHours'),    value: t('contact.infoHoursVal') },
+    { icon: 'location_on',   color: '#F59E0B', label: t('contact.infoLocation'), value: t('contact.infoLocationVal') },
+    { icon: 'support_agent', color: '#0EA5E9', label: t('contact.infoSupport'),  value: t('contact.infoSupportVal') },
   ]
 
   return (
@@ -183,17 +184,7 @@ function Contact() {
       <Helmet>
         <title>Contacto — Salesek | Habla con nosotros</title>
         <meta name="description" content="¿Tienes dudas sobre Salesek? Escríbenos y te respondemos en menos de 24 horas." />
-        <link rel="canonical" href="https://salesek.onrender.com/contact" />
-        <meta property="og:type"        content="website" />
-        <meta property="og:url"         content="https://salesek.onrender.com/contact" />
-        <meta property="og:title"       content="Contacto — Salesek" />
-        <meta property="og:description" content="¿Tienes dudas sobre Salesek? Escríbenos y te respondemos en menos de 24 horas." />
-        <meta property="og:image"       content="https://salesek.onrender.com/og-salesek.png" />
-        <meta property="og:site_name"   content="Salesek" />
-        <meta name="twitter:card"       content="summary_large_image" />
-        <meta name="twitter:title"      content="Contacto — Salesek" />
-        <meta name="twitter:description" content="Habla con el equipo de Salesek." />
-        <meta name="twitter:image"      content="https://salesek.onrender.com/og-salesek.png" />
+        <link rel="canonical" href="https://salsek.com/contact" />
       </Helmet>
 
       <PublicNavbar />
@@ -203,7 +194,7 @@ function Contact() {
         <div style={{ maxWidth: '600px', margin: '0 auto' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '99px', background: 'rgba(37,99,235,0.08)', border: '1px solid rgba(37,99,235,0.15)', marginBottom: '24px' }}>
             <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#2563EB' }}>chat</span>
-            <span style={{ fontSize: '13px', fontWeight: '600', color: '#2563EB' }}>Estamos aquí para ayudarte</span>
+            <span style={{ fontSize: '13px', fontWeight: '600', color: '#2563EB' }}>{t('contact.heroBadge')}</span>
           </div>
           <h1 style={{ fontSize: isMobile ? '32px' : '44px', fontWeight: '800', letterSpacing: '-0.02em', color: text, marginBottom: '16px', lineHeight: '1.15' }}>
             {t('contact.title')}
@@ -235,10 +226,10 @@ function Contact() {
             <div style={{ background: 'linear-gradient(135deg, #1D4ED8, #2563EB)', borderRadius: '16px', padding: '20px' }}>
               <span className="material-symbols-outlined" style={{ fontSize: '26px', color: 'rgba(255,255,255,0.8)', marginBottom: '10px', display: 'block' }}>rocket_launch</span>
               <h4 style={{ fontSize: '16px', fontWeight: '700', color: 'white', marginBottom: '8px' }}>
-                ¿Quieres una demo personalizada?
+                {t('contact.demoTitle')}
               </h4>
               <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', lineHeight: '1.6' }}>
-                Cuéntanos sobre tu negocio y te preparamos una demo adaptada a tu sector.
+                {t('contact.demoDesc')}
               </p>
             </div>
           </div>
@@ -246,10 +237,10 @@ function Contact() {
           {/* Right: form */}
           <div style={{ background: cardBg, border: `1px solid ${cardBorder}`, borderRadius: '24px', padding: isMobile ? '24px 20px' : '40px' }}>
             <h2 style={{ fontSize: '20px', fontWeight: '700', color: text, marginBottom: '6px' }}>
-              Envíanos un mensaje
+              {t('contact.formTitle')}
             </h2>
             <p style={{ fontSize: '13px', color: textSub, marginBottom: '28px' }}>
-              Tu borrador se guarda automáticamente mientras escribes.
+              {t('contact.draftSaved')}
             </p>
 
             {status === 'sent' ? (
@@ -257,13 +248,13 @@ function Contact() {
                 <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(16,185,129,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
                   <span className="material-symbols-outlined" style={{ fontSize: '32px', color: '#10B981' }}>check_circle</span>
                 </div>
-                <h3 style={{ fontSize: '20px', fontWeight: '700', color: text, marginBottom: '8px' }}>¡Mensaje enviado!</h3>
+                <h3 style={{ fontSize: '20px', fontWeight: '700', color: text, marginBottom: '8px' }}>{t('contact.successTitle')}</h3>
                 <p style={{ fontSize: '14px', color: textSub, marginBottom: '20px' }}>{t('contact.sent')}</p>
                 <button
                   onClick={() => setStatus('idle')}
                   style={{ padding: '10px 24px', background: 'none', border: `1px solid ${cardBorder}`, borderRadius: '10px', fontSize: '14px', fontWeight: '500', cursor: 'pointer', color: text, fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                 >
-                  Enviar otro mensaje
+                  {t('contact.sendAnother')}
                 </button>
               </div>
             ) : (
@@ -297,7 +288,7 @@ function Contact() {
                 <div>
                   <label style={{ fontSize: '13px', fontWeight: '600', color: textSub, display: 'block', marginBottom: '6px' }}>
                     {t('contact.company')}
-                    <span style={{ fontSize: '12px', fontWeight: '400', marginLeft: '6px', color: textSub }}>(opcional)</span>
+                    <span style={{ fontSize: '12px', fontWeight: '400', marginLeft: '6px', color: textSub }}>({t('contact.optional')})</span>
                   </label>
                   <div style={{ position: 'relative' }}>
                     <input name="company" value={form.company} onChange={handleChange} onBlur={handleBlur} placeholder="Mi Empresa S.L." style={inputStyle('company')} />
@@ -327,7 +318,7 @@ function Contact() {
                 {(form.name || form.email || form.message) && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10B981' }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>save</span>
-                    Borrador guardado automáticamente
+                    {t('contact.autosaved')}
                   </div>
                 )}
 
@@ -335,7 +326,7 @@ function Contact() {
                 {status === 'error' && (
                   <div style={{ padding: '12px 16px', background: 'rgba(244,63,94,0.08)', border: '1px solid rgba(244,63,94,0.2)', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#F43F5E' }}>
                     <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>error</span>
-                    Algo salió mal. Por favor intenta de nuevo.
+                    {t('contact.error')}
                   </div>
                 )}
 
@@ -344,11 +335,14 @@ function Contact() {
                   onClick={handleSubmit}
                   disabled={status === 'sending'}
                   style={{
-                    padding: '14px', background: status === 'sending' ? '#94A3B8' : isFormValid() ? '#2563EB' : '#94A3B8',
+                    padding: '14px',
+                    background: status === 'sending' ? '#94A3B8' : isFormValid() ? '#2563EB' : '#94A3B8',
                     color: 'white', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: '600',
-                    cursor: status === 'sending' ? 'not-allowed' : 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif',
+                    cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                    boxShadow: isFormValid() ? '0 4px 16px rgba(37,99,235,0.3)' : 'none', transition: 'background 0.2s',
+                    boxShadow: isFormValid() ? '0 4px 16px rgba(37,99,235,0.3)' : 'none',
+                    transition: 'background 0.2s',
                   }}
                 >
                   <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>
@@ -358,7 +352,7 @@ function Contact() {
                 </button>
 
                 <p style={{ fontSize: '12px', color: textSub, textAlign: 'center' }}>
-                  Al enviar aceptas nuestra política de privacidad. Nunca compartimos tus datos.
+                  {t('contact.privacy')}
                 </p>
               </div>
             )}
