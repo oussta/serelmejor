@@ -236,6 +236,16 @@ function Login() {
             )}
           </div>
 
+          {/* Forgot password */}
+          <div style={{ textAlign: 'right', marginBottom: '20px', marginTop: '8px' }}>
+            <Link
+              to="/forgot-password"
+              style={{ fontSize: '13px', color: '#2563EB', fontWeight: '600', textDecoration: 'none' }}
+            >
+              {t('auth.forgotPassword') || '¿Olvidaste tu contraseña?'}
+            </Link>
+          </div>
+
           {/* Submit */}
           <button
             type="submit"

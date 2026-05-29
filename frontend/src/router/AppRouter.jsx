@@ -6,6 +6,8 @@ import Team from '../pages/dashboard/Team'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
 import AdminPanel from '../pages/admin/AdminPanel'
+import ForgotPassword from '../pages/auth/ForgotPassword'
+import ResetPassword from '../pages/auth/ResetPassword'
 // App pages (protected)
 import Dashboard from '../pages/dashboard/Dashboard'
 import Leads from '../pages/salesflow/Leads'
@@ -57,11 +59,15 @@ function AppRouter() {
       <Route path="/contact"     element={<Contact />} />
       <Route path="/blog"        element={<Blog />} />
       <Route path="/blog/:slug"  element={<BlogPost />} />
-      <Route path="/como-funciona" element={<HowItWorks />} />
+      <Route path="/como-funciona" element={
+  <ProtectedRoute><HowItWorks /></ProtectedRoute>
+  } />
 
       {/* ── Auth ── */}
       <Route path="/login"    element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+<Route path="/reset-password"  element={<ResetPassword />} />
 
       {/* ── Admin only ── */}
       <Route path="/admin" element={
