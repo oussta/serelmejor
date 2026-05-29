@@ -57,6 +57,9 @@ elseif ($path === 'reset-password' && $method === 'POST') {
 elseif ($path === 'verify-email' && $method === 'POST') {
     AuthController::verifyEmail();
 }
+elseif ($path === 'verify-reset-code' && $method === 'POST') {
+    AuthController::verifyResetCode();
+}
 elseif ($path === 'resend-code' && $method === 'POST') {
     AuthController::resendCode();
 }

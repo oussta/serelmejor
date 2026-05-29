@@ -350,99 +350,121 @@ class AuthController {
 
     // POST /forgot-password
     public static function forgotPassword() {
-        $data  = json_decode(file_get_contents("php://input"), true);
-        $error = Validator::required($data, ['email']);
-        if ($error) Response::error($error, 400);
+    $data  = json_decode(file_get_contents("php://input"), true);
+    $error = Validator::required($data, ['email']);
+    if ($error) Response::error($error, 400);
 
-        $email = Validator::sanitize($data['email']);
-        $pdo   = getDB();
+    $email = Validator::sanitize($data['email']);
+    $pdo   = getDB();
 
-        $stmt = $pdo->prepare("SELECT id, name FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch();
+    $stmt = $pdo->prepare("SELECT id, name FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
 
-        if (!$user) {
-            Response::json(["message" => "If this email exists you will receive a reset link"]);
-            return;
-        }
-
-        $token  = bin2hex(random_bytes(32));
-        $expiry = date('Y-m-d H:i:s', time() + 3600);
-
-        $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?");
-        $stmt->execute([$token, $expiry, $user['id']]);
-
-        $resetUrl = "https://salsek.com/reset-password?token={$token}";
-
-        $content = "
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
-            </p>
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hemos recibido una solicitud para restablecer tu contraseña.
-            </p>
-            <a href='{$resetUrl}' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
-                Restablecer contraseña →
-            </a>
-            <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px;'>
-                <p style='color: #92400E; font-size: 13px; margin: 0;'>
-                    ⏱️ Expira en <strong>1 hora</strong>. Si no lo solicitaste, ignora este email.
-                </p>
-            </div>";
-
-        self::sendEmail(
-            $email,
-            'Restablece tu contraseña de Salesek',
-            self::emailWrapper('Solicitud de restablecimiento de contraseña', $content)
-        );
-
-        Response::json(["message" => "If this email exists you will receive a reset link"]);
+    if (!$user) {
+        Response::json(["message" => "If this email exists you will receive a reset code"]);
+        return;
     }
+
+    $code   = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+    $expiry = date('Y-m-d H:i:s', time() + 3600);
+
+    $stmt = $pdo->prepare("UPDATE users SET reset_code = ?, reset_code_expiry = ? WHERE id = ?");
+    $stmt->execute([$code, $expiry, $user['id']]);
+
+    $content = "
+        <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
+            Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
+        </p>
+        <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
+            Usa este código para restablecer tu contraseña:
+        </p>
+        <div style='text-align: center; margin: 32px 0;'>
+            <div style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; font-size: 40px; font-weight: 800; letter-spacing: 12px; padding: 20px 32px; border-radius: 16px; font-family: monospace;'>
+                {$code}
+            </div>
+        </div>
+        <div style='background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px; padding: 14px;'>
+            <p style='color: #92400E; font-size: 13px; margin: 0;'>
+                ⏱️ Este código expira en <strong>1 hora</strong>.
+                Si no solicitaste este cambio, ignora este email.
+            </p>
+        </div>";
+
+    self::sendEmail(
+        $email,
+        'Tu código para restablecer contraseña: ' . $code,
+        self::emailWrapper('Restablece tu contraseña 🔑', $content)
+    );
+
+    Response::json(["message" => "If this email exists you will receive a reset code"]);
+}
+// POST /verify-reset-code
+public static function verifyResetCode() {
+    $data  = json_decode(file_get_contents("php://input"), true);
+    $error = Validator::required($data, ['email', 'code']);
+    if ($error) Response::error($error, 400);
+
+    $email = Validator::sanitize($data['email']);
+    $code  = Validator::sanitize($data['code']);
+    $pdo   = getDB();
+
+    $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ? AND reset_code = ? AND reset_code_expiry > NOW()");
+    $stmt->execute([$email, $code]);
+    $user = $stmt->fetch();
+
+    if (!$user) Response::error("Código incorrecto o expirado", 400);
+
+    Response::json(["valid" => true, "message" => "Code verified"]);
+}
 
     // POST /reset-password
     public static function resetPassword() {
-        $data  = json_decode(file_get_contents("php://input"), true);
-        $error = Validator::required($data, ['token', 'password']);
-        if ($error) Response::error($error, 400);
+    $data  = json_decode(file_get_contents("php://input"), true);
+    $error = Validator::required($data, ['email', 'code', 'password']);
+    if ($error) Response::error($error, 400);
 
-        $error = Validator::password($data['password']);
-        if ($error) Response::error($error, 400);
+    $error = Validator::password($data['password']);
+    if ($error) Response::error($error, 400);
 
-        $pdo  = getDB();
-        $stmt = $pdo->prepare("SELECT id, email, name FROM users WHERE reset_token = ? AND reset_token_expiry > NOW()");
-        $stmt->execute([$data['token']]);
-        $user = $stmt->fetch();
+    $email = Validator::sanitize($data['email']);
+    $code  = Validator::sanitize($data['code']);
+    $pdo   = getDB();
 
-        if (!$user) Response::error("Invalid or expired reset token", 400);
+    $stmt = $pdo->prepare("SELECT id, name FROM users WHERE email = ? AND reset_code = ? AND reset_code_expiry > NOW()");
+    $stmt->execute([$email, $code]);
+    $user = $stmt->fetch();
 
-        $hash = password_hash($data['password'], PASSWORD_BCRYPT);
-        $stmt = $pdo->prepare("UPDATE users SET password_hash = ?, reset_token = NULL, reset_token_expiry = NULL WHERE id = ?");
-        $stmt->execute([$hash, $user['id']]);
+    if (!$user) Response::error("Código incorrecto o expirado", 400);
 
-        $content = "
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
+    $hash = password_hash($data['password'], PASSWORD_BCRYPT);
+    $stmt = $pdo->prepare("UPDATE users SET password_hash = ?, reset_code = NULL, reset_code_expiry = NULL WHERE id = ?");
+    $stmt->execute([$hash, $user['id']]);
+
+    $content = "
+        <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
+            Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
+        </p>
+        <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
+            Tu contraseña ha sido restablecida correctamente.
+        </p>
+        <a href='https://salsek.com/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
+            Iniciar sesión →
+        </a>
+        <div style='background: #FFF1F2; border: 1px solid #FECDD3; border-radius: 10px; padding: 14px;'>
+            <p style='color: #9F1239; font-size: 13px; margin: 0;'>
+                🔒 Si no realizaste este cambio, contacta con nosotros inmediatamente.
             </p>
-            <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
-                Tu contraseña ha sido restablecida correctamente.
-            </p>
-            <a href='https://salsek.com/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
-                Iniciar sesión →
-            </a>
-            <div style='background: #FFF1F2; border: 1px solid #FECDD3; border-radius: 10px; padding: 14px;'>
-                <p style='color: #9F1239; font-size: 13px; margin: 0;'>
-                    🔒 Si no realizaste este cambio, contacta con nosotros inmediatamente.
-                </p>
-            </div>";
+        </div>";
 
-        self::sendEmail(
-            $user['email'],
-            'Tu contraseña de Salesek ha sido cambiada',
-            self::emailWrapper('Contraseña actualizada ✓', $content)
-        );
+    self::sendEmail(
+        $email,
+        'Tu contraseña de Salesek ha sido cambiada',
+        self::emailWrapper('Contraseña actualizada ✓', $content)
+    );
 
-        Response::json(["message" => "Password reset successfully"]);
-    }
+    Response::json(["message" => "Password reset successfully"]);
+}
 
     // POST /cancel-subscription
     public static function cancelSubscription() {
