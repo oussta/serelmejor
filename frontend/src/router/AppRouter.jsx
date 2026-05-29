@@ -31,7 +31,6 @@ import BlogPost from '../pages/landing/BlogPost'
 
 // Layout
 import Layout from '../components/layout/Layout'
-
 import SupplierPortal from '../pages/supplier/SupplierPortal'
 
 function ProtectedRoute({ children }) {
@@ -52,22 +51,20 @@ function AppRouter() {
     <Routes>
 
       {/* ── Public ── */}
-      <Route path="/"            element={<Landing />} />
-      <Route path="/features"    element={<Features />} />
-      <Route path="/precios"     element={<PublicPricing />} />
-      <Route path="/about"       element={<About />} />
-      <Route path="/contact"     element={<Contact />} />
-      <Route path="/blog"        element={<Blog />} />
-      <Route path="/blog/:slug"  element={<BlogPost />} />
-      <Route path="/como-funciona" element={
-  <ProtectedRoute><HowItWorks /></ProtectedRoute>
-  } />
+      <Route path="/"              element={<Landing />} />
+      <Route path="/features"      element={<Features />} />
+      <Route path="/precios"       element={<PublicPricing />} />
+      <Route path="/about"         element={<About />} />
+      <Route path="/contact"       element={<Contact />} />
+      <Route path="/blog"          element={<Blog />} />
+      <Route path="/blog/:slug"    element={<BlogPost />} />
+      <Route path="/como-funciona" element={<HowItWorks />} />
 
       {/* ── Auth ── */}
-      <Route path="/login"    element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login"           element={<Login />} />
+      <Route path="/register"        element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-<Route path="/reset-password"  element={<ResetPassword />} />
+      <Route path="/reset-password"  element={<ResetPassword />} />
 
       {/* ── Admin only ── */}
       <Route path="/admin" element={

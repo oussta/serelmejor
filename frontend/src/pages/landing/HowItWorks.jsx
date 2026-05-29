@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../context/ThemeContext'
+import PublicNavbar from '../../components/layout/PublicNavbar'
+import PublicFooter from '../../components/layout/PublicFooter'
 
 export default function HowItWorks() {
   const navigate     = useNavigate()
