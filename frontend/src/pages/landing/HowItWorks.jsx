@@ -23,9 +23,9 @@ export default function HowItWorks() {
     return () => window.removeEventListener('resize', h)
   }, [])
 
-  const bg      = isDark ? '#0F172A' : '#F8FAFC'
-  const cardBg  = isDark ? '#1E293B' : '#FFFFFF'
-  const border  = isDark ? '#334155' : '#E2E8F0'
+  const bg       = isDark ? '#0F172A' : '#F8FAFC'
+  const cardBg   = isDark ? '#1E293B' : '#FFFFFF'
+  const border   = isDark ? '#334155' : '#E2E8F0'
   const textMain = isDark ? '#F1F5F9' : '#0F172A'
   const textSub  = isDark ? '#94A3B8' : '#64748B'
 
@@ -67,12 +67,12 @@ export default function HowItWorks() {
       title: t('howItWorks.bridge.title'),
       desc:  t('howItWorks.bridge.desc'),
       steps: [
-        { icon: 'diversity_3',   title: t('howItWorks.bridge.s1t'), desc: t('howItWorks.bridge.s1d') },
-        { icon: 'bolt',          title: t('howItWorks.bridge.s2t'), desc: t('howItWorks.bridge.s2d') },
-        { icon: 'trending_down', title: t('howItWorks.bridge.s3t'), desc: t('howItWorks.bridge.s3d') },
-        { icon: 'local_shipping',title: t('howItWorks.bridge.s4t'), desc: t('howItWorks.bridge.s4d') },
-        { icon: 'notifications', title: t('howItWorks.bridge.s5t'), desc: t('howItWorks.bridge.s5d') },
-        { icon: 'summarize',     title: t('howItWorks.bridge.s6t'), desc: t('howItWorks.bridge.s6d') },
+        { icon: 'diversity_3',    title: t('howItWorks.bridge.s1t'), desc: t('howItWorks.bridge.s1d') },
+        { icon: 'bolt',           title: t('howItWorks.bridge.s2t'), desc: t('howItWorks.bridge.s2d') },
+        { icon: 'trending_down',  title: t('howItWorks.bridge.s3t'), desc: t('howItWorks.bridge.s3d') },
+        { icon: 'local_shipping', title: t('howItWorks.bridge.s4t'), desc: t('howItWorks.bridge.s4d') },
+        { icon: 'notifications',  title: t('howItWorks.bridge.s5t'), desc: t('howItWorks.bridge.s5d') },
+        { icon: 'summarize',      title: t('howItWorks.bridge.s6t'), desc: t('howItWorks.bridge.s6d') },
       ],
     },
   }
@@ -95,14 +95,14 @@ export default function HowItWorks() {
   ]
 
   const whoItems = [
-    { icon: 'store',           color: '#2563EB', title: t('howItWorks.who.w1t'), desc: t('howItWorks.who.w1d') },
-    { icon: 'engineering',     color: '#10B981', title: t('howItWorks.who.w2t'), desc: t('howItWorks.who.w2d') },
-    { icon: 'apartment',       color: '#F59E0B', title: t('howItWorks.who.w3t'), desc: t('howItWorks.who.w3d') },
-    { icon: 'groups',          color: '#7C3AED', title: t('howItWorks.who.w4t'), desc: t('howItWorks.who.w4d') },
+    { icon: 'store',            color: '#2563EB', title: t('howItWorks.who.w1t'), desc: t('howItWorks.who.w1d') },
+    { icon: 'engineering',      color: '#10B981', title: t('howItWorks.who.w2t'), desc: t('howItWorks.who.w2d') },
+    { icon: 'apartment',        color: '#F59E0B', title: t('howItWorks.who.w3t'), desc: t('howItWorks.who.w3d') },
+    { icon: 'groups',           color: '#7C3AED', title: t('howItWorks.who.w4t'), desc: t('howItWorks.who.w4d') },
     { icon: 'medical_services', color: '#F43F5E', title: t('howItWorks.who.w5t'), desc: t('howItWorks.who.w5d') },
-    { icon: 'restaurant',      color: '#0EA5E9', title: t('howItWorks.who.w6t'), desc: t('howItWorks.who.w6d') },
-    { icon: 'build',           color: '#10B981', title: t('howItWorks.who.w7t'), desc: t('howItWorks.who.w7d') },
-    { icon: 'school',          color: '#2563EB', title: t('howItWorks.who.w8t'), desc: t('howItWorks.who.w8d') },
+    { icon: 'restaurant',       color: '#0EA5E9', title: t('howItWorks.who.w6t'), desc: t('howItWorks.who.w6d') },
+    { icon: 'build',            color: '#10B981', title: t('howItWorks.who.w7t'), desc: t('howItWorks.who.w7d') },
+    { icon: 'school',           color: '#2563EB', title: t('howItWorks.who.w8t'), desc: t('howItWorks.who.w8d') },
   ]
 
   const faqs = [
@@ -119,7 +119,10 @@ export default function HowItWorks() {
       <Helmet>
         <title>¿Cómo funciona Salesek? — CRM e inventario para pymes</title>
         <meta name="description" content="Aprende cómo SalesFlow, StockFlow y The Bridge trabajan juntos para que nunca pierdas una venta ni te quedes sin stock." />
+        <link rel="canonical" href="https://salsek.com/como-funciona" />
       </Helmet>
+
+      <PublicNavbar />
 
       {/* ── HERO ── */}
       <section style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%)', padding: isMobile ? '48px 20px' : '80px 24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -134,11 +137,11 @@ export default function HowItWorks() {
             {t('howItWorks.title')}<br />
             <span style={{ color: '#60A5FA' }}>{t('howItWorks.titleAccent')}</span>
           </h1>
-          <p style={{ fontSize: isMobile ? '14px' : '17px', color: 'rgba(255,255,255,0.65)', lineHeight: '1.7', marginBottom: '32px', maxWidth: '520px', margin: '0 auto 32px' }}>
+          <p style={{ fontSize: isMobile ? '14px' : '17px', color: 'rgba(255,255,255,0.65)', lineHeight: '1.7', margin: '0 auto 32px', maxWidth: '520px' }}>
             {t('howItWorks.subtitle')}
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => navigate('/pricing')} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 8px 24px rgba(37,99,235,0.4)' }}>
+            <button onClick={() => navigate('/register')} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '14px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 8px 24px rgba(37,99,235,0.4)' }}>
               {t('howItWorks.tryFree')}
             </button>
             <button onClick={() => navigate('/contact')} style={{ padding: '12px 24px', background: 'rgba(255,255,255,0.08)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
@@ -157,7 +160,7 @@ export default function HowItWorks() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '20px' }}>
             {mods.map((mod, i) => (
-              <div key={i} style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '28px', transition: 'transform 0.2s, box-shadow 0.2s', cursor: 'default' }}
+              <div key={i} style={{ background: cardBg, border: `1px solid ${border}`, borderRadius: '20px', padding: '28px', transition: 'transform 0.2s, box-shadow 0.2s' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = `0 12px 32px ${mod.color}20` }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}
               >
@@ -181,7 +184,6 @@ export default function HowItWorks() {
             <p style={{ fontSize: '14px', color: textSub }}>{t('howItWorks.stepsSubtitle')}</p>
           </div>
 
-          {/* Tab switcher */}
           <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '32px', flexWrap: 'wrap' }}>
             {tabs.map(tab => (
               <button key={tab.id} onClick={() => setActiveTab(tab.id)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: isMobile ? '10px 16px' : '11px 20px', background: activeTab === tab.id ? tab.color : cardBg, color: activeTab === tab.id ? 'white' : textSub, border: `2px solid ${activeTab === tab.id ? tab.color : border}`, borderRadius: '12px', fontSize: '13px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', transition: 'all 0.2s', boxShadow: activeTab === tab.id ? `0 4px 16px ${tab.color}40` : 'none' }}>
@@ -325,7 +327,7 @@ export default function HowItWorks() {
           <h2 style={{ fontSize: isMobile ? '26px' : '38px', fontWeight: '800', color: 'white', marginBottom: '12px', letterSpacing: '-0.02em' }}>{t('howItWorks.ctaTitle')}</h2>
           <p style={{ fontSize: isMobile ? '14px' : '16px', color: 'rgba(255,255,255,0.6)', marginBottom: '32px', lineHeight: '1.6' }}>{t('howItWorks.ctaDesc')}</p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => navigate('/pricing')} style={{ padding: '13px 28px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: isMobile ? '14px' : '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 8px 24px rgba(37,99,235,0.4)', width: isMobile ? '100%' : 'auto' }}>
+            <button onClick={() => navigate('/register')} style={{ padding: '13px 28px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', color: 'white', border: 'none', borderRadius: '12px', fontSize: isMobile ? '14px' : '15px', fontWeight: '700', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 8px 24px rgba(37,99,235,0.4)', width: isMobile ? '100%' : 'auto' }}>
               {t('howItWorks.ctaRegister')}
             </button>
             <button onClick={() => navigate('/precios')} style={{ padding: '13px 28px', background: 'rgba(255,255,255,0.08)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', fontSize: isMobile ? '14px' : '15px', fontWeight: '600', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', width: isMobile ? '100%' : 'auto' }}>
@@ -334,6 +336,8 @@ export default function HowItWorks() {
           </div>
         </div>
       </section>
+
+      <PublicFooter />
 
       <style>{`@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }`}</style>
     </div>
