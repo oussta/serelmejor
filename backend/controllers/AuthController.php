@@ -57,7 +57,7 @@ class AuthController {
                 {$content}
                 <hr style='border: none; border-top: 1px solid #E2E8F0; margin: 32px 0 24px;'>
                 <p style='color: #94A3B8; font-size: 12px; margin: 0;'>
-                    © 2026 Salesek · <a href='https://serelmejor.vercel.app' style='color: #2563EB;'>serelmejor.vercel.app</a>
+                    © 2026 Salesek · <a href='https://salsek.com' style='color: #2563EB;'>salsek.com</a>
                 </p>
             </div>
         </div>";
@@ -199,7 +199,7 @@ class AuthController {
                 Hola <strong style='color: #0F172A;'>{$user['name']}</strong>,
                 tu email ha sido verificado correctamente. 🎉
             </p>
-            <a href='https://serelmejor.vercel.app/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
+            <a href='https://salsek.com/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
                 Acceder a Salesek →
             </a>";
 
@@ -372,7 +372,7 @@ class AuthController {
         $stmt = $pdo->prepare("UPDATE users SET reset_token = ?, reset_token_expiry = ? WHERE id = ?");
         $stmt->execute([$token, $expiry, $user['id']]);
 
-        $resetUrl = "https://serelmejor.vercel.app/reset-password?token={$token}";
+        $resetUrl = "https://salsek.com/reset-password?token={$token}";
 
         $content = "
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
@@ -426,7 +426,7 @@ class AuthController {
             <p style='color: #64748B; font-size: 15px; line-height: 1.7;'>
                 Tu contraseña ha sido restablecida correctamente.
             </p>
-            <a href='https://serelmejor.vercel.app/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
+            <a href='https://salsek.com/login' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin: 20px 0;'>
                 Iniciar sesión →
             </a>
             <div style='background: #FFF1F2; border: 1px solid #FECDD3; border-radius: 10px; padding: 14px;'>
@@ -480,7 +480,7 @@ class AuthController {
                 Tu suscripción <strong>{$planName}</strong> ha sido cancelada.
                 Seguirás teniendo acceso hasta el final del período facturado.
             </p>
-            <a href='https://serelmejor.vercel.app/pricing' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
+            <a href='https://salsek.com/pricing' style='display: inline-block; background: linear-gradient(135deg, #2563EB, #0EA5E9); color: white; padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 15px; margin-top: 8px;'>
                 Reactivar suscripción →
             </a>";
 
