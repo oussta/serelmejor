@@ -7,7 +7,6 @@ Disallow: /orders
 Disallow: /admin
 Disallow: /team
 Disallow: /supplier
-Disallow: /pricing
 Disallow: /payment
 
-Sitemap: https://salesek.onrender.com/sitemap.xml
+Sitemap: https://salsek.com/sitemap.xml

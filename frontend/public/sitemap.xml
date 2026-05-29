@@ -2,85 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://salesek.onrender.com/</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/features</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/features</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/precios</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/pricing</loc>
+    <lastmod>2026-05-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://salsek.com/como-funciona</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/about</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/about</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/contact</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/contact</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/crm-para-pequenas-empresas-espana</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/crm-para-pequenas-empresas-espana</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/como-dejar-de-gestionar-clientes-con-excel</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/como-dejar-de-gestionar-clientes-con-excel</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/control-inventario-pymes-sin-complicaciones</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/control-inventario-pymes-sin-complicaciones</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/software-gestion-pymes-que-vale-la-pena</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/software-gestion-pymes-que-vale-la-pena</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/como-no-perder-clientes-por-falta-de-seguimiento</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/como-no-perder-clientes-por-falta-de-seguimiento</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://salesek.onrender.com/blog/gestionar-proveedores-sin-llamadas-ni-emails</loc>
-    <lastmod>2026-05-05</lastmod>
+    <loc>https://salsek.com/blog/gestionar-proveedores-sin-llamadas-ni-emails</loc>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

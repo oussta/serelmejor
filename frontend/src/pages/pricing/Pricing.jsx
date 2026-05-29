@@ -210,49 +210,51 @@ function Pricing() {
               </div>
             )}
 
-            {/* Why tooltip button */}
-            <div style={{ position: 'absolute', top: '14px', right: '14px' }}>
-              <button
-                onMouseEnter={() => setActiveTip(plan.id)}
-                onMouseLeave={() => setActiveTip(null)}
-                onClick={() => setActiveTip(activeTip === plan.id ? null : plan.id)}
-                style={{
-                  width: '26px', height: '26px', borderRadius: '50%',
-                  background: plan.badge ? 'rgba(255,255,255,0.2)' : (isDark ? '#334155' : '#F1F5F9'),
-                  border: plan.badge ? '1px solid rgba(255,255,255,0.3)' : `1px solid ${border}`,
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: plan.badge ? 'white' : textSub,
-                }}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>help</span>
-              </button>
+           {/* Why tooltip button */}
+<div
+  style={{ position: 'absolute', top: '14px', right: '14px' }}
+  onMouseEnter={() => setActiveTip(plan.id)}
+  onMouseLeave={() => setActiveTip(null)}
+>
+  <button
+    onClick={() => setActiveTip(activeTip === plan.id ? null : plan.id)}
+    style={{
+      width: '26px', height: '26px', borderRadius: '50%',
+      background: plan.badge ? 'rgba(255,255,255,0.2)' : (isDark ? '#334155' : '#F1F5F9'),
+      border: plan.badge ? '1px solid rgba(255,255,255,0.3)' : `1px solid ${border}`,
+      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      color: plan.badge ? 'white' : textSub,
+    }}
+  >
+    <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>help</span>
+  </button>
 
-              {activeTip === plan.id && (
-                <div style={{
-                  position: 'absolute', top: '32px', right: 0,
-                  background: isDark ? '#1E293B' : 'white',
-                  border: `1px solid ${border}`,
-                  borderRadius: '16px', padding: '16px', width: '240px',
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.2)', zIndex: 20,
-                  animation: 'slideUp 0.2s ease',
-                }}>
-                  <p style={{ fontSize: '13px', fontWeight: '800', color: textMain, marginBottom: '8px' }}>
-                    {t(`pricing.why${plan.whyKey}`)}
-                  </p>
-                  <p style={{ fontSize: '12px', color: textSub, lineHeight: '1.6', marginBottom: '10px' }}>
-                    {t(`pricing.why${plan.whyKey}Desc`)}
-                  </p>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {(t(`pricing.why${plan.whyKey}Items`, { returnObjects: true }) || []).map((item, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: '14px', color: plan.color }}>check_circle</span>
-                        <span style={{ fontSize: '12px', color: textMain, fontWeight: '500' }}>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+  {activeTip === plan.id && (
+    <div style={{
+      position: 'absolute', top: '32px', right: 0,
+      background: isDark ? '#1E293B' : 'white',
+      border: `1px solid ${border}`,
+      borderRadius: '16px', padding: '16px', width: '240px',
+      boxShadow: '0 8px 32px rgba(0,0,0,0.2)', zIndex: 20,
+      animation: 'slideUp 0.2s ease',
+    }}>
+      <p style={{ fontSize: '13px', fontWeight: '800', color: textMain, marginBottom: '8px' }}>
+        {t(`pricing.why${plan.whyKey}`)}
+      </p>
+      <p style={{ fontSize: '12px', color: textSub, lineHeight: '1.6', marginBottom: '10px' }}>
+        {t(`pricing.why${plan.whyKey}Desc`)}
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        {(t(`pricing.why${plan.whyKey}Items`, { returnObjects: true }) || []).map((item, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '14px', color: plan.color }}>check_circle</span>
+            <span style={{ fontSize: '12px', color: textMain, fontWeight: '500' }}>{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
 
             {/* Icon + name */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', paddingRight: '32px' }}>
