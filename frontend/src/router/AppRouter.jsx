@@ -47,6 +47,13 @@ function AdminRoute({ children }) {
   return <Layout>{children}</Layout>
 }
 
+function SupplierRoute({ children }) {
+  const { token, user } = useAuth()
+  if (!token) return <Navigate to="/login" replace />
+  if (user?.role !== 'supplier') return <Navigate to="/dashboard" replace />
+  return <Layout>{children}</Layout>
+}
+
 function AppRouter() {
   return (
     <Routes>
@@ -72,10 +79,10 @@ function AppRouter() {
         <AdminRoute><AdminPanel /></AdminRoute>
       } />
 
-      {/* ── Supplier ── */}
-      <Route path="/supplier" element={
-        <ProtectedRoute><SupplierPortal /></ProtectedRoute>
-      } />
+     {/* ── Supplier ── */}
+<Route path="/supplier" element={
+  <SupplierRoute><SupplierPortal /></SupplierRoute>
+} />
 
       {/* ── Protected ── */}
       <Route path="/pricing" element={
