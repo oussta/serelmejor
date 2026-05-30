@@ -344,7 +344,7 @@ export default function Register() {
                   }}>
                     {done
                       ? <span className="material-symbols-outlined" style={{ fontSize: '16px', color: 'white' }}>check</span>
-                      : <span style={{ fontSize: '13px', fontWeight: '700', color: active ? 'white' : textSub }}>{i + 1}</span>
+                     : <span className="material-symbols-outlined" style={{ fontSize: '16px', color: active ? 'white' : textSub }}>{s.icon}</span>
                     }
                   </div>
                   <span style={{

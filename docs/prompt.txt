@@ -1,0 +1,76 @@
+I need you to create the complete final project documentation for my DAW school project called Salesek. 
+
+PROJECT CONTEXT:
+- Name: Salesek — SaaS CRM + Inventory platform for small businesses
+- Live URL: https://salsek.com
+- Repository: https://github.com/oussta/serelmejor
+- Backend API: https://serelmejor.onrender.com
+- Tech stack: React 18 + Vite (frontend) | PHP 8 (backend) | PostgreSQL (database) | JWT + bcrypt (auth) | SendGrid (email) | Groq AI/LLaMA (AI) | WebSockets (real-time) | Render + Vercel (deployment)
+- 4 roles: Admin, Owner, Employee, Supplier
+- 2 modules: SalesFlow CRM + StockFlow Inventory + The Bridge (auto-sync)
+- 11 database tables: users, businesses, subscriptions, leads, lead_messages, followups, products, stock_movements, suppliers, purchase_orders, notifications
+- Demo accounts (password: password): admin@salesek.com | owner@salesek.com | employee@salesek.com | supplier@salesek.com
+
+FEATURES:
+- Lead pipeline: New → Contacted → Negotiating → Won/Lost
+- Message timeline per lead
+- Follow-up reminders
+- AI draft response button (Groq API)
+- Product CRUD with categories
+- Stock movements (sales + restocks)
+- Low stock alerts
+- Automatic purchase orders to suppliers via email
+- AI order suggestion button (Groq API)
+- The Bridge: when a deal closes in CRM, inventory auto-updates and creates purchase order if stock is low
+- Real-time notifications via WebSockets
+- Supplier portal (read-only): view orders, confirm, mark delivered
+- Admin panel: platform stats, all businesses, all users
+- 3 subscription plans: SalesFlow €29/mo | StockFlow €29/mo | Suite €49/mo
+- Multilingual: Spanish, English, French
+- Dark mode
+- Responsive design (mobile + desktop)
+- SEO optimized (sitemap, robots.txt, Schema.org, Open Graph)
+- Email flows: verification, welcome, password reset, contact form, purchase orders, cancellation
+
+TASK:
+Create TWO complete Word documents (.docx) saved in the docs/ folder of this project:
+1. docs/memoria_ES.docx — in Spanish
+2. docs/memoria_EN.docx — in English
+
+Each document must follow this exact structure:
+
+1. Identificación de necesidades
+   1.1 Contextualización — describe the SME sector, who will use Salesek, what problem it solves
+   1.2 Justificación — why Salesek is the right solution, business opportunities, specific characteristics
+   1.3 Otros aspectos — fiscal/legal obligations, possible grants/subsidies, work guide
+
+2. Diseño del proyecto
+   2.1 Contenido — what the project covers, technical feasibility study, project phases
+   2.2 Objetivos y recursos — objectives, hardware/software resources, material/personal resources
+   2.3 Viabilidad económica — budget (Render ~€14/mo, domain ~€12/yr, development hours), financing
+   2.4 Modelo de solución — full description with: tech stack table, user roles table, database E-R description, API endpoints list, data flow diagrams description, subscription plans table, folder structure
+
+3. Ejecución del proyecto
+   3.1 Planificación temporal — 14 phases (Phase 0 Setup to Phase 14 Documentation), dependent tasks, Gantt description
+   3.2 Riesgos — risk identification (server downtime, data loss, security breaches) and prevention plan
+   3.3 Revisión de recursos — resource assignment, budget review
+   3.4 Documentación de ejecución — all config files, security policy (JWT, bcrypt, PDO, HTTPS, XSS), source code structure, database implementation, user manuals, installation manual, configuration manual
+
+4. Seguimiento y control
+   4.1 Valoración del proyecto — quality indicators, evaluation protocol
+   4.2 Incidencias — incident protocol with collection, solution, registry
+   4.3 Cambios — migration plan, updates, scalability, improvements
+   4.4 Pruebas y soporte — security tests, load tests, access tests, backup policy, SLA agreement
+
+IMPORTANT RULES:
+- Write in a professional academic tone — do NOT use bullet points with dashes (-) to list things, use numbered lists or proper paragraphs instead
+- Do NOT make it sound like AI wrote it — use natural human academic writing
+- Every section where a screenshot is needed, insert a clearly visible yellow highlighted box that says: [CAPTURA REQUERIDA: description of what screenshot to take] in Spanish doc and [SCREENSHOT REQUIRED: description] in English doc
+- Be thorough and detailed — this is a graded final exam document
+- Include real technical details from the project (actual table names, actual endpoints, actual tech versions)
+- The installation manual must include exact steps to run the project locally and deploy to Render/Vercel
+- Include the 4 demo account credentials in the user manual section
+- Do not use the word "innovative" or "cutting-edge" or AI buzzwords
+- Write dates as 2025/2026 academic year
+- Author: your student name (leave as [NOMBRE DEL ALUMNO] placeholder)
+- School: Digitech DAW
