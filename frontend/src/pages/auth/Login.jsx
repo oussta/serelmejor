@@ -19,14 +19,21 @@ function Login() {
   const [loading,     setLoading]     = useState(false)
   const [serverError, setServerError] = useState('')
 
-  const bg       = isDark ? '#0F172A' : '#F0F4FF'
-  const cardBg   = isDark ? '#1E293B' : '#FFFFFF'
-  const border   = isDark ? '#334155' : '#E2E8F0'
-  const textMain = isDark ? '#F1F5F9' : '#0F172A'
-  const textSub  = isDark ? '#94A3B8' : '#64748B'
-  const inputBg  = isDark ? '#0F172A' : '#F8FAFC'
+  const bg        = isDark ? '#0F172A' : '#F0F4FF'
+  const cardBg    = isDark ? '#1E293B' : '#FFFFFF'
+  const border    = isDark ? '#334155' : '#E2E8F0'
+  const textMain  = isDark ? '#F1F5F9' : '#0F172A'
+  const textSub   = isDark ? '#94A3B8' : '#64748B'
+  const inputBg   = isDark ? '#0F172A' : '#F8FAFC'
   const inputText = isDark ? '#F1F5F9' : '#0F172A'
   const inputBorder = isDark ? '#334155' : '#CBD5E1'
+
+  const demoAccounts = [
+    { role: 'Admin',    email: 'admin@salesek.com' },
+    { role: 'Owner',    email: 'owner@salesek.com' },
+    { role: 'Employee', email: 'employee@salesek.com' },
+    { role: 'Supplier', email: 'supplier@salesek.com' },
+  ]
 
   function validateField(name, value) {
     if (name === 'email') {
@@ -96,25 +103,15 @@ function Login() {
     }}>
 
       {/* Back to site */}
-      <a
+      
         href="/"
         style={{
-          position: 'absolute',
-          top: '24px',
-          left: '24px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          fontSize: '13px',
-          fontWeight: '600',
-          color: textSub,
-          textDecoration: 'none',
-          fontFamily: 'Plus Jakarta Sans, sans-serif',
-          padding: '8px 14px',
-          borderRadius: '10px',
-          border: `1px solid ${border}`,
-          background: cardBg,
-          transition: 'all 0.15s',
+          position: 'absolute', top: '24px', left: '24px',
+          display: 'flex', alignItems: 'center', gap: '6px',
+          fontSize: '13px', fontWeight: '600', color: textSub,
+          textDecoration: 'none', padding: '8px 14px',
+          borderRadius: '10px', border: `1px solid ${border}`,
+          background: cardBg, transition: 'all 0.15s',
         }}
         onMouseEnter={e => { e.currentTarget.style.color = '#2563EB'; e.currentTarget.style.borderColor = '#2563EB' }}
         onMouseLeave={e => { e.currentTarget.style.color = textSub; e.currentTarget.style.borderColor = border }}
@@ -125,31 +122,25 @@ function Login() {
 
       {/* Card */}
       <div style={{
-        background: cardBg,
-        padding: '40px',
-        borderRadius: '24px',
+        background: cardBg, padding: '40px', borderRadius: '24px',
         boxShadow: isDark ? '0 8px 40px rgba(0,0,0,0.5)' : '0 8px 40px rgba(37,99,235,0.12)',
-        width: '100%',
-        maxWidth: '420px',
-        border: `1px solid ${border}`,
+        width: '100%', maxWidth: '420px', border: `1px solid ${border}`,
       }}>
 
-        {/* Logo area */}
+        {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          {/* Logo circle */}
           <div style={{
             width: '56px', height: '56px', borderRadius: '16px',
             background: 'linear-gradient(135deg, #2563EB, #0EA5E9)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 14px',
-            boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
+            margin: '0 auto 14px', boxShadow: '0 4px 16px rgba(37,99,235,0.35)',
           }}>
             <span style={{ color: 'white', fontWeight: '800', fontSize: '24px', letterSpacing: '-1px' }}>S</span>
           </div>
           <h1 style={{ fontSize: '22px', fontWeight: '800', color: textMain, letterSpacing: '-0.5px', marginBottom: '4px' }}>
             Salesek
           </h1>
-          <p style={{ fontSize: '14px', color: textSub, fontWeight: '400' }}>
+          <p style={{ fontSize: '14px', color: textSub }}>
             {t('auth.loginTitle') || 'Inicia sesión en tu cuenta'}
           </p>
         </div>
@@ -158,15 +149,10 @@ function Login() {
         {serverError && (
           <div style={{
             background: isDark ? 'rgba(244,63,94,0.12)' : '#FFF1F2',
-            color: '#F43F5E',
-            padding: '12px 14px',
-            borderRadius: '10px',
-            marginBottom: '20px',
-            fontSize: '14px',
+            color: '#F43F5E', padding: '12px 14px', borderRadius: '10px',
+            marginBottom: '20px', fontSize: '14px',
             border: '1px solid rgba(244,63,94,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
+            display: 'flex', alignItems: 'center', gap: '8px',
           }}>
             <span className="material-symbols-outlined" style={{ fontSize: '18px', flexShrink: 0 }}>error</span>
             {serverError}
@@ -187,7 +173,7 @@ function Login() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               onBlur={handleBlur}
-              placeholder="admin@salesek.com"
+              placeholder="owner@salesek.com"
               autoComplete="email"
             />
             {errors.email && (
@@ -199,7 +185,7 @@ function Login() {
           </div>
 
           {/* Password */}
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: '8px' }}>
             <label style={{ display: 'block', fontSize: '13px', color: textSub, marginBottom: '6px', fontWeight: '600' }}>
               {t('auth.password') || 'Contraseña'}
             </label>
@@ -251,21 +237,14 @@ function Login() {
             type="submit"
             disabled={loading}
             style={{
-              width: '100%',
-              padding: '13px',
+              width: '100%', padding: '13px',
               background: loading ? '#94A3B8' : 'linear-gradient(135deg, #2563EB, #0EA5E9)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '12px',
-              fontSize: '15px',
-              fontWeight: '700',
+              color: 'white', border: 'none', borderRadius: '12px',
+              fontSize: '15px', fontWeight: '700',
               cursor: loading ? 'not-allowed' : 'pointer',
               fontFamily: 'Plus Jakarta Sans, sans-serif',
               boxShadow: loading ? 'none' : '0 4px 16px rgba(37,99,235,0.35)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
               transition: 'all 0.15s',
             }}
           >
@@ -284,21 +263,36 @@ function Login() {
           </Link>
         </p>
 
-        {/* Demo hint */}
+        {/* Demo accounts */}
         <div style={{
-          marginTop: '20px',
-          padding: '12px 16px',
+          marginTop: '20px', padding: '16px',
           background: isDark ? 'rgba(37,99,235,0.08)' : '#EFF6FF',
-          borderRadius: '10px',
+          borderRadius: '12px',
           border: `1px solid ${isDark ? 'rgba(37,99,235,0.2)' : '#BFDBFE'}`,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
         }}>
-          <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#2563EB', flexShrink: 0 }}>info</span>
-          <p style={{ fontSize: '12px', color: isDark ? '#93C5FD' : '#2563EB', fontWeight: '500', margin: 0 }}>
-            Demo: admin@salesek.com / password
-          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#2563EB' }}>info</span>
+            <span style={{ fontSize: '12px', fontWeight: '700', color: '#2563EB' }}>
+              Cuentas demo — password: <strong>password</strong>
+            </span>
+          </div>
+          {demoAccounts.map(({ role, email: demoEmail }) => (
+            <div key={demoEmail} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: `1px solid ${isDark ? 'rgba(37,99,235,0.1)' : '#BFDBFE'}` }}>
+              <span style={{ fontSize: '12px', fontWeight: '600', color: isDark ? '#93C5FD' : '#1D4ED8' }}>{role}</span>
+              <button
+                type="button"
+                onClick={() => { setEmail(demoEmail); setPassword('password') }}
+                style={{
+                  fontSize: '11px', color: isDark ? '#93C5FD' : '#2563EB',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  fontFamily: 'Plus Jakarta Sans, sans-serif',
+                  textDecoration: 'underline', padding: '2px 4px',
+                }}
+              >
+                {demoEmail}
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
