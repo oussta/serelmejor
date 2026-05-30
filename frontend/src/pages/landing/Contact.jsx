@@ -173,7 +173,7 @@ function Contact() {
   }
 
   const info = [
-    { icon: 'mail',          color: '#2563EB', label: t('contact.infoEmail'),    value: 'hola@salesek.com' },
+    { icon: 'mail',          color: '#2563EB', label: t('contact.infoEmail'),    value: 'salesek.app@gmail.com' },
     { icon: 'schedule',      color: '#10B981', label: t('contact.infoHours'),    value: t('contact.infoHoursVal') },
     { icon: 'location_on',   color: '#F59E0B', label: t('contact.infoLocation'), value: t('contact.infoLocationVal') },
     { icon: 'support_agent', color: '#0EA5E9', label: t('contact.infoSupport'),  value: t('contact.infoSupportVal') },
