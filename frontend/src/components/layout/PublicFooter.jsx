@@ -62,12 +62,9 @@ function PublicFooter() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
             {/* Logo */}
-            <div onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '12px', width: 'fit-content' }}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'linear-gradient(135deg, #2563EB, #0EA5E9)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(37,99,235,0.4)' }}>
-                <span style={{ color: 'white', fontWeight: '800', fontSize: '24px', letterSpacing: '-1px' }}>S</span>
-              </div>
-              <span style={{ fontSize: '24px', fontWeight: '800', color: '#F1F5F9', letterSpacing: '-0.5px' }}>Salesek</span>
-            </div>
+      <div onClick={() => navigate('/')} style={{ cursor: 'pointer', width: 'fit-content' }}>
+    <img src="/logo.png" alt="Salesek" style={{ height: '40px', objectFit: 'contain' }} />
+    </div>
 
             <p style={{ fontSize: '14px', color: textSub, lineHeight: '1.75', maxWidth: '260px' }}>
               {t('footer.tagline') || 'CRM + Inventario conectados en una sola plataforma para pequeñas empresas.'}

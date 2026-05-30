@@ -34,8 +34,9 @@ import Layout from '../components/layout/Layout'
 import SupplierPortal from '../pages/supplier/SupplierPortal'
 
 function ProtectedRoute({ children }) {
-  const { token } = useAuth()
+  const { token, user } = useAuth()
   if (!token) return <Navigate to="/login" replace />
+  if (user?.role === 'supplier') return <Navigate to="/supplier" replace />
   return <Layout>{children}</Layout>
 }
 

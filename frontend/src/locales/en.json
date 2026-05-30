@@ -9,7 +9,9 @@
   "blog": "Blog",
   "login": "Log in",
   "register": "Get started free",
-  "cta": "Get started free"
+  "cta": "Get started free",
+  "darkMode": "Dark mode",
+  "lightMode": "Light mode"
 },
 "howItWorks": {
   "badge": "How it works?",
