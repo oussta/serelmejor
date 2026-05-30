@@ -284,38 +284,22 @@ function Login() {
           </Link>
         </p>
 
-       {/* Demo hint */}
-<div style={{
-  marginTop: '20px',
-  padding: '14px 16px',
-  background: isDark ? 'rgba(37,99,235,0.08)' : '#EFF6FF',
-  borderRadius: '12px',
-  border: `1px solid ${isDark ? 'rgba(37,99,235,0.2)' : '#BFDBFE'}`,
-}}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
-    <span className="material-symbols-outlined" style={{ fontSize: '15px', color: '#2563EB' }}>info</span>
-    <span style={{ fontSize: '12px', fontWeight: '700', color: isDark ? '#93C5FD' : '#2563EB' }}>
-      Cuentas demo — password: password
-    </span>
-  </div>
-  {[
-    { role: 'Admin',    em: 'admin@salesek.com' },
-    { role: 'Owner',    em: 'owner@salesek.com' },
-    { role: 'Employee', em: 'employee@salesek.com' },
-    { role: 'Supplier', em: 'supplier@salesek.com' },
-  ].map(({ role, em }) => (
-    <div key={em} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0', borderBottom: `1px solid ${isDark ? 'rgba(37,99,235,0.1)' : '#BFDBFE'}` }}>
-      <span style={{ fontSize: '11px', fontWeight: '600', color: isDark ? '#93C5FD' : '#1D4ED8' }}>{role}</span>
-      <button
-        type="button"
-        onClick={() => { setEmail(em); setPassword('password') }}
-        style={{ fontSize: '11px', color: isDark ? '#93C5FD' : '#2563EB', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans, sans-serif', textDecoration: 'underline' }}
-      >
-        {em}
-      </button>
-    </div>
-  ))}
-</div>
+        {/* Demo hint */}
+        <div style={{
+          marginTop: '20px',
+          padding: '12px 16px',
+          background: isDark ? 'rgba(37,99,235,0.08)' : '#EFF6FF',
+          borderRadius: '10px',
+          border: `1px solid ${isDark ? 'rgba(37,99,235,0.2)' : '#BFDBFE'}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+        }}>
+          <span className="material-symbols-outlined" style={{ fontSize: '16px', color: '#2563EB', flexShrink: 0 }}>info</span>
+          <p style={{ fontSize: '12px', color: isDark ? '#93C5FD' : '#2563EB', fontWeight: '500', margin: 0 }}>
+            Demo: admin@salesek.com / password
+          </p>
+        </div>
       </div>
 
       <style>{`
