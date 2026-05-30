@@ -140,9 +140,7 @@ function PublicFooter() {
                 {item.label}
               </button>
             ))}
-            <span style={{ fontSize: '11px', color: '#334155', padding: '3px 10px', background: '#1E293B', borderRadius: '99px', border: '1px solid #2D3748', fontWeight: '600' }}>
-              DAW 2025/26
-            </span>
+            
           </div>
         </div>
       </div>
