@@ -461,9 +461,9 @@
   "aiPlaceholder": "Describe your stock situation to get order suggestions..."
 },
 "register": {
-  "stepAccount": "1. Account",
-  "stepPlan": "2. Plan",
-  "stepPayment": "3. Payment",
+  "stepAccount": "Account",
+  "stepPlan": "Plan",
+  "stepPayment": "Payment",
   "createAccount": "Create your free account",
   "choosePlan": "Choose your plan",
   "paymentDetails": "Payment details",
@@ -504,7 +504,7 @@
   "plan": "Plan",
   "goToLogin": "Sign in →",
   "successNote": "Sign in with your email and password to access.",
-  "stepVerify": "4. Verify",
+  "stepVerify": "Verify",
   "verifyTitle": "Verify your email",
 "verifySubtitle": "We sent a 6-digit code to",
 "verifyBtn": "Verify email",

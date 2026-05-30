@@ -101,9 +101,9 @@
 }
 ,
   "register": {
-  "stepAccount": "1. Cuenta",
-  "stepPlan": "2. Plan",
-  "stepPayment": "3. Pago",
+  "stepAccount": "Cuenta",
+  "stepPlan": "Plan",
+  "stepPayment": "Pago",
   "createAccount": "Crea tu cuenta gratis",
   "choosePlan": "Elige tu plan",
   "paymentDetails": "Datos de pago",
@@ -144,7 +144,7 @@
   "plan": "Plan",
   "goToLogin": "Iniciar sesión →",
   "successNote": "Inicia sesión con tu email y contraseña para acceder.",
-  "stepVerify": "4. Verificar",
+  "stepVerify": "Verificar",
   "verifyTitle": "Verifica tu email",
 "verifySubtitle": "Hemos enviado un código de 6 dígitos a",
 "verifyBtn": "Verificar email",

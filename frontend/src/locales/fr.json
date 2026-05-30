@@ -620,9 +620,9 @@
   "aiPlaceholder": "Décrivez votre situation de stock pour obtenir des suggestions de commande..."
 },
 "register": {
-  "stepAccount": "1. Compte",
-  "stepPlan": "2. Plan",
-  "stepPayment": "3. Paiement",
+  "stepAccount": "Compte",
+  "stepPlan": "Plan",
+  "stepPayment": "Paiement",
   "createAccount": "Créez votre compte gratuit",
   "choosePlan": "Choisissez votre plan",
   "paymentDetails": "Détails de paiement",
@@ -663,7 +663,7 @@
   "plan": "Plan",
   "goToLogin": "Se connecter →",
   "successNote": "Connectez-vous avec votre email et mot de passe pour accéder.",
-  "stepVerify": "4. Vérifier",
+  "stepVerify": "Vérifier",
   "verifyTitle": "Vérifiez votre email",
 "verifySubtitle": "Nous avons envoyé un code à 6 chiffres à",
 "verifyBtn": "Vérifier l'email",
