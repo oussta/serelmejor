@@ -53,23 +53,22 @@ function Navbar() {
 
   const planLabel = user?.plan && user.plan !== 'pending' ? getPlanLabel(user.plan) : null
 
-  const links = [
-    { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-    ...(user?.role !== 'supplier' ? [
-      { path: '/leads',    label: 'CRM',        icon: 'contacts' },
-      { path: '/products', label: 'Inventario', icon: 'inventory_2' },
-      { path: '/orders',   label: 'Pedidos',    icon: 'local_shipping' },
-    ] : []),
-    ...(user?.role === 'supplier' ? [
-      { path: '/supplier', label: 'Mis Pedidos', icon: 'local_shipping' },
-    ] : []),
-    ...(user?.role === 'owner' || user?.role === 'admin' ? [
-      { path: '/team', label: 'Equipo', icon: 'group' },
-    ] : []),
-    ...(user?.role === 'admin' ? [
-      { path: '/admin', label: 'Admin', icon: 'admin_panel_settings' },
-    ] : []),
-  ]
+ const links = [
+  ...(user?.role !== 'supplier' ? [
+    { path: '/dashboard', label: 'Dashboard',  icon: 'dashboard'            },
+    { path: '/leads',     label: 'CRM',        icon: 'contacts'             },
+    { path: '/products',  label: 'Inventario', icon: 'inventory_2'          },
+    { path: '/orders',    label: 'Pedidos',    icon: 'local_shipping'       },
+  ] : [
+    { path: '/supplier',  label: 'Mis Pedidos', icon: 'local_shipping'      },
+  ]),
+  ...(user?.role === 'owner' || user?.role === 'admin' ? [
+    { path: '/team',      label: 'Equipo',     icon: 'group'                },
+  ] : []),
+  ...(user?.role === 'admin' ? [
+    { path: '/admin',     label: 'Admin',      icon: 'admin_panel_settings' },
+  ] : []),
+]
 
   const navBg     = isDark ? '#1E293B' : 'white'
   const border    = isDark ? '#334155' : '#E2E8F0'
