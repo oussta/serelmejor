@@ -14,11 +14,11 @@ Plataforma SaaS de gestión para pequeñas empresas que combina CRM de ventas e 
 
 ## Credenciales de demo
 
-| Rol      | Email                      | Contraseña |
-|----------|----------------------------|------------|
-| Admin    | admin@salesek.com          | password   |
-| Employee | maria@salesek-demo.com     | password   |
-| Supplier | proveedor@salesek-demo.com | password   |
+
+Admin:    admin@salesek.com / password
+Owner:    owner@salesek.com / password
+Supplier: supplier@salesek.com / password
+Employee: employee@salesek.com / password
 
 ## Roles y permisos
 
@@ -26,8 +26,8 @@ Plataforma SaaS de gestión para pequeñas empresas que combina CRM de ventas e 
 |----------|--------------------------------------------------------------|
 | Admin    | Panel global, todos los negocios y usuarios de la plataforma |
 | Owner    | Acceso completo a su negocio, equipo y facturación           |
-| Employee | Leads, productos, pedidos — sin facturación ni configuración |
-| Supplier | Solo portal de proveedores — ve y confirma sus pedidos       |
+| Employee | Leads, productos, pedidos                                   |
+| Supplier | Solo portal de proveedores  ve y confirma sus pedidos       |
 
 ## Instalación local
 
@@ -42,7 +42,7 @@ DB_HOST, DB_NAME, DB_USER, DB_PASS, DB_PORT=5432, JWT_SECRET, SENDGRID_KEY, CLAU
 
 ## URLs de producción
 
-- Frontend: https://serelmejor.vercel.app
+- Frontend: https://www.salsek.com/
 - Backend: https://serelmejor.onrender.com
 
 ## Elementos diferenciadores
@@ -50,4 +50,5 @@ DB_HOST, DB_NAME, DB_USER, DB_PASS, DB_PORT=5432, JWT_SECRET, SENDGRID_KEY, CLAU
 1. WebSockets — notificaciones en tiempo real
 2. Despliegue profesional en Render y Vercel
 3. JWT + bcrypt — autenticación avanzada
-4. Claude API — IA para borradores y sugerencias de stock
+4.Grock API — IA para borradores y sugerencias de stock
+5.Send GRid API confirmacion del email
